@@ -15,7 +15,7 @@ namespace AssetData
 	{
 		public static AssetDataManager Instance { get; private set; }
 
-		private string dataPath = "Assets/Data"; // 데이터 경로
+		public string dataPath = "Assets/Data"; // 데이터 경로
 		private static Dictionary<Type, IDictionary> AssetMap = new Dictionary<Type, IDictionary>();
 
 		public static string RemotePath { get; private set; }
@@ -24,25 +24,28 @@ namespace AssetData
 
 		public static bool IsLoaded { get; private set; }
 
-		private void Start()
-		{
-			this.Load();
-		}
-
-		public void Load()
-		{
+        private void Awake()
+        {
 			Instance = this;
-
-			var test = CSVtoJSON.ConvertCsvFileToJsonObject(dataPath);
-			
-			AssetDataManager.AssetMap.Clear();
-            UniTask uniTask = AssetDataManager.Load<int, LineData>(test);
 		}
 
+		public static async UniTask Load()
+		{
+			AssetDataManager.IsLoaded = false;
+
+			AssetDataManager.AssetMap.Clear();
+			await UniTask.WhenAll(new List<UniTask>()
+			{
+				AssetDataManager.Load<int, LineData>("LineData"),
+			});
+
+			AssetDataManager.IsLoaded = true;
+		}
 
 		private static async UniTask Load<TKey, TValue>(string name) where TValue : AssetData<TKey>, new()
 		{
-			AssetDataManager.LoadJson<TKey, TValue>(name);
+			var jsonData = CSVtoJSON.ConvertCsvFileToJson(name);
+			AssetDataManager.LoadJson<TKey, TValue>(jsonData);
 		}
 
 		private static void LoadJson<TKey, TValue>(string jsonText) where TValue : AssetData<TKey>, new()
@@ -68,18 +71,89 @@ namespace AssetData
 			AssetDataManager.AssetMap.Add(typeof(TValue), dataMap);
 		}
 
-		#region NestedClass - 간단한 데이터 구조 설정
-		public class LineData : AssetData<int>, ISort
+
+		#region GetData
+		public static TValue GetData<TValue>(string id) where TValue : class, IAssetData
 		{
-			[JsonProperty("Line_Price")]
-			public double Line_Price { get; protected set; }
+			if (string.IsNullOrEmpty(id))
+				return null;
 
-			[JsonProperty("Line_Speed")]
-			public float Line_Speed { get; protected set; }
-
-			[JsonProperty("Line_Order_index")]
-			public int OrderIndex { get; private set; }
+			return AssetDataManager.GetData<string, TValue>(id);
 		}
+
+		public static TValue GetData<TValue>(short id) where TValue : class, IAssetData
+		{
+			return AssetDataManager.GetData<short, TValue>(id);
+		}
+
+		public static TValue GetData<TValue>(int id) where TValue : class, IAssetData
+		{
+			return AssetDataManager.GetData<int, TValue>(id);
+		}
+
+		public static TValue GetData<TValue>(long id) where TValue : class, IAssetData
+		{
+			return AssetDataManager.GetData<long, TValue>(id);
+		}
+
+		public static TValue GetData<TKey, TValue>(TKey id) where TValue : class, IAssetData
+		{
+			if (AssetDataManager.AssetMap.TryGetValue(typeof(TValue), out var dictionary))
+			{
+				var dataMap = dictionary as Dictionary<TKey, TValue>;
+				if (dataMap != null && dataMap.TryGetValue(id, out var data))
+					return data;
+			}
+
+			return null;
+		}
+
+		public static TValue GetData<TValue>(Func<TValue, bool> listener) where TValue : class, IAssetData
+		{
+			if (AssetDataManager.AssetMap.TryGetValue(typeof(TValue), out var dataMap))
+			{
+				var values = dataMap.Values;
+
+				foreach (TValue data in values)
+				{
+					var isValid = listener(data);
+					if (isValid)
+						return data;
+				}
+			}
+
+			return null;
+		}
+
+		public static List<TValue> GetDatas<TValue>(Func<TValue, bool> listener = null) where TValue : IAssetData
+		{
+			var type = typeof(TValue);
+			var list = new List<TValue>();
+
+			if (AssetDataManager.AssetMap.TryGetValue(type, out var dictionary))
+			{
+				var values = dictionary.Values;
+
+				foreach (TValue data in values)
+				{
+					if (listener != null)
+					{
+						var isValid = listener(data);
+						if (isValid)
+							list.Add(data);
+					}
+					else
+					{
+						list.Add(data);
+					}
+				}
+			}
+			return list;
+		}
+		#endregion
+
+		#region NestedClass - 간단한 데이터 구조 설정
+
 
 		#endregion
 	}

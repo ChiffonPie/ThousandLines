@@ -8,17 +8,15 @@ namespace AssetData
     {
         //public string jsonValue = "Assets/Data";
 
-        public static string ConvertCsvFileToJsonObject(string path)
+        //특정 경로의 데이터를 전체를 파싱하는 방식 (서버 패킷 구조와 동일하도록)
+        public static string ConvertAllCsvFileToJson()
         {
             List<JObject> jsonData = new List<JObject>();
-
-            string[] files = Directory.GetFiles($"{path}", "*.csv");
+            string[] files = Directory.GetFiles($"{AssetDataManager.Instance.dataPath}", "*.csv");
             string jsonAllData = null;
 
             foreach (var file in files)
             {
-                UnityEngine.Debug.LogError(Path.GetFileNameWithoutExtension(file));
-
                 var csv = new List<string[]>();
                 var lines = File.ReadAllLines(file);
 
@@ -35,15 +33,64 @@ namespace AssetData
                     }
                     jsonData.Add(json);
                 }
-
             }
 
-            foreach (var item in jsonData)
+            // Json Data Array
+            for (int i = 0; i < jsonData.Count; i++)
             {
-                jsonAllData += item.ToString();
+                jsonAllData += jsonData[i].ToString();
+                if (i != jsonData.Count - 1) jsonAllData += ",";
             }
+
+            UnityEngine.Debug.LogError(jsonAllData);
+
             return jsonAllData;
         }
+
+
+        //특정 파일을 파싱하는 방식
+        public static string ConvertCsvFileToJson(string fileName)
+        {
+            List<JObject> jsonData = new List<JObject>();
+            string[] files = Directory.GetFiles($"{AssetDataManager.Instance.dataPath}", "*.csv");
+            string jsonAllData = null;
+
+            foreach (var file in files)
+            {
+                if (Path.GetFileNameWithoutExtension(file) == fileName)
+                {
+                    jsonAllData = "[";
+                    var csv = new List<string[]>();
+                    var lines = File.ReadAllLines(file);
+
+                    foreach (string line in lines)
+                        csv.Add(line.Split(','));
+
+                    var properties = lines[0].Split(',');
+                    for (int i = 1; i < lines.Length; i++)
+                    {
+                        JObject json = new JObject();
+                        for (int j = 0; j < properties.Length; j++)
+                        {
+                            json.Add(properties[j], csv[i][j]);
+                        }
+                        jsonData.Add(json);
+                    }
+                }
+            }
+
+            // Json Data Array
+            for (int i = 0; i < jsonData.Count; i++)
+            {
+                jsonAllData += jsonData[i].ToString();
+                if (i != jsonData.Count - 1) 
+                    jsonAllData += ",";
+            }
+            jsonAllData += "]";
+
+            return jsonAllData;
+        }
+
 
         //public static async UniTask Load()
         //{
