@@ -4,16 +4,18 @@ namespace ThousandLines_Data
 {
 	public class MachineLineData : AssetData<int>, ISort
 	{
-		[JsonProperty("Machine_isActive")]
-		public int Machine_isActive { get; protected set; }
+		[JsonProperty("Line_isActive")]
+		public int Line_isActive { get; protected set; }
 
-		[JsonProperty("Machine_Create_Speed")]
-		public float Machine_Create_Speed { get; protected set; }
-
-		[JsonProperty("Machine_Speed")]
-		public float Machine_Speed { get; private set; }
-
-		[JsonProperty("order")]
+		[JsonProperty("Line_Order_Index")]
 		public int OrderIndex { get; private set; }
+
+		[JsonProperty("Line_Price")]
+		public double Line_Price { get; private set; }
+
+		[JsonProperty("Line_Speed")]
+		public float Line_Speed { get; private set; }
+
+
 	}
 }

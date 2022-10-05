@@ -21,9 +21,8 @@ namespace ThousandLines_Data
 			AssetDataManager.AssetMap.Clear();
 			await UniTask.WhenAll(new List<UniTask>()
 			{
-				AssetDataManager.Load<int, LineData>("LineData"),
 				AssetDataManager.Load<int, UserData>("UserData"),
-				AssetDataManager.Load<int, MachineLineData>("MachineData"),
+				AssetDataManager.Load<int, MachineLineData>("MachineLineData"),
 			});
 
 			AssetDataManager.IsLoaded = true;

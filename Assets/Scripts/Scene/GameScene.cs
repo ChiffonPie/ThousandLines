@@ -34,8 +34,6 @@ namespace ThousandLines
 			{
 				this.SetGameSceneText = "데이터 로드 완료";
 				var test = AssetDataManager.GetData<MachineLineData>(1);
-
-				Debug.LogError(test.Machine_isActive);
 				this.m_Sequence.Next();
 			});
 		}
