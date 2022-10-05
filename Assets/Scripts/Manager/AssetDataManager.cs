@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace ThousandLines
+namespace ThousandLines_Data
 {
 	public class AssetDataManager
 	{
@@ -28,10 +28,10 @@ namespace ThousandLines
 			{
 				AssetDataManager.Load<int, LineData>("LineData"),
 				AssetDataManager.Load<int, UserData>("UserData"),
+				AssetDataManager.Load<int, MachineData>("MachineData"),
 			});
 
 			AssetDataManager.IsLoaded = true;
-			Debug.Log("DataLoad Complete");
 		}
 
 		private static async UniTask Load<TKey, TValue>(string name) where TValue : AssetData<TKey>, new()

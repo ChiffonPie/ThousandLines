@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ThousandLines
+namespace ThousandLines_Data
 {
     public class ActionSequence
     {

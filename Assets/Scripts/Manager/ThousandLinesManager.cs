@@ -6,9 +6,6 @@ namespace ThousandLines
     {
         public static ThousandLinesManager Instance { get; private set; }
 
-        [SerializeField]
-        private string dataPath = null;
-
         //천개의 줄
         //천개의 공정(라인) 의 뜻
         //자동화 시스템에서 생산되는 원자재를

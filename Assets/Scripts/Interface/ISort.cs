@@ -1,4 +1,4 @@
-namespace ThousandLines
+namespace ThousandLines_Data
 {
     public interface ISort
     {

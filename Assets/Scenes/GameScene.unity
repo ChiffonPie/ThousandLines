@@ -194,7 +194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Loading...
 --- !u!222 &205853093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -826,4 +826,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c529aaea6b58545abb3bd9fce647bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPath: 

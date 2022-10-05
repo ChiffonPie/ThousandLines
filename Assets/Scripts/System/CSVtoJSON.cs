@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ThousandLines
+namespace ThousandLines_Data
 {
     public class CSVtoJSON
     {
