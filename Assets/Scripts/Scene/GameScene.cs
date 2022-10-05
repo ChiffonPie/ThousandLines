@@ -5,37 +5,47 @@ namespace ThousandLines
 {
 	public class GameScene : MonoBehaviour
 	{
+		[SerializeField]
+		private UnityEngine.UI.Text m_GameSceneText;
+
 		private ActionSequence m_Sequence = new ActionSequence();
         
 		private void Awake()
         {
-            this.SetupSequence();
+			this.InitializeGameScene();
 		}
 
-        private void Start()
-		{
+		private void InitializeGameScene()
+        {
+			this.SetupSequence();
 			this.m_Sequence.Start();
 		}
-
 
 		private void SetupSequence()
 		{
 			this.m_Sequence.Clear();
 			this.m_Sequence.Add(this.LoadAssetData);
+			this.m_Sequence.Add(this.LoadGameScene);
 		}
 
 		private void LoadAssetData()
 		{
-            UniTask uniTask = AssetDataManager.Load().ContinueWith(() =>
+			UniTask uniTask = AssetDataManager.Load().ContinueWith(() =>
 			{
-				Debug.LogError("데이터 로드 완료");
-				var test = AssetDataManager.GetData<LineData>(1);
-				Debug.LogError(test.Line_Price);
-
-
-				var test2 = AssetDataManager.GetData<UserData>(1);
-				Debug.LogError(test2.Line_Price);
+				this.SetGameSceneText = "데이터 로드 완료";
+				this.m_Sequence.Next();
 			});
 		}
+
+		private void LoadGameScene()
+        {
+			this.SetGameSceneText = "Game Scene 로드 완료";
+			this.m_Sequence.Next();
+		}
+
+		private string SetGameSceneText
+		{
+			set { m_GameSceneText.text = value; }
+        }
 	}
 }
