@@ -1,4 +1,4 @@
-namespace AssetData
+namespace ThousandLines
 {
 	public interface IAssetData
 	{

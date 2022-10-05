@@ -3,19 +3,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
-namespace AssetData
-{
-	public class AssetDataManager : MonoBehaviour
-	{
-		public static AssetDataManager Instance { get; private set; }
 
-		public string dataPath = "Assets/Data"; // 데이터 경로
+namespace ThousandLines
+{
+	public class AssetDataManager
+	{
+		public static string dataPath = "Assets/Data"; // 데이터 경로
 		private static Dictionary<Type, IDictionary> AssetMap = new Dictionary<Type, IDictionary>();
 
 		public static string RemotePath { get; private set; }
@@ -23,11 +18,6 @@ namespace AssetData
 		public static string CachePath { get; private set; }
 
 		public static bool IsLoaded { get; private set; }
-
-        private void Awake()
-        {
-			Instance = this;
-		}
 
 		public static async UniTask Load()
 		{
@@ -37,9 +27,11 @@ namespace AssetData
 			await UniTask.WhenAll(new List<UniTask>()
 			{
 				AssetDataManager.Load<int, LineData>("LineData"),
+				AssetDataManager.Load<int, UserData>("UserData"),
 			});
 
 			AssetDataManager.IsLoaded = true;
+			Debug.Log("DataLoad Complete");
 		}
 
 		private static async UniTask Load<TKey, TValue>(string name) where TValue : AssetData<TKey>, new()
@@ -70,7 +62,6 @@ namespace AssetData
 
 			AssetDataManager.AssetMap.Add(typeof(TValue), dataMap);
 		}
-
 
 		#region GetData
 		public static TValue GetData<TValue>(string id) where TValue : class, IAssetData
@@ -151,12 +142,5 @@ namespace AssetData
 			return list;
 		}
 		#endregion
-
-		#region NestedClass - 간단한 데이터 구조 설정
-
-
-		#endregion
 	}
-
-
 }

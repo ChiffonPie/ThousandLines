@@ -1,7 +1,6 @@
-using AssetData;
 using Newtonsoft.Json;
 
-namespace AssetData
+namespace ThousandLines
 {
 	public class LineData : AssetData<int>, ISort
 	{

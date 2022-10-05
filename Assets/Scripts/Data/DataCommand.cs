@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace AssetData
+namespace ThousandLines
 {
     public class DataCommand<T> : AssetData<string>
     {

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AssetData
+namespace ThousandLines
 {
 	public abstract class AssetData<T> : IAssetData
 	{
