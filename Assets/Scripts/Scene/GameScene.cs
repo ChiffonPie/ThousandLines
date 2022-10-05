@@ -26,6 +26,8 @@ namespace ThousandLines
 			this.m_Sequence.Clear();
 			this.m_Sequence.Add(this.LoadAssetData);
 			this.m_Sequence.Add(this.LoadGameScene);
+
+			//this.m_Sequence.Count
 		}
 
 		private void LoadAssetData()

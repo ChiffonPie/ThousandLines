@@ -14,6 +14,14 @@ namespace ThousandLines_Data
             this.m_Actions.Clear();
         }
 
+        public int Count
+        {
+            get
+            {
+                return m_Actions.Count;
+            }
+        }
+
         public void Add(Action action)
         {
             this.m_Actions.Add(action);
