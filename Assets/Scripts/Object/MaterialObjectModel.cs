@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ThousandLines
 {
-    public class MaterialObjectModel
+    public abstract class MaterialObjectModel
     {
         // 원자재 모델
         public MaterialObjectData m_data;
