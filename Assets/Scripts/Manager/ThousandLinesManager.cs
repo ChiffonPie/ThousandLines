@@ -18,14 +18,9 @@ namespace ThousandLines
         // 아이템 구조 설계
         // 아이템 인터렉션
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
-            //AssetDataManager.Load(dataPath);
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

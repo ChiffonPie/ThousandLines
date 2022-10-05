@@ -7,7 +7,6 @@ namespace ThousandLines
 	{
 		[SerializeField]
 		private UnityEngine.UI.Text m_GameSceneText;
-
 		private ActionSequence m_Sequence = new ActionSequence();
         
 		private void Awake()
@@ -33,6 +32,8 @@ namespace ThousandLines
 			UniTask uniTask = AssetDataManager.Load().ContinueWith(() =>
 			{
 				this.SetGameSceneText = "데이터 로드 완료";
+				var test = AssetDataManager.GetData<LineData>(1);
+				Debug.LogError(test.IsActive);
 				this.m_Sequence.Next();
 			});
 		}
