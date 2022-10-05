@@ -23,7 +23,7 @@ namespace ThousandLines_Data
 			{
 				AssetDataManager.Load<int, LineData>("LineData"),
 				AssetDataManager.Load<int, UserData>("UserData"),
-				AssetDataManager.Load<int, MachineData>("MachineData"),
+				AssetDataManager.Load<int, MachineLineData>("MachineData"),
 			});
 
 			AssetDataManager.IsLoaded = true;
