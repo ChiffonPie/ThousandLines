@@ -12,11 +12,6 @@ namespace ThousandLines_Data
 	{
 		public static string dataPath = "Assets/Data"; // 데이터 경로
 		private static Dictionary<Type, IDictionary> AssetMap = new Dictionary<Type, IDictionary>();
-
-		public static string RemotePath { get; private set; }
-
-		public static string CachePath { get; private set; }
-
 		public static bool IsLoaded { get; private set; }
 
 		public static async UniTask Load()

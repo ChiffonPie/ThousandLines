@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace ThousandLines_Data
 {
-	public class MaterialData : AssetData<int>, ISort
+	public class MaterialObjectData : AssetData<int>, ISort
 	{
 		[JsonProperty("Material_Hp")]
 		public int Material_Hp { get; private set; }
