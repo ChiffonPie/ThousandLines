@@ -10,32 +10,27 @@ namespace ThousandLines
 		private Image m_Image;
 
 		[SerializeField]
-		private Text m_Label;
+		private TextMeshProUGUI m_Label;
 
 		public Image Image
 		{
 			get { return this.m_Image; }
 		}
 
-		public Text Label
+		public TextMeshProUGUI Label
 		{
 			get { return this.m_Label; }
 		}
 
 		public float FillAmount
 		{
+			get { return this.m_Image.fillAmount; }
 			set { this.m_Image.fillAmount = value; }
 		}
 
 		public string Text
 		{
 			set { this.m_Label.text = value; }
-		}
-
-		public void SetValue(int value, int maxValue)
-		{
-			this.FillAmount = (float)value / maxValue;
-			this.Text = $"{value}/{maxValue}";
 		}
 	}
 }
