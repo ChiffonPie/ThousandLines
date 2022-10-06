@@ -41,9 +41,9 @@ namespace ThousandLines
                 return;
 
             this.baseMachineState = state;
-            //var action = this.m_Actions.Find(state);
-            //if (action != null)
-            //    action.Invoke();
+            var action = this.m_Actions.Find(state);
+            if (action != null)
+                action.Invoke();
         }
 
         private void Create()
