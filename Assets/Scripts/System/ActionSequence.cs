@@ -22,6 +22,11 @@ namespace ThousandLines
             }
         }
 
+        public int Index
+        {
+            get { return m_Index; }
+        }
+
         public void Add(Action action)
         {
             this.m_Actions.Add(action);
