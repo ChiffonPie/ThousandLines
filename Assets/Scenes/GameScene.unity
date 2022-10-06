@@ -451,7 +451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GameSceneText: {fileID: 1791188152}
   m_LoadingSlider: {fileID: 1032943101}
-  m_LoadingDuration: 2
+  m_LoadingDuration: 1
 --- !u!1 &997744359
 GameObject:
   m_ObjectHideFlags: 0

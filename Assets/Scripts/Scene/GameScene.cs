@@ -16,7 +16,7 @@ namespace ThousandLines
 
 		private ActionSequence m_Sequence = new ActionSequence();
 		[SerializeField]
-		private float m_LoadingDuration = 2f;
+		private float m_LoadingDuration = 1f;
 
 		private void Awake()
         {
@@ -27,9 +27,16 @@ namespace ThousandLines
         {
 			this.SetupSequence();
 			this.InitaizeLoading();
-			this.m_Sequence.Start();
+			this.m_Sequence.Start(()=>
+			{
+				this.LoadComplete();
+			});
 		}
 
+
+		/// <summary>
+		/// initialize  ÇÒ ½ÃÄö½º Ãß°¡
+		/// </summary>
 		private void SetupSequence()
 		{
 			this.m_Sequence.Clear();
@@ -55,6 +62,8 @@ namespace ThousandLines
 			float startValue =  value      / (float)this.m_Sequence.Count;
 			float endValue   = (value + 1) / (float)this.m_Sequence.Count;
 
+
+			this.m_LoadingSlider.Label.DOColor(Color.green, this.m_LoadingDuration);
 			this.m_LoadingSlider.Label.DOGauge((int)Math.Ceiling(startValue * 100),
 											   (int)Math.Ceiling(endValue   * 100),
 											    this.m_LoadingDuration);
@@ -86,6 +95,22 @@ namespace ThousandLines
 				this.SetGameSceneText = "Game Scene Load Complete";
 				this.m_Sequence.Next();
 			});
+		}
+
+		private void LoadComplete()
+        {
+			Sequence sequence = DOTween.Sequence();
+
+			//±ôºýÀÓ È½¼ö
+			for (int i = 0; i < 4; i++)
+            {
+				sequence.Append(this.m_GameSceneText.DOColor(Color.black, this.m_LoadingDuration / 10));
+				sequence.Append(this.m_GameSceneText.DOColor(Color.green, this.m_LoadingDuration / 10));
+			}
+
+			sequence.Append(this.m_GameSceneText.DOFade(0, this.m_LoadingDuration / 5));
+			sequence.Join(this.m_LoadingSlider.Fade(0, this.m_LoadingDuration / 5));
+			sequence.AppendCallback(() => { Debug.LogError("¿Ï·á"); });
 		}
 
 		private string SetGameSceneText
