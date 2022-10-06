@@ -11,16 +11,19 @@ namespace ThousandLines
 		private Image m_Image;
 
 		[SerializeField]
-		private TextMeshProUGUI m_Label;
+		private TextMeshProUGUI m_LoadingText;
+
+		[SerializeField]
+		private TextMeshProUGUI m_PercentLabel;
 
 		public Image Image
 		{
 			get { return this.m_Image; }
 		}
 
-		public TextMeshProUGUI Label
+		public TextMeshProUGUI PercentLabel
 		{
-			get { return this.m_Label; }
+			get { return this.m_PercentLabel; }
 		}
 
 		public float FillAmount
@@ -29,17 +32,26 @@ namespace ThousandLines
 			set { this.m_Image.fillAmount = value; }
 		}
 
-		public string Text
+		public TextMeshProUGUI LoadingText
 		{
-			set { this.m_Label.text = value; }
+			get { return this.m_LoadingText; }
 		}
 
 		public Sequence Fade(float endValue = 0, float duration = 1)
         {
 			Sequence sequence = DOTween.Sequence();
 
+			//±ôºýÀÓ È½¼ö
+			for (int i = 0; i < 3; i++)
+			{
+				sequence.Append(this.m_LoadingText.DOColor(Color.black, 0.09f));
+				sequence.Append(this.m_LoadingText.DOColor(Color.green, 0.09f));
+			}
+
+			sequence.AppendInterval(0.5f);
 			sequence.Append(this.Image.DOFade(endValue, duration));
-			sequence.Join(this.m_Label.DOFade(endValue, duration));
+			sequence.Join(this.m_PercentLabel.DOFade(endValue, duration));
+			sequence.Join(this.LoadingText.DOFade(endValue, duration));
 			if (this.GetComponent<Image>() != null)
 				sequence.Join(this.GetComponent<Image>().DOFade(endValue, duration));
 
