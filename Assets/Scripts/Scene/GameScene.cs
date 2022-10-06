@@ -2,7 +2,6 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using ThousandLines_Data;
 using DG.Tweening;
-using TMPro;
 using System;
 
 namespace ThousandLines
@@ -43,7 +42,7 @@ namespace ThousandLines
         #region GaemScene Sequences
 
         /// <summary>
-        /// initialize  할 시퀀스 추가
+        /// Initialize  할 시퀀스 추가
         /// </summary>
         private void SetupSequence()
 		{
@@ -81,7 +80,12 @@ namespace ThousandLines
         {
 			Sequence sequence = DOTween.Sequence();
 			sequence.Append(this.m_LoadingSlider.Fade(0, 0.3f));
-			sequence.AppendCallback(() => { Debug.LogError("완료"); });
+			sequence.AppendCallback(() => {
+
+				//sequence.Append(this.m_LoadingSlider.transform.DOMove(new Vector2(this.m_LoadingSlider.transform.position.x, this.m_LoadingSlider.transform.position.y + 1000),1,true));
+				Debug.LogError("완료"); 
+			
+			});
 		}
 
 		/// <summary>
@@ -99,8 +103,8 @@ namespace ThousandLines
 
 			this.m_LoadingSlider.PercentLabel.DOColor(Color.green, this.m_LoadingDuration);
 			this.m_LoadingSlider.PercentLabel.DOGauge((int)Math.Ceiling(startValue * 100),
-											   (int)Math.Ceiling(endValue * 100),
-												this.m_LoadingDuration);
+													  (int)Math.Ceiling(endValue * 100),
+												   	this.m_LoadingDuration);
 			this.m_LoadingSlider.Image.DOFillAmount(endValue, this.m_LoadingDuration).OnComplete(() =>
 			{
 				if (onCompleted != null)
