@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using ThousandLines_Data;
 using DG.Tweening;
 using System;
+using TMPro;
 
 namespace ThousandLines
 {
@@ -12,8 +13,11 @@ namespace ThousandLines
 		private SliderViewer m_LoadingSlider;
 
 		private ActionSequence m_Sequence = new ActionSequence();
+
 		[SerializeField]
-		private float m_LoadingDuration = 1f;
+		private TextMeshProUGUI m_IntroLabel;
+		[SerializeField]
+		private float m_LoadingDuration = 0.5f;
 
 		private void Awake()
         {
@@ -34,6 +38,7 @@ namespace ThousandLines
 
 		private void InitaizeLoading()
 		{
+			this.m_LoadingSlider.gameObject.SetActive(true);
 			this.m_LoadingSlider.Image.fillAmount = 0;
 		}
 
@@ -74,19 +79,9 @@ namespace ThousandLines
 			});
 		}
 
-        #endregion
+		#endregion
 
-        private void LoadComplete()
-        {
-			Sequence sequence = DOTween.Sequence();
-			sequence.Append(this.m_LoadingSlider.Fade(0, 0.3f));
-			sequence.AppendCallback(() => {
-
-				//sequence.Append(this.m_LoadingSlider.transform.DOMove(new Vector2(this.m_LoadingSlider.transform.position.x, this.m_LoadingSlider.transform.position.y + 1000),1,true));
-				Debug.LogError("완료"); 
-			
-			});
-		}
+		#region GameScene Load
 
 		/// <summary>
 		/// 로딩 처리
@@ -111,5 +106,33 @@ namespace ThousandLines
 					onCompleted();
 			});
 		}
+		private void LoadComplete()
+		{
+			Sequence sequence = DOTween.Sequence();
+			sequence.Append(this.m_LoadingSlider.Fade(0, 0.3f));
+			sequence.AppendCallback(() => {
+				this.m_LoadingSlider.gameObject.SetActive(false);
+				this.IntroLabel();
+			});
+		}
+
+		#endregion
+
+		#region GameScene Intro
+		private void IntroLabel()
+		{
+			Sequence sequence = DOTween.Sequence();
+			sequence.Append(this.m_IntroLabel.transform.DOMove(new Vector2(this.m_IntroLabel.transform.position.x + 50, this.m_IntroLabel.transform.position.y - 25), 0.4f, true));
+			sequence.Join(this.m_IntroLabel.DOColor(Color.white, this.m_LoadingDuration * 0.4f));
+			sequence.AppendInterval(this.m_LoadingDuration);
+			sequence.Append(this.m_IntroLabel.DOColor(Color.black, 0.4f));
+			sequence.Join(this.m_IntroLabel.transform.DOMove(new Vector2(this.m_IntroLabel.transform.position.x - 50, this.m_IntroLabel.transform.position.y + 25), this.m_LoadingDuration * 0.4f, true));
+			sequence.AppendCallback(() => 
+			{
+				ThousandLinesManager.Instance.Initiaize();
+			});
+		}
+
+		#endregion
 	}
 }

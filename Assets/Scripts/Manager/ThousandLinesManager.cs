@@ -13,6 +13,7 @@ namespace ThousandLines
         //추가 공정 및 가공함으로써 더욱 가치있는 자재로 업그레이드 후 판매하는 게임
 
         //머신 하나당 1개의 메테리얼만 가질 수 있다. (다음 소비가 안되면 멈춤)
+        //생산 쿨타임이 존재한다.
 
         // 오브젝트 풀링
         // 아이템 구조 설계
@@ -22,9 +23,9 @@ namespace ThousandLines
         {
             Instance = this;
         }
+        public void Initiaize()
+        {
 
-
-
-
+        }
     }
 }

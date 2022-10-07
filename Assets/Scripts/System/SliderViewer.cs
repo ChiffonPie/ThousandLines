@@ -55,6 +55,8 @@ namespace ThousandLines
 			if (this.GetComponent<Image>() != null)
 				sequence.Join(this.GetComponent<Image>().DOFade(endValue, duration));
 
+			sequence.Join(this.transform.DOMove(new Vector2(this.transform.position.x - 50, this.transform.position.y + 25), 0.2f, true));
+
 			return sequence;
 		}
 	}

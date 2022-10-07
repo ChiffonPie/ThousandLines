@@ -5,9 +5,14 @@ using UnityEngine;
 
 namespace ThousandLines
 {
-    public abstract class BaseMachineModel
+    public class BaseMachineModel
     {
         // 기계 데이터
-        public MachineLineData m_data;
+        public BaseMachineData m_Data;
+
+        public BaseMachineModel(BaseMachineData data)
+        {
+            this.m_Data = data;
+        }
     }
 }
