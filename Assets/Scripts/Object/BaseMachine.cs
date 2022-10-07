@@ -12,19 +12,29 @@ namespace ThousandLines
     {
         public BaseMachineModel Model;
         public BaseMachineState baseMachineState = BaseMachineState.NULL;
+        private List<SpriteRenderer> m_SpriteRenderers;
         
         private Dictionary<BaseMachineState, Action> m_Actions = new Dictionary<BaseMachineState, Action>();
         [SerializeField]
         private Transform m_createPos;
         public void Show()
         {
+            this.InitializeBaseMachine();
+        }
+        private void InitializeBaseMachine()
+        {
+            this.InitializeSprites();
             var data = AssetDataManager.GetData<BaseMachineData>(1);
             var model = new BaseMachineModel(data);
-
             this.SetMachine(model);
+            this.SetState(BaseMachineState.INITIALIZE);
         }
-
-        //베이스 재료 생성 및 이동 처리
+        private void InitializeSprites()
+        {
+            this.m_SpriteRenderers = new List<SpriteRenderer>();
+            this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
+            SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
+        }
         private void SetMachine(BaseMachineModel machineModel)
         {
             this.Model = machineModel;
@@ -32,11 +42,11 @@ namespace ThousandLines
         }
         private void SetupSequence()
         {
+            this.m_Actions.Add(BaseMachineState.INITIALIZE, this.Initialize);
             this.m_Actions.Add(BaseMachineState.READY, this.Ready);
             this.m_Actions.Add(BaseMachineState.CREATE, this.Create);
             this.m_Actions.Add(BaseMachineState.MOVE, this.Move);
             this.m_Actions.Add(BaseMachineState.WAIT, this.Wait);
-
             this.SetState(BaseMachineState.READY);
         }
 
@@ -63,6 +73,20 @@ namespace ThousandLines
             });
         }
 
+        private void Initialize()
+        {
+            Debug.LogError("초기화중");
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, Color.white, 0.5f));
+            sequence.AppendInterval(0.5f);
+            sequence.AppendCallback(() =>
+            {
+                Debug.LogError("초기화 완료");
+                if (this.baseMachineState == BaseMachineState.INITIALIZE)
+                    this.SetState(BaseMachineState.READY);
+            });
+        }
+
         private void Move()
         {
             Debug.LogError("이동중");
@@ -77,5 +101,7 @@ namespace ThousandLines
         {
             Debug.LogError("준비완료");
         }
+
+
     }
 }

@@ -129,6 +129,7 @@ namespace ThousandLines
 			sequence.Join(this.m_IntroLabel.transform.DOMove(new Vector2(this.m_IntroLabel.transform.position.x - 50, this.m_IntroLabel.transform.position.y + 25), this.m_LoadingDuration * 0.4f, true));
 			sequence.AppendCallback(() => 
 			{
+				this.m_IntroLabel.gameObject.SetActive(false);
 				ThousandLinesManager.Instance.Initiaize();
 			});
 		}
