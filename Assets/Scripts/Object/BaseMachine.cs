@@ -83,6 +83,7 @@ namespace ThousandLines
         #endregion
 
         #region Sequences
+
         private void InitializeSequence()
         {
             Sequence sequence = DOTween.Sequence();
