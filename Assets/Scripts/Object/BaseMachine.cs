@@ -97,13 +97,13 @@ namespace ThousandLines
 
         private void CreateSequence()
         {
-            this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
             var sequence = DOTween.Sequence();
             sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed);
             //Join 해서 로딩게이지 연출 추가
             sequence.AppendCallback(() =>
             {
                 Debug.Log(this.name + " : 생성");
+                this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
                 this.SetState(BaseMachineState.MOVE);
             });
         }
