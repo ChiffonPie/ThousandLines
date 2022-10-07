@@ -15,6 +15,7 @@ namespace ThousandLines
         NULL        = -1,
         INITIALIZE  =  0,
         READY       =  1,
+
         CREATE      =  2,
         WAIT        =  3,
         MOVE        =  4,
@@ -24,9 +25,25 @@ namespace ThousandLines
     {
         NULL       = -1,
         INITIALIZE =  0,
-        PROCESSING =  1,
-        WAIT       =  2,
-        MOVE       =  3,
-        CHANGE     =  4,
+        READY      =  1,
+
+        PROCESSING =  2,
+        WAIT       =  3,
+        MOVE       =  4,
+
+        CHANGE     =  5,
+    }
+
+    public enum GoalMachineState
+    {
+        NULL       = -1,
+        INITIALIZE =  0,
+        READY      =  1,
+
+        GOAL       =  2,
+        WAIT       =  3,
+        MOVE       =  4,
+        
+        CHANGE     =  5,
     }
 }
