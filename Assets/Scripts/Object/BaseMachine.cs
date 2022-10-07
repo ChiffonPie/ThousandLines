@@ -139,7 +139,7 @@ namespace ThousandLines
         {
             MaterialObject createMaterial = Instantiate(materialObject, ThousandLinesManager.Instance.transform);
             createMaterial.name = materialObject.name;
-            createMaterial.m_Tr.position = this.m_Pos[0];
+            createMaterial.transform.position = this.m_Pos[0];
             this.m_MaterialObject = createMaterial;
         }
 
