@@ -49,25 +49,25 @@ namespace ThousandLines
 
         private void InitializeSequence()
         {
-            Debug.LogError("초기화중");
+            Debug.Log(this.name + " : 초기화중");
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, Color.white, 0.5f));
             sequence.AppendInterval(0.5f);
             sequence.AppendCallback(() =>
             {
-                Debug.LogError("초기화 완료");
+                Debug.Log(this.name + " : 초기화 완료");
                 if (this.goalMachineState == GoalMachineState.INITIALIZE)
                     this.SetState(GoalMachineState.READY);
             });
         }
         private void ReadySequence()
         {
-            Debug.LogError("준비완료");
+            Debug.Log(this.name + " : 준비완료");
         }
 
         private void GoalSequence()
         {
-            Debug.LogError("준비완료");
+            Debug.Log(this.name + " : 준비완료");
         }
     }
 }

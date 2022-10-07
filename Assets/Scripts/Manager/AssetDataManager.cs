@@ -22,6 +22,7 @@ namespace ThousandLines_Data
 			await UniTask.WhenAll(new List<UniTask>()
 			{
 				AssetDataManager.Load<int, UserData>("UserData"),
+				AssetDataManager.Load<int, BaseMachineData>("BaseMachineData"),
 				AssetDataManager.Load<int, MachineLineData>("MachineLineData"),
 			});
 

@@ -19,24 +19,37 @@ namespace ThousandLines
         private List<SpriteRenderer> m_SpriteRenderers;
 
         private Dictionary<BaseMachineState, Action> m_Actions = new Dictionary<BaseMachineState, Action>();
+        
         [SerializeField]
-        private Transform m_createPos;
+        private Transform[] m_tr;
+        private Vector3[] m_Pos;
+
         public void Show()
         {
             this.InitializeBaseMachine();
         }
-
 
         #region Initialized And Set Sequence
 
         private void InitializeBaseMachine()
         {
             this.InitializeSprites();
+            this.InitializedPos();
             var data = AssetDataManager.GetData<BaseMachineData>(1);
             var model = new BaseMachineModel(data);
             this.SetMachine(model);
             this.SetState(BaseMachineState.INITIALIZE);
         }
+
+        private void InitializedPos()
+        {
+            this.m_Pos = new Vector3[this.m_tr.Length];
+            for (int i = 0; i < this.m_Pos.Length; i++)
+            {
+                this.m_Pos[i] = this.m_tr[i].position;
+            }
+        }
+
         private void InitializeSprites()
         {
             this.m_SpriteRenderers = new List<SpriteRenderer>();
@@ -71,26 +84,29 @@ namespace ThousandLines
         #endregion
 
         #region Sequences
-
-        private void CreateSequence()
-        {
-            var sequence = DOTween.Sequence();
-            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed);
-            sequence.AppendCallback(() =>
-            {
-                Debug.LogError("생성");
-                this.SetState(BaseMachineState.MOVE);
-            });
-        }
-
         private void InitializeSequence()
         {
-            Debug.LogError("초기화중");
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, Color.white, 0.5f));
             sequence.AppendInterval(0.5f);
             sequence.AppendCallback(() =>
             {
+                Debug.Log(this.name + " : 초기화 완료");
+                this.SetState(BaseMachineState.CREATE);
+            });
+        }
+
+        private void CreateSequence()
+        {
+            var sequence = DOTween.Sequence();
+            Debug.LogError(this.Model.m_Data.Machine_Create_Speed);
+
+            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed);
+            //Join 해서 로딩게이지 연출 추가
+
+            sequence.AppendCallback(() =>
+            {
+                Debug.Log(this.name + " : 생성");
                 this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
                 this.SetState(BaseMachineState.MOVE);
             });
@@ -98,17 +114,22 @@ namespace ThousandLines
 
         private void MoveSequence()
         {
-            Debug.LogError("이동중");
+            Debug.Log(this.m_MaterialObject + " : 이동중");
+            this.m_MaterialObject.transform.DOPath(this.m_Pos, this.Model.m_Data.Machine_Speed, PathType.CatmullRom)
+                .OnComplete(() =>
+                {
+                    this.SetState(BaseMachineState.WAIT);
+                });
         }
 
         private void WaitSequence()
         {
-            Debug.LogError("대기중");
+            Debug.Log(this.name + " : 대기중");
         }
 
         private void ReadySequence()
         {
-            Debug.LogError("준비완료");
+            Debug.Log(this.name + " : 준비완료");
         }
 
         #endregion
@@ -119,8 +140,9 @@ namespace ThousandLines
         private void CreateBaseMaterial(MaterialObject materialObject)
         {
             MaterialObject createMaterial = Instantiate(materialObject, this.transform);
-            materialObject.name = materialObject.name;
-            materialObject.transform.position = m_createPos.transform.position;
+            createMaterial.name = materialObject.name;
+            materialObject.transform.position = this.m_Pos[0];
+            this.m_MaterialObject = materialObject;
         }
 
         #endregion
