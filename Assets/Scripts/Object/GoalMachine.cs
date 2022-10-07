@@ -51,7 +51,7 @@ namespace ThousandLines
         {
             Debug.Log(this.name + " : 초기화중");
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, Color.white, 0.5f));
+            sequence.Append(SpriteExtensions.SetSpritesColor(this.m_SpriteRenderers, Color.white, 0.5f));
             sequence.AppendInterval(0.5f);
             sequence.AppendCallback(() =>
             {

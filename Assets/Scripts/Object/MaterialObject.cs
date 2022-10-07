@@ -6,11 +6,19 @@ namespace ThousandLines
 {
     public class MaterialObject : MonoBehaviour
     {
+        [HideInInspector]
+        public Transform m_Tr;
+
         [SerializeField]
         private MaterialObjectModel Model = null;
 
         [SerializeField]
         private double m_price = 0;
+
+        private void Awake()
+        {
+            this.m_Tr = this.GetComponent<Transform>();
+        }
 
         private double Price
         {
