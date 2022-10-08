@@ -10,19 +10,19 @@ namespace ThousandLines
         private MaterialObjectModel Model = null;
 
         [SerializeField]
-        private double m_price = 0;
+        private double m_Value = 0;
 
-        private double Price
+        public double Value
         {
-            get { return m_price; }
-            set { this.m_price = value; }
+            get { return m_Value; }
+            set { this.m_Value = value; }
         }
 
         //처음 생성시 만들어지는 기본 데이터 메테리얼 오브젝트
         private void SetMaterialObject(MaterialObjectModel materialObjectModel)
         {
             this.Model = materialObjectModel;
-            this.Price = materialObjectModel.m_data.Material_Value;
+            this.Value = materialObjectModel.m_data.Material_Value;
         }
 
         private void SetLineComplete(int lineindex)

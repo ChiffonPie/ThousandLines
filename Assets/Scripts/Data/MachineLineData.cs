@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace ThousandLines_Data
 {
-	public class MachineLineData : AssetData<int>, ISort
+	public class MachineLineData : AssetData<string>, ISort
 	{
 		[JsonProperty("Line_isActive")]
 		public int Line_isActive { get; protected set; }
@@ -16,6 +16,7 @@ namespace ThousandLines_Data
 		[JsonProperty("Line_Speed")]
 		public float Line_Speed { get; private set; }
 
-
+		[JsonProperty("Line_Distance")]
+		public float Line_Distance { get; private set; }
 	}
 }

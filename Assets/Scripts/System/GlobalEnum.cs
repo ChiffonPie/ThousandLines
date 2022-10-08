@@ -10,40 +10,17 @@ namespace ThousandLines
         Material_Gold   = 5,
     }
 
-    public enum BaseMachineState
+    public enum MachineState
     {
-        NULL        = -1,
-        INITIALIZE  =  0,
-        READY       =  1,
+        NULL        = -1, // 정상적이지 않은 상태
+        INITIALIZE  =  0, // 초기화
+        READY       =  1, // 준비 완료
 
-        CREATE      =  2,
-        WAIT        =  3,
-        MOVE        =  4,
-    }
+        PLAY        =  2, // 가동
 
-    public enum MachineLineState
-    {
-        NULL       = -1,
-        INITIALIZE =  0,
-        READY      =  1,
+        WAIT        =  3, // 작업 완료 대기 상태
+        MOVE        =  4, // 작업물 다음 장소로 이동
 
-        PROCESSING =  2,
-        WAIT       =  3,
-        MOVE       =  4,
-
-        CHANGE     =  5,
-    }
-
-    public enum GoalMachineState
-    {
-        NULL       = -1,
-        INITIALIZE =  0,
-        READY      =  1,
-
-        GOAL       =  2,
-        WAIT       =  3,
-        MOVE       =  4,
-        
-        CHANGE     =  5,
+        CHANGE      =  5, // 머신 위치(순서) 이동 
     }
 }

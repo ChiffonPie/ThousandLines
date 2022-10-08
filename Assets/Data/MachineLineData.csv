@@ -1,6 +1,6 @@
-Id,Line_isActive,Line_Order_Index,Line_Price,Line_Speed
-1,1,1,10,1
-2,0,2,100,2
-3,0,3,1000,3
-4,0,4,10000,4
-5,0,5,100000,5
+Id,Line_isActive,Line_Order_Index,Line_Price,Line_Speed,Line_Distance
+MachineLine_1,1,1,10,1,4
+MachineLine_2,1,2,100,2,4
+MachineLine_3,0,3,1000,3,4
+MachineLine_4,0,4,10000,4,4
+MachineLine_5,0,5,100000,5,4

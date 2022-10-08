@@ -1,24 +1,57 @@
+using ThousandLines_Data;
 using UnityEngine;
 
 namespace ThousandLines
 {
-    public class MachineLine : MonoBehaviour
+    public class MachineLine : Machine
     {
         [SerializeField]
         private MachineLineModel Model;
-        public MachineLineState baseMachineState = MachineLineState.NULL;
-        private int m_Index;
 
-        public int Index
+        protected override void Awake()
         {
-            get { return this.m_Index; }
-            set { this.m_Index = value; }
+            base.Awake();
+
+        }
+        public override void Show()
+        {
+            base.Show();
         }
 
-        //처음 생성시 만들어지는 기본 데이터 메테리얼 오브젝트
+        public void SetMachine(MachineLineData machineLineData)
+        {
+            var model = new MachineLineModel(machineLineData);
+            this.SetMachine(model);
+        }
+
         private void SetMachine(MachineLineModel machineModel)
         {
             this.Model = machineModel;
+        }
+
+        protected override void InitializeSequence()
+        {
+            base.InitializeSequence();
+        }
+
+        protected override void ReadySequence()
+        {
+            base.ReadySequence();
+        }
+
+        protected override void PlaySequence()
+        {
+            base.PlaySequence();
+        }
+
+
+        protected override void MoveSequence()
+        {
+            base.MoveSequence();
+        }
+        protected override void WaitSequence()
+        {
+            base.WaitSequence();
         }
     }
 }

@@ -534,7 +534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LoadingSlider: {fileID: 1032943101}
   m_IntroLabel: {fileID: 1001825239}
-  m_LoadingDuration: 2
+  m_LoadingDuration: 0.1
 --- !u!1 &997744359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1117,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -100
   m_Sprite: {fileID: 21300000, guid: c521d91b9892a16459913af17eb6f684, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -1430,7 +1430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2095184429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1506,6 +1506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BaseMachine: {fileID: 3262982130653267976, guid: e15e4debcf891f24c8236380d01f219c, type: 3}
   m_GoalMachine: {fileID: 8864442120974215113, guid: bf0011aa1cd93aa429bfad0ea380ddba, type: 3}
-  m_MachineLinePrefab: {fileID: 0}
   m_MaterialObject: {fileID: 1135033990501114839, guid: 19db2bbd77113674fb269613042baa21, type: 3}
-  m_MachineLines: []
+  m_moneyText: {fileID: 21960873}
+  m_money: 0
+  m_Machine: []

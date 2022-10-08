@@ -12,5 +12,8 @@ namespace ThousandLines_Data
 
 		[JsonProperty("Machine_Speed")]
 		public float Machine_Speed { get; private set; }
+
+		[JsonProperty("Machine_Distance")]
+		public float Machine_Distance { get; private set; }
 	}
 }
