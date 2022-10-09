@@ -96,9 +96,9 @@ namespace ThousandLines
 
             MachineLine machineLine = machineLineGameObject.GetComponent<MachineLine>();
             machineLine.name = machineLineData.Id;
-            
+
             machineLine.Index = this.m_Machine.Count;
-            machineLine.transform.position = SetMachinePos(machineLine.transform, machineLine.Index, machineLineData.Line_Distance);
+            machineLine.transform.position = SetMachinePos(machineLine.transform, machineLine.Index -1, machineLineData.Line_Distance);
 
             this.m_Machine.Add(machineLine);
             machineLine.SetMachine(machineLineData);
@@ -127,7 +127,6 @@ namespace ThousandLines
         #endregion
 
 
-
         // 시스템 순서
         // 현 개체와 다음 개체가 Wait 상태일 경우 다음 작동 시퀀스를 발동한다.
         public void BaseMachineNext(Machine currentMachine, Action onCompleted)
@@ -140,7 +139,7 @@ namespace ThousandLines
             nextMachine.m_MaterialObject = currentMachine.m_MaterialObject;
             currentMachine.m_MaterialObject = null;
 
-            nextMachine.SetState(MachineState.PLAY);
+            nextMachine.SetState(MachineState.MOVE);
 
             onCompleted?.Invoke();
         }
@@ -156,7 +155,7 @@ namespace ThousandLines
             currentMachine.m_MaterialObject = previousMachine.m_MaterialObject;
             previousMachine.m_MaterialObject = null;
 
-            previousMachine.SetState(MachineState.PLAY);
+            previousMachine.SetState(MachineState.MOVE);
 
             onCompleted?.Invoke();
         }

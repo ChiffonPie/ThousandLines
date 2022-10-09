@@ -9,7 +9,6 @@ namespace ThousandLines
 {
     public class GoalMachine : Machine
     {
-        [SerializeField]
         private Vector3[] m_GoalPos;
 
         protected override void Awake()
@@ -35,11 +34,7 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() =>
-            {
-                this.SetState(MachineState.READY);
-            });
+            this.SetState(MachineState.READY);
         }
 
         protected override void ReadySequence()
@@ -59,17 +54,18 @@ namespace ThousandLines
         protected override void PlaySequence()
         {
             base.PlaySequence();
+
+        }
+       
+        protected override void MoveSequence()
+        {
+            base.MoveSequence();
             this.m_GoalPos[0] = this.m_MaterialObject.transform.position;
             this.m_MaterialObject.transform.DOPath(this.m_GoalPos, 1).OnComplete(() =>
             {
                 this.SetMoney();
                 this.SetState(MachineState.READY);
             });
-        }
-       
-        protected override void MoveSequence()
-        {
-            base.MoveSequence();
         }
 
         private void SetMoney()

@@ -11,14 +11,15 @@ namespace ThousandLines
     {
         public int Index;
         public  MachineState machineState = MachineState.NULL;
-        protected List<SpriteRenderer> m_SpriteRenderers;
         public MaterialObject m_MaterialObject;
 
-        [SerializeField]
+        protected List<SpriteRenderer> m_SpriteRenderers;
         protected Animator m_Animator;
 
         [SerializeField]
         protected List<Transform> m_tr;
+
+        [SerializeField]
         protected Vector3[] m_Pos;
 
         [HideInInspector]
@@ -27,12 +28,12 @@ namespace ThousandLines
         protected virtual void Awake()
         {
             this.InitializeSprites();
-            this.InitializePos();
             this.InitializeAnimator();
         }
         public virtual void Show()
         {
             this.SetupSequence();
+            this.SetupPos();
         }
 
         #region Initialize
@@ -44,7 +45,7 @@ namespace ThousandLines
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
         }
 
-        private void InitializePos()
+        private void SetupPos()
         {
             this.m_Pos = GetPoints();
         }
@@ -55,8 +56,11 @@ namespace ThousandLines
 
         private void InitializeAnimator()
         {
-            if (this.GetComponent<Animator>() != null) 
+            if (this.GetComponent<Animator>() != null)
+            {
                 this.m_Animator = this.GetComponent<Animator>();
+                this.m_Animator.speed = 0;
+            }
         }
 
         #endregion
@@ -109,5 +113,32 @@ namespace ThousandLines
             if (action != null)
                 action.Invoke();
         }
+
+        #region Animation
+
+        protected float GetAnimationTime()
+        {
+            return this.m_Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        }
+
+        protected virtual void SetMaterialParent(Transform parent = null)
+        {
+            if (parent != null)
+            {
+                this.m_MaterialObject.transform.SetParent(parent);
+            }
+        }
+
+        public void StartAnimation(float speed)
+        {
+            this.m_Animator.speed = speed;
+        }
+
+        public void EndAnimation()
+        {
+            this.m_Animator.speed = 0;
+        }
+
+        #endregion
     }
 }

@@ -42,11 +42,7 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() =>
-            {
-                this.SetState(MachineState.READY);
-            });
+            this.SetState(MachineState.READY);
         }
         protected override void ReadySequence()
         {
@@ -70,7 +66,6 @@ namespace ThousandLines
         protected override void MoveSequence()
         {
             base.MoveSequence();
-            var sequence = DOTween.Sequence();
             this.m_MaterialObject.transform.DOPath(this.m_Pos, this.Model.m_Data.Machine_Speed).OnComplete(() =>
             {
                 this.SetState(MachineState.WAIT);
