@@ -23,4 +23,12 @@ namespace ThousandLines
 
         CHANGE      =  5, // 머신 위치(순서) 이동 
     }
+
+    public enum MachineAbility
+    {
+        NULL    = -1,
+        PRESS   =  0,
+        WELDING =  1,
+        SOAK    =  2,
+    }
 }

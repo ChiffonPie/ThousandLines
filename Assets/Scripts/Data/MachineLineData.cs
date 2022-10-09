@@ -18,5 +18,11 @@ namespace ThousandLines_Data
 
 		[JsonProperty("Line_Distance")]
 		public float Line_Distance { get; private set; }
+
+		[JsonProperty("Line_Prosseing")]
+		public string Line_Prosseing { get; private set; }
+
+		[JsonProperty("Line_Description")]
+		public string Line_Description { get; private set; }
 	}
 }

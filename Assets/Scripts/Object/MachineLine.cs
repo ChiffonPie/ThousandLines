@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using ThousandLines_Data;
 using UnityEngine;
 
@@ -6,8 +7,11 @@ namespace ThousandLines
 {
     public class MachineLine : Machine
     {
-        private Transform? materialTr;
+        [Header("[ MachineLine ]")]
+        [SerializeField]
+        private Transform prosseingTr;
         private MachineLineModel Model;
+        private MachineAbility machineAbility = MachineAbility.NULL;
         private float animationTime;
         private bool isComplete = false;
 
@@ -19,12 +23,13 @@ namespace ThousandLines
         public override void Show()
         {
             base.Show();
-            this.animationTime = this.GetAnimationTime();
         }
 
         public void SetMachine(MachineLineData machineLineData)
         {
             var model = new MachineLineModel(machineLineData);
+            this.machineAbility = EnumExtension.ProsseingStringToEnum(model.m_Data.Line_Prosseing);
+            this.animationTime = this.GetAnimationTime();
             this.Model = model;
         }
 
@@ -32,7 +37,6 @@ namespace ThousandLines
         {
             base.InitializeSequence();
 
-            //애니메이션 시간을 가져와서 총 타임에 맞춰야 함.
             Sequence sequence = DOTween.Sequence();
             sequence.AppendCallback(() =>
             {
@@ -45,6 +49,7 @@ namespace ThousandLines
             base.ReadySequence();
             ThousandLinesManager.Instance.MachinePrevious(this, () =>
             {
+                // 1. 제작 시작 - 재료를 공정 위치로 이동
                 this.SetState(MachineState.MOVE);
             });
         }
@@ -54,11 +59,12 @@ namespace ThousandLines
             base.PlaySequence();
             var sequence = DOTween.Sequence();
 
-            // 2. 가공 대기상태 (애니메이션 시작)
-            this.StartAnimation(1);
+            // 3. 가공 대기상태 (애니메이션 시작)
+            this.SetAnimation(1);
             sequence.AppendInterval(this.animationTime).OnComplete(() =>
             {
                 this.isComplete = true;
+                this.SetAnimation(0);
                 this.SetState(MachineState.MOVE);
             });
         }
@@ -70,10 +76,10 @@ namespace ThousandLines
 
             if (!isComplete)
             {
-                // 1. 재료 중앙 이동
-                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[0], 1)).OnComplete(() =>
+                // 2. 재료 중앙 이동
+                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
                 {
-                    this.SetMaterialParent(materialTr);
+                    this.SetMaterialParent(prosseingTr);
                     this.SetState(MachineState.PLAY);
                 });
             }
@@ -81,7 +87,7 @@ namespace ThousandLines
             {
                 // 3. 가공 완료 후 다음으로 이동
                 this.SetMaterialParent(ThousandLinesManager.Instance.transform);
-                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[1], 1)).OnComplete(() =>
+                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
                 {
                     this.SetState(MachineState.WAIT);
                 });
@@ -97,6 +103,17 @@ namespace ThousandLines
             {
                 this.SetState(MachineState.READY);
             });
+        }
+
+        public void ProsseingMatertial()
+        {
+            switch (machineAbility)
+            {
+                case MachineAbility.NULL:    Debug.LogError("처리 과정이 정의되지 않았습니다.");  break;
+                case MachineAbility.PRESS:   this.PressScale(this.m_MaterialObject);    break;
+                case MachineAbility.WELDING: this.AddSprite (this.m_MaterialObject, this.Model.m_Data.Line_Prosseing);    break;
+                case MachineAbility.SOAK:    this.ChangeColor();   break;
+            }
         }
     }
 }

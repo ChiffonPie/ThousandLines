@@ -9,6 +9,7 @@ namespace ThousandLines
 {
     public class Machine : MonoBehaviour
     {
+        [Header("[ Machine ]")]
         public int Index;
         public  MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
@@ -129,14 +130,60 @@ namespace ThousandLines
             }
         }
 
-        public void StartAnimation(float speed)
+        public void SetAnimation(float speed)
         {
+            this.m_Animator.Rebind();
             this.m_Animator.speed = speed;
         }
+        #endregion
 
-        public void EndAnimation()
+        #region Prosseing
+
+        protected void PressScale(MaterialObject materialObject)
         {
-            this.m_Animator.speed = 0;
+            if (materialObject == null) return;
+
+            //압축에 대한 연출
+            materialObject.transform.localScale = 
+                new Vector2(materialObject.transform.localScale.x * 1.5f, materialObject.transform.localScale.y * 0.8f);
+        }
+
+        protected void AddSprite(MaterialObject materialObject, string spriteName)
+        {
+            //용접에 대한 연출
+            if (materialObject == null) return;
+            var sprite = Resources.Load<Sprite>($"{"Sprites/PNG/Prosseing/" + spriteName}");
+
+            SpriteRenderer spriteRenderer = null;
+            for (int i = 0; i < materialObject.transform.childCount; i++)
+            {
+                if (materialObject.transform.GetChild(i).name == spriteName)
+                {
+                    materialObject.transform.GetChild(i).transform.localPosition = Vector3.zero;
+                    materialObject.transform.GetChild(i).transform.localScale = Vector3.one;
+
+                    spriteRenderer = materialObject.transform.GetChild(i).GetComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = sprite;
+                    spriteRenderer.sortingOrder = materialObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
+                    return;
+                }
+            }
+
+            //없으면 처리
+            GameObject weldingObject = new GameObject();
+            weldingObject.transform.SetParent(materialObject.transform);
+            weldingObject.transform.localPosition = Vector3.zero;
+            weldingObject.transform.localScale = Vector3.one;
+            weldingObject.name = spriteName;
+
+            spriteRenderer = weldingObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = sprite;
+            spriteRenderer.sortingOrder = materialObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
+        }
+
+        protected void ChangeColor()
+        {
+            //담금질에 대한 연출
         }
 
         #endregion

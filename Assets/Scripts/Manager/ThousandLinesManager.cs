@@ -126,6 +126,7 @@ namespace ThousandLines
 
         #endregion
 
+        #region MachineState
 
         // 시스템 순서
         // 현 개체와 다음 개체가 Wait 상태일 경우 다음 작동 시퀀스를 발동한다.
@@ -159,6 +160,10 @@ namespace ThousandLines
 
             onCompleted?.Invoke();
         }
+
+        #endregion
+
+
     }
 }
 

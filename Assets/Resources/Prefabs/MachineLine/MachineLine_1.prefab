@@ -87,6 +87,8 @@ MonoBehaviour:
   m_tr:
   - {fileID: 5220525913171313887}
   - {fileID: 6368468601147757981}
+  m_Pos: []
+  prosseingTr: {fileID: 8891366113691911807}
 --- !u!95 &1539109955869655992
 Animator:
   serializedVersion: 4
@@ -285,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8891366113691911807}
   m_Layer: 0
-  m_Name: MaterialPos
+  m_Name: ProsseingPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

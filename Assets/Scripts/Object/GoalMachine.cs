@@ -29,6 +29,7 @@ namespace ThousandLines
         public override void Show()
         {
             base.Show();
+            this.GoalVector();
         }
 
         protected override void InitializeSequence()
@@ -60,8 +61,9 @@ namespace ThousandLines
         protected override void MoveSequence()
         {
             base.MoveSequence();
+            var sequence = DOTween.Sequence();
             this.m_GoalPos[0] = this.m_MaterialObject.transform.position;
-            this.m_MaterialObject.transform.DOPath(this.m_GoalPos, 1).OnComplete(() =>
+            sequence.Append(this.m_MaterialObject.transform.DOPath(this.m_Pos, 1)).OnComplete(() =>
             {
                 this.SetMoney();
                 this.SetState(MachineState.READY);

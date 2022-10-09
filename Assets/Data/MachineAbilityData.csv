@@ -1,3 +1,4 @@
-Id,MachineAbility_IntValue,MachineAbility_floatValue
-Create_Speed,1,1
-Critical_Chance,0,2
+Id,MachineAbility_Damage,MachineAbility_Plus,MachineAbility_Multiply,MachineAbility_Shield
+Press,1,1,1,0
+Welding,0,0,1,1
+Soak,100,10000,2,0
