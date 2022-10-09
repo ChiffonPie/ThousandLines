@@ -27,12 +27,17 @@ public static class SpriteExtensions
         }
     }
 
-    public static Sequence SetSpritesColor(List<SpriteRenderer> spriteRenderers, Color color, float duration)
+    public static Sequence SetSpritesColor(List<SpriteRenderer> spriteRenderers, float duration)
     {
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
-            sequence.Join(spriteRenderers[i].DOColor(color, duration));
+            sequence.Join(spriteRenderers[i].DOColor(
+                new Color(spriteRenderers[i].color.r, 
+                spriteRenderers[i].color.g, 
+                spriteRenderers[i].color.b,
+                1), 
+                duration));
         }
         return sequence;
     }
@@ -41,7 +46,10 @@ public static class SpriteExtensions
     {
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
-            spriteRenderers[i].color = Color.clear;
+            spriteRenderers[i].color = new Color(spriteRenderers[i].color.r,
+                spriteRenderers[i].color.g,
+                spriteRenderers[i].color.b,
+                0);
         }
     }
 }

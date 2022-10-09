@@ -14,6 +14,9 @@ namespace ThousandLines
         public  MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
 
+        [SerializeField]
+        protected SpriteRenderer m_stateSr;
+
         protected List<SpriteRenderer> m_SpriteRenderers;
         protected Animator m_Animator;
 
@@ -30,6 +33,7 @@ namespace ThousandLines
         {
             this.InitializeSprites();
             this.InitializeAnimator();
+
         }
         public virtual void Show()
         {
@@ -44,6 +48,7 @@ namespace ThousandLines
             this.m_SpriteRenderers = new List<SpriteRenderer>();
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
+            if (this.m_stateSr != null) this.m_stateSr.color = Color.red;
         }
 
         private void SetupPos()
@@ -52,7 +57,7 @@ namespace ThousandLines
         }
         private Vector3[] GetPoints()
         {
-            return this.m_tr.ConvertAll(c => c.position).ToArray();
+            return this.m_tr.ConvertAll(c => c.localPosition).ToArray();
         }
 
         private void InitializeAnimator()
@@ -79,10 +84,13 @@ namespace ThousandLines
         }
         protected virtual void InitializeSequence()
         {
-            Debug.Log(this.name + " : 초기화 시작");
+            //초기화 시간 지정 - 0.5f
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, Color.white, 0.5f));
-            sequence.AppendInterval(0.5f);
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f));
+            sequence.AppendInterval(0.5f).OnComplete(() => 
+            {
+                this.SetState(MachineState.READY);
+            });
         }
         protected virtual void MoveSequence()
         {
@@ -104,16 +112,33 @@ namespace ThousandLines
 
         #endregion
 
+        #region SetState
+
         public void SetState(MachineState state)
         {
             if (this.machineState == state)
                 return;
 
             this.machineState = state;
+            this.SetStateColor(this.machineState);
             var action = this.m_Actions.Find(state);
             if (action != null)
                 action.Invoke();
         }
+
+        private void SetStateColor(MachineState state)
+        {
+            if (this.m_stateSr == null) return;
+            switch (machineState)
+            {
+                case MachineState.INITIALIZE: return;
+                case MachineState.READY:      this.m_stateSr.color = Color.cyan;  return;
+                case MachineState.PLAY:       this.m_stateSr.color = Color.green; return;
+            }
+            this.m_stateSr.color = new Color(1, 0.5f, 0);
+        }
+        
+        #endregion
 
         #region Animation
 
@@ -130,7 +155,7 @@ namespace ThousandLines
             }
         }
 
-        public void SetAnimation(float speed)
+        public void SetAnimationSpeed(float speed)
         {
             this.m_Animator.Rebind();
             this.m_Animator.speed = speed;

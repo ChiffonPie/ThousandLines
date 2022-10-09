@@ -41,33 +41,35 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
-            ThousandLinesManager.Instance.MachinePrevious(this, () =>
-            {
-                this.SetState(MachineState.PLAY);
-            });
-
-            //메테리얼을 보유하지 않은 상태인 경우 대기한다.
-            //준비 상태에서는 이전 단계의 Wait를 받아서 처리할 수 있도록 한다.
+            ThousandLinesManager.Instance.MachineSend(this);
         }
-
-        //골 지점의 경우 vector 의 시작값을 현재 메터리얼 오브젝트 좌표를 받아서 추가한다.
 
         protected override void PlaySequence()
         {
             base.PlaySequence();
-
         }
        
         protected override void MoveSequence()
         {
             base.MoveSequence();
+            if (this.m_MaterialObject == null)
+            {
+                this.SetState(MachineState.PLAY);
+                return;
+            }
+
             var sequence = DOTween.Sequence();
             this.m_GoalPos[0] = this.m_MaterialObject.transform.position;
-            sequence.Append(this.m_MaterialObject.transform.DOPath(this.m_Pos, 1)).OnComplete(() =>
+            sequence.Append(this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, 1)).OnComplete(() =>
             {
                 this.SetMoney();
                 this.SetState(MachineState.READY);
             });
+        }
+        protected override void WaitSequence()
+        {
+            base.WaitSequence();
+            ThousandLinesManager.Instance.MachineReceive(this);
         }
 
         private void SetMoney()
@@ -75,10 +77,6 @@ namespace ThousandLines
             ThousandLinesManager.Instance.Money = this.m_MaterialObject.Value;
             Destroy(this.m_MaterialObject.gameObject);
             this.m_MaterialObject = null;
-
-            //오브젝트 풀링으로 제어하기 필요
-
         }
-
     }
 }

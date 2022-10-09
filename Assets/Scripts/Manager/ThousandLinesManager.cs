@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using ThousandLines_Data;
+using UnityEngine.Rendering;
+using Unity.VisualScripting;
 
 namespace ThousandLines
 {
@@ -62,7 +64,7 @@ namespace ThousandLines
 
             for (int i = 0; i < machineLineDatas.Count; i++)
             {
-                if (machineLineDatas[i].Line_isActive == 0) continue; 
+                if (machineLineDatas[i].Line_isActive == 0) continue;
                 this.InitializeMachineLine(machineLineDatas[i]);
                 endPos += machineLineDatas[i].Line_Distance;
 
@@ -82,8 +84,9 @@ namespace ThousandLines
             this.m_BaseMachine = baseMachine;
 
             this.m_BaseMachine.Index = this.m_Machine.Count;
-            this.m_Machine.Add(this.m_BaseMachine);
+            this.SetSortingGroup(this.m_BaseMachine.gameObject, this.m_BaseMachine.Index);
 
+            this.m_Machine.Add(this.m_BaseMachine);
             this.m_BaseMachine.Show();
         }
 
@@ -98,9 +101,11 @@ namespace ThousandLines
             machineLine.name = machineLineData.Id;
 
             machineLine.Index = this.m_Machine.Count;
-            machineLine.transform.position = SetMachinePos(machineLine.transform, machineLine.Index -1, machineLineData.Line_Distance);
+            machineLine.transform.position = SetMachinePos(machineLine.transform, machineLine.Index - 1, machineLineData.Line_Distance);
 
+            this.SetSortingGroup(machineLine.gameObject, machineLine.Index);
             this.m_Machine.Add(machineLine);
+
             machineLine.SetMachine(machineLineData);
             machineLine.Show();
         }
@@ -109,14 +114,24 @@ namespace ThousandLines
         {
             GoalMachine goalMachine = Instantiate(this.m_GoalMachine, this.transform);
             goalMachine.name = this.m_GoalMachine.name;
-            this.m_GoalMachine = goalMachine;
 
-            this.m_GoalMachine.transform.position = new Vector2(this.m_GoalMachine.transform.position.x + value, 
+            this.m_GoalMachine = goalMachine;
+            this.m_GoalMachine.transform.position = new Vector2(this.m_GoalMachine.transform.position.x + value,
                                                                 this.m_GoalMachine.transform.position.y);
             this.m_GoalMachine.Index = this.m_Machine.Count;
-            this.m_Machine.Add(this.m_GoalMachine);
+            this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.Index);
 
+            this.m_Machine.Add(this.m_GoalMachine);
             this.m_GoalMachine.Show();
+        }
+
+        private void SetSortingGroup(GameObject gameObject, int index)
+        {
+            if (gameObject.GetComponent<SortingGroup>() == null)
+            {
+                gameObject.AddComponent<SortingGroup>();
+            }
+            gameObject.GetComponent<SortingGroup>().sortingOrder = index;
         }
 
         private Vector2 SetMachinePos(Transform trValue, int index, float distance)
@@ -128,42 +143,41 @@ namespace ThousandLines
 
         #region MachineState
 
-        // 시스템 순서
-        // 현 개체와 다음 개체가 Wait 상태일 경우 다음 작동 시퀀스를 발동한다.
-        public void BaseMachineNext(Machine currentMachine, Action onCompleted)
+        //완료가 되면 호출됨
+
+        // Receive
+        public void MachineReceive(Machine currentMachine)
         {
-            //다음 머신이 정상적으로 건네받을 수 있는지 확인
+            //다음 머신이 정상적으로 건네받을 수 있는지 확인 (건네주지 못하면 Wait)
             var nextMachine = m_Machine.Find(currentMachine.Index + 1);
             if (nextMachine == null) return;
             if (nextMachine.machineState != MachineState.READY) return;
 
             nextMachine.m_MaterialObject = currentMachine.m_MaterialObject;
+            nextMachine.m_MaterialObject.transform.SetParent(nextMachine.transform);
             currentMachine.m_MaterialObject = null;
 
             nextMachine.SetState(MachineState.MOVE);
-
-            onCompleted?.Invoke();
+            currentMachine.SetState(MachineState.READY);
         }
 
-        //이전 개체가 완료었고, 내가 완료가 되면 호출됨
-        public void MachinePrevious(Machine currentMachine, Action onCompleted)
+        // Send
+        public void MachineSend(Machine currentMachine)
         {
-            //다음 머신이 정상적으로 건네받을 수 있는지 확인
+            // 내가 수령할 수 있는지
             var previousMachine = m_Machine.Find(currentMachine.Index - 1);
             if (previousMachine == null) return;
             if (previousMachine.machineState != MachineState.WAIT) return;
 
             currentMachine.m_MaterialObject = previousMachine.m_MaterialObject;
+            currentMachine.m_MaterialObject.transform.SetParent(currentMachine.transform);
             previousMachine.m_MaterialObject = null;
 
-            previousMachine.SetState(MachineState.MOVE);
-
-            onCompleted?.Invoke();
+            //전달 완료 하였고, 이전 메테리얼 수령함 준비로 상태변경
+            previousMachine.SetState(MachineState.READY);
+            currentMachine.SetState(MachineState.MOVE);
         }
-
         #endregion
-
-
     }
 }
 

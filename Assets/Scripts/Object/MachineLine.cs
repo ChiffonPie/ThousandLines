@@ -36,22 +36,12 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() =>
-            {
-                this.SetState(MachineState.READY);
-            });
         }
 
         protected override void ReadySequence()
         {
             base.ReadySequence();
-            ThousandLinesManager.Instance.MachinePrevious(this, () =>
-            {
-                // 1. 제작 시작 - 재료를 공정 위치로 이동
-                this.SetState(MachineState.MOVE);
-            });
+            ThousandLinesManager.Instance.MachineSend(this);
         }
 
         protected override void PlaySequence()
@@ -60,11 +50,11 @@ namespace ThousandLines
             var sequence = DOTween.Sequence();
 
             // 3. 가공 대기상태 (애니메이션 시작)
-            this.SetAnimation(1);
+            this.SetAnimationSpeed(1);
             sequence.AppendInterval(this.animationTime).OnComplete(() =>
             {
                 this.isComplete = true;
-                this.SetAnimation(0);
+                this.SetAnimationSpeed(0);
                 this.SetState(MachineState.MOVE);
             });
         }
@@ -77,7 +67,7 @@ namespace ThousandLines
             if (!isComplete)
             {
                 // 2. 재료 중앙 이동
-                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
+                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
                 {
                     this.SetMaterialParent(prosseingTr);
                     this.SetState(MachineState.PLAY);
@@ -86,8 +76,8 @@ namespace ThousandLines
             else
             {
                 // 3. 가공 완료 후 다음으로 이동
-                this.SetMaterialParent(ThousandLinesManager.Instance.transform);
-                sequence.Append(this.m_MaterialObject.transform.DOMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
+                this.SetMaterialParent(this.transform);
+                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
                 {
                     this.SetState(MachineState.WAIT);
                 });
@@ -97,12 +87,7 @@ namespace ThousandLines
         {
             base.WaitSequence();
             this.isComplete = false;
-
-            //작업이 완료되어 대기중임을 매니저에게 전달
-            ThousandLinesManager.Instance.BaseMachineNext(this, () =>
-            {
-                this.SetState(MachineState.READY);
-            });
+            ThousandLinesManager.Instance.MachineReceive(this);
         }
 
         public void ProsseingMatertial()

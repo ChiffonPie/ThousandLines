@@ -8,9 +8,9 @@ namespace System.Collections.Generic
         {
             switch (value)
             {
-                case "Press": return MachineAbility.PRESS;
+                case "Press"  : return MachineAbility.PRESS;
                 case "Welding": return MachineAbility.WELDING;
-                case "Soak": return MachineAbility.SOAK;
+                case "Soak"   : return MachineAbility.SOAK;
             }
 
             UnityEngine.Debug.LogError("정의되지 않은 처리 방법이 있습니다.");

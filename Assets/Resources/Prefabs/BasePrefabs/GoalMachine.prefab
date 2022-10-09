@@ -197,9 +197,11 @@ MonoBehaviour:
   Index: 0
   machineState: -1
   m_MaterialObject: {fileID: 0}
+  m_stateSr: {fileID: 0}
   m_tr:
   - {fileID: 3750000197967954155}
   - {fileID: 589499282366970894}
+  m_Pos: []
 --- !u!1 &4827051573424815299
 GameObject:
   m_ObjectHideFlags: 0

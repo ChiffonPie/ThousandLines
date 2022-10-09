@@ -42,7 +42,6 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-            this.SetState(MachineState.READY);
         }
         protected override void ReadySequence()
         {
@@ -55,7 +54,7 @@ namespace ThousandLines
             base.PlaySequence();
 
             var sequence = DOTween.Sequence();
-            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed).OnComplete(() => {
+            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed * 0.5f).OnComplete(() => {
 
                 this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
                 this.SetState(MachineState.MOVE);
@@ -66,7 +65,7 @@ namespace ThousandLines
         protected override void MoveSequence()
         {
             base.MoveSequence();
-            this.m_MaterialObject.transform.DOPath(this.m_Pos, this.Model.m_Data.Machine_Speed).OnComplete(() =>
+            this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, this.Model.m_Data.Machine_Speed * 0.5f).OnComplete(() =>
             {
                 this.SetState(MachineState.WAIT);
             });
@@ -75,14 +74,8 @@ namespace ThousandLines
         protected override void WaitSequence()
         {
             base.WaitSequence();
-            //작업이 완료되어 대기중임을 매니저에게 전달
-            ThousandLinesManager.Instance.BaseMachineNext(this ,() => 
-            {
-                this.SetState(MachineState.READY);
-            });
+            ThousandLinesManager.Instance.MachineReceive(this);
         }
-
-
 
         #endregion
 

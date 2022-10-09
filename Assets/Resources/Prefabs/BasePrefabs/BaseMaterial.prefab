@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1135033990501114837}
   - component: {fileID: 1135033990501114838}
   - component: {fileID: 1135033990501114839}
-  - component: {fileID: 5784530140195511885}
+  - component: {fileID: -782085802069448818}
   m_Layer: 0
   m_Name: BaseMaterial
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Value: 0
---- !u!210 &5784530140195511885
+--- !u!210 &-782085802069448818
 SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
