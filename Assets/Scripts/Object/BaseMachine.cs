@@ -46,7 +46,7 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
-            this.SetState(MachineState.PLAY);
+            this.SetState(MachineState.STOP);
         }
 
         protected override void PlaySequence()
