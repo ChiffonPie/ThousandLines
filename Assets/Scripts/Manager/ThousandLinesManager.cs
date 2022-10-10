@@ -200,6 +200,8 @@ namespace ThousandLines
         {
             //해제 후 옆에 애가 쉬고 있으면 부르는 코드
             //본인이 작업중이면 안함
+            Debug.LogError(currentMachine.machineState);
+
             if (currentMachine.machineState != MachineState.READY) return;
 
             var nextMachine = this.m_Machines.Find(index + 1);

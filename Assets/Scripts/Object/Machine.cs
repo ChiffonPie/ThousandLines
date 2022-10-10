@@ -200,6 +200,7 @@ namespace ThousandLines
 
         public void SetInAndOut(bool isReserved)
         {
+            if (this.machineState == MachineState.OUT) return;
             this.m_isReserved = isReserved;
             if (!this.m_isReserved)
                 this.m_buttonSpriteRenderer.color = Color.green;
