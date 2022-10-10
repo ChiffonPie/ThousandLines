@@ -7,10 +7,10 @@ public static class SpriteExtensions
     public static List<SpriteRenderer> GetSpriteList(GameObject baseObject)
     {
         List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-
         if (baseObject.GetComponent<SpriteRenderer>() != null)
+        {
             spriteRenderers.Add(baseObject.GetComponent<SpriteRenderer>());
-
+        }
         GetSprite(spriteRenderers, baseObject);
         return spriteRenderers;
     }
@@ -22,8 +22,8 @@ public static class SpriteExtensions
             if (baseObject.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
             {
                 spriteRenderers.Add(baseObject.transform.GetChild(i).GetComponent<SpriteRenderer>());
-                GetSprite(spriteRenderers, baseObject.transform.GetChild(i).gameObject);
             }
+            GetSprite(spriteRenderers, baseObject.transform.GetChild(i).gameObject);
         }
     }
 
@@ -35,10 +35,10 @@ public static class SpriteExtensions
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             sequence.Join(spriteRenderers[i].DOColor(
-                new Color(spriteRenderers[i].color.r, 
-                spriteRenderers[i].color.g, 
+                new Color(spriteRenderers[i].color.r,
+                spriteRenderers[i].color.g,
                 spriteRenderers[i].color.b,
-                a), 
+                a),
                 duration));
         }
         return sequence;
