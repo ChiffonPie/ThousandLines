@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ThousandLines_Data;
 using UniRx;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace ThousandLines
     {
         [Header("[ Machine ]")]
         public int Index;
+        public float m_Distace; // 입력해도 되고, 데이터로 로드 해도됨
         public  MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
 
@@ -18,13 +20,16 @@ namespace ThousandLines
         protected SpriteRenderer m_stateSr;
 
         protected List<SpriteRenderer> m_SpriteRenderers;
+        protected SpriteRenderer m_buttonSpriteRenderer;
         protected Animator m_Animator;
 
         [SerializeField]
         protected List<Transform> m_tr;
-
-        [SerializeField]
         protected Vector3[] m_Pos;
+        private bool m_Reposition = false; // 해제로 인한 이동 예약
+
+        [HideInInspector]
+        public bool m_isReserved = false; //해제 및 설치 예약
 
         [HideInInspector]
         protected Dictionary<MachineState, Action> m_Actions = new Dictionary<MachineState, Action>();
@@ -49,6 +54,16 @@ namespace ThousandLines
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
             if (this.m_stateSr != null) this.m_stateSr.color = Color.red;
+
+            //버튼 스프라이트 적용
+            for (int i = 0; i < this.m_SpriteRenderers.Count; i++)
+            {
+                if (this.m_SpriteRenderers[i].name =="MachineButton")
+                {
+                    this.m_buttonSpriteRenderer = this.m_SpriteRenderers[i];
+                    this.m_buttonSpriteRenderer.color = Color.green;
+                }
+            }
         }
 
         private void SetupPos()
@@ -76,17 +91,20 @@ namespace ThousandLines
         protected virtual void SetupSequence()
         {
             this.m_Actions.Add(MachineState.INITIALIZE, this.InitializeSequence);
-            this.m_Actions.Add(MachineState.READY, this.ReadySequence);
-            this.m_Actions.Add(MachineState.PLAY, this.PlaySequence);
-            this.m_Actions.Add(MachineState.MOVE, this.MoveSequence);
-            this.m_Actions.Add(MachineState.WAIT, this.WaitSequence);
+            this.m_Actions.Add(MachineState.READY,      this.ReadySequence);
+            this.m_Actions.Add(MachineState.PLAY,       this.PlaySequence);
+            this.m_Actions.Add(MachineState.MOVE,       this.MoveSequence);
+            this.m_Actions.Add(MachineState.WAIT,       this.WaitSequence);
+            this.m_Actions.Add(MachineState.IN,         this.InSequence);
+            this.m_Actions.Add(MachineState.OUT,        this.OutSequence);
+            this.m_Actions.Add(MachineState.REPOSITION, this.RepositionSequence);
             this.SetState(MachineState.INITIALIZE);
         }
         protected virtual void InitializeSequence()
         {
             //초기화 시간 지정 - 0.5f
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f));
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
             sequence.AppendInterval(0.5f).OnComplete(() => 
             {
                 this.SetState(MachineState.READY);
@@ -108,6 +126,47 @@ namespace ThousandLines
         protected virtual void PlaySequence()
         {
             Debug.Log(this.name + " : 작동");
+        }
+
+        protected virtual void InSequence()
+        {
+            Debug.Log(this.name + " : 설치");
+        }
+
+        protected virtual void OutSequence()
+        {
+            Debug.Log(this.name + " : 해제");
+
+            ThousandLinesManager.Instance.MachineListRemove(this);
+            ThousandLinesManager.Instance.ResetReadyMachine(this.Index);
+
+            Vector2 hidePos = this.transform.position;
+            hidePos += new Vector2(0.78f, 1f);
+
+            //떠날 때 이전 머신이 Ready 상태일 경우 불러준다.
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, false));
+            sequence.Join(this.transform.DOMove(hidePos, 1f));
+        }
+
+        protected virtual void RepositionSequence()
+        {
+            // 해제 머신의 다음 머신들은 모든 생산을 완료 한 뒤 이동 하여야 한다.
+            Debug.Log(this.name + " : 포지션 재정리");
+
+            int index = this.Index;
+            ThousandLinesManager.Instance.MachineListSet(this);
+            ThousandLinesManager.Instance.ResetReadyMachine(index);
+
+            Debug.LogError(this.Index);
+            Sequence sequence = DOTween.Sequence();
+            Vector2 movePos = ThousandLinesManager.Instance.GetMachineLinePos(this);
+
+            sequence.Append(this.transform.DOMove(movePos, 1f)).OnComplete(() =>
+            {
+                this.SetState(MachineState.READY);
+            });
         }
 
         #endregion
@@ -132,12 +191,27 @@ namespace ThousandLines
             switch (machineState)
             {
                 case MachineState.INITIALIZE: return;
-                case MachineState.READY:      this.m_stateSr.color = Color.cyan;  return;
-                case MachineState.PLAY:       this.m_stateSr.color = Color.green; return;
+                case MachineState.READY:      this.m_stateSr.color = Color.cyan;   return;
+                case MachineState.PLAY:       this.m_stateSr.color = Color.green;  return;
+                case MachineState.OUT:        this.m_stateSr.color = Color.red;    return;
+                case MachineState.REPOSITION: this.m_stateSr.color = Color.yellow; return;
             }
             this.m_stateSr.color = new Color(1, 0.5f, 0);
         }
-        
+
+        public void SetInAndOut(bool isReserved)
+        {
+            this.m_isReserved = isReserved;
+            if (!this.m_isReserved)
+                this.m_buttonSpriteRenderer.color = Color.green;
+            else
+                this.m_buttonSpriteRenderer.color = Color.red;
+
+            //이미 준비상태 였다면 해제로 돌입한다.
+            if (this.machineState == MachineState.READY)
+                this.SetState(MachineState.OUT);
+        }
+
         #endregion
 
         #region Animation

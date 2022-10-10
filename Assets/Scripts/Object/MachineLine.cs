@@ -10,7 +10,7 @@ namespace ThousandLines
         [Header("[ MachineLine ]")]
         [SerializeField]
         private Transform prosseingTr;
-        private MachineLineModel Model;
+        public MachineLineModel Model;
         private MachineAbility machineAbility = MachineAbility.NULL;
         private float animationTime;
         private bool isComplete = false;
@@ -25,12 +25,15 @@ namespace ThousandLines
             base.Show();
         }
 
+        #region Initialized And Set Sequence
+
         public void SetMachine(MachineLineData machineLineData)
         {
             var model = new MachineLineModel(machineLineData);
             this.machineAbility = EnumExtension.ProsseingStringToEnum(model.m_Data.Line_Prosseing);
             this.animationTime = this.GetAnimationTime();
             this.Model = model;
+            this.m_Distace = Model.m_Data.Line_Distance;
         }
 
         protected override void InitializeSequence()
@@ -38,10 +41,21 @@ namespace ThousandLines
             base.InitializeSequence();
         }
 
+        #endregion
+
+        #region Sequence
+
         protected override void ReadySequence()
         {
             base.ReadySequence();
-            ThousandLinesManager.Instance.MachineSend(this);
+            if (this.m_isReserved)
+            {
+                this.SetState(MachineState.OUT);
+            }
+            else
+            {
+                ThousandLinesManager.Instance.MachineSend(this);
+            }
         }
 
         protected override void PlaySequence()
@@ -83,12 +97,32 @@ namespace ThousandLines
                 });
             }
         }
+
         protected override void WaitSequence()
         {
             base.WaitSequence();
             this.isComplete = false;
             ThousandLinesManager.Instance.MachineReceive(this);
         }
+
+        protected override void InSequence()
+        {
+            base.InSequence();
+        }
+
+        protected override void OutSequence()
+        {
+            base.OutSequence();
+        }
+
+        protected override void RepositionSequence()
+        {
+            base.RepositionSequence();
+        }
+
+        #endregion
+
+        #region Others
 
         public void ProsseingMatertial()
         {
@@ -100,5 +134,7 @@ namespace ThousandLines
                 case MachineAbility.SOAK:    this.ChangeColor();   break;
             }
         }
+
+        #endregion
     }
 }

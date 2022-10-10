@@ -18,10 +18,15 @@ namespace ThousandLines
 
         PLAY        =  2, // 가동
 
-        WAIT        =  3, // 작업 완료 대기 상태
-        MOVE        =  4, // 작업물 다음 장소로 이동
+        MOVE        =  3, // 작업물 다음 장소로 이동
+        WAIT        =  4, // 작업 완료 대기 상태
 
-        CHANGE      =  5, // 머신 위치(순서) 이동 
+        IN          =  5, // 머신 설치
+        OUT         =  6, // 머신 해제 
+
+        REPOSITION  =  7, // 머신 순서 재설정
+
+        STOP        =  8, // 정지
     }
 
     public enum MachineAbility

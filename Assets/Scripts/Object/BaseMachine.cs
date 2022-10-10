@@ -76,18 +76,25 @@ namespace ThousandLines
             base.WaitSequence();
             ThousandLinesManager.Instance.MachineReceive(this);
         }
+        protected override void InSequence()
+        {
+            base.InSequence();
+        }
+
+        protected override void OutSequence()
+        {
+            base.OutSequence();
+        }
 
         #endregion
 
         #region Others
 
-
-
         private void CreateBaseMaterial(MaterialObject materialObject)
         {
-            MaterialObject createMaterial = Instantiate(materialObject, ThousandLinesManager.Instance.transform);
+            MaterialObject createMaterial = Instantiate(materialObject, this.m_tr[0]);
             createMaterial.name = materialObject.name;
-            createMaterial.transform.position = this.m_Pos[0];
+            createMaterial.transform.localPosition = this.m_Pos[0];
             this.m_MaterialObject = createMaterial;
         }
 

@@ -27,16 +27,18 @@ public static class SpriteExtensions
         }
     }
 
-    public static Sequence SetSpritesColor(List<SpriteRenderer> spriteRenderers, float duration)
+    public static Sequence SetSpritesColor(List<SpriteRenderer> spriteRenderers, float duration, bool isShow)
     {
         Sequence sequence = DOTween.Sequence();
+        float a = 0;
+        if (isShow) a = 1;
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             sequence.Join(spriteRenderers[i].DOColor(
                 new Color(spriteRenderers[i].color.r, 
                 spriteRenderers[i].color.g, 
                 spriteRenderers[i].color.b,
-                1), 
+                a), 
                 duration));
         }
         return sequence;

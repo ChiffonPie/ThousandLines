@@ -9,28 +9,19 @@ namespace ThousandLines
 {
     public class GoalMachine : Machine
     {
-        private Vector3[] m_GoalPos;
+        public float Line_Distance = 2.7f;
 
         protected override void Awake()
         {
             base.Awake();
-            this.GoalVector();
-        }
-
-        private void GoalVector()
-        {
-            this.m_GoalPos = new Vector3[m_Pos.Length + 1];
-            for (int i = 1; i < m_GoalPos.Length; i++)
-            {
-                this.m_GoalPos[i] = this.m_Pos[i - 1];
-            }
         }
 
         public override void Show()
         {
             base.Show();
-            this.GoalVector();
         }
+
+        #region Sequences
 
         protected override void InitializeSequence()
         {
@@ -59,7 +50,7 @@ namespace ThousandLines
             }
 
             var sequence = DOTween.Sequence();
-            this.m_GoalPos[0] = this.m_MaterialObject.transform.position;
+            this.SetMaterialParent(this.transform);
             sequence.Append(this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, 1)).OnComplete(() =>
             {
                 this.SetMoney();
@@ -69,8 +60,14 @@ namespace ThousandLines
         protected override void WaitSequence()
         {
             base.WaitSequence();
-            ThousandLinesManager.Instance.MachineReceive(this);
+            ThousandLinesManager.Instance.MachineSend(this);
         }
+        protected override void RepositionSequence()
+        {
+            base.RepositionSequence();
+        }
+
+        #endregion
 
         private void SetMoney()
         {
