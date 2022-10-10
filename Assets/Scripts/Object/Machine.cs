@@ -138,7 +138,7 @@ namespace ThousandLines
             Debug.Log(this.name + " : «ÿ¡¶");
 
             ThousandLinesManager.Instance.MachineListRemove(this);
-            ThousandLinesManager.Instance.ResetReadyMachine(this.Index);
+            ThousandLinesManager.Instance.ResetReadyMachine(this, this.Index);
 
             Vector2 hidePos = this.transform.position;
             hidePos += new Vector2(0.78f, 1f);
@@ -157,9 +157,8 @@ namespace ThousandLines
 
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListSet(this);
-            ThousandLinesManager.Instance.ResetReadyMachine(index);
+            ThousandLinesManager.Instance.ResetReadyMachine(this, index);
 
-            Debug.LogError(this.Index);
             Sequence sequence = DOTween.Sequence();
             Vector2 movePos = ThousandLinesManager.Instance.GetMachineLinePos(this);
 

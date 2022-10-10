@@ -196,9 +196,12 @@ namespace ThousandLines
             currentMachine.SetState(MachineState.MOVE);
         }
 
-        public void ResetReadyMachine(int index)
+        public void ResetReadyMachine(Machine currentMachine, int index)
         {
             //해제 후 옆에 애가 쉬고 있으면 부르는 코드
+            //본인이 작업중이면 안함
+            if (currentMachine.machineState != MachineState.READY) return;
+
             var nextMachine = this.m_Machines.Find(index + 1);
             if (nextMachine == null) return;
             if (nextMachine.machineState != MachineState.READY) return;
