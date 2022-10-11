@@ -9,6 +9,9 @@ namespace ThousandLines
 {
     public class BaseMachine : Machine
     {
+        [HideInInspector]
+        public bool m_isStop = false; // 생산머신 특징 - 정지 함
+
         public BaseMachineModel Model;
 
         protected override void Awake()
@@ -46,7 +49,10 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
-            this.SetState(MachineState.STOP);
+            if (!m_isStop)
+                this.SetState(MachineState.STOP);
+            else
+                this.SetState(MachineState.PLAY);
         }
 
         protected override void PlaySequence()
@@ -59,7 +65,6 @@ namespace ThousandLines
                 this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
                 this.SetState(MachineState.MOVE);
             });
-            //Join 해서 로딩게이지 연출 추가
         }
 
         protected override void MoveSequence()
@@ -84,6 +89,12 @@ namespace ThousandLines
         protected override void OutSequence()
         {
             base.OutSequence();
+        }
+
+        protected override void StopSequence()
+        {
+            base.StopSequence();
+            this.m_stateSr.color = Color.red;
         }
 
         #endregion

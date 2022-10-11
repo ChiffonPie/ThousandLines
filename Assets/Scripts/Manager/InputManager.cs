@@ -34,7 +34,15 @@ namespace ThousandLines
                     //머신 버튼을 터치
                     if (hitInformation.collider.GetComponent<Machine>() != null)
                     {
-                        hitInformation.collider.GetComponent<Machine>().SetInAndOut(!hitInformation.collider.GetComponent<Machine>().m_isReserved);
+                        //베이스 머신은 생상 정지를 시킴
+                        if (hitInformation.collider.GetComponent<Machine>().Index == 0)
+                        {
+                            hitInformation.collider.GetComponent<Machine>().SetStopMachine(hitInformation.collider.GetComponent<Machine>());
+                        }
+                        else
+                        {
+                            hitInformation.collider.GetComponent<Machine>().SetInAndOut(!hitInformation.collider.GetComponent<Machine>().m_isReserved);
+                        }
                     }
                 }
             }

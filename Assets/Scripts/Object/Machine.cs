@@ -97,6 +97,7 @@ namespace ThousandLines
             this.m_Actions.Add(MachineState.WAIT,       this.WaitSequence);
             this.m_Actions.Add(MachineState.IN,         this.InSequence);
             this.m_Actions.Add(MachineState.OUT,        this.OutSequence);
+            this.m_Actions.Add(MachineState.STOP,       this.StopSequence);
             this.m_Actions.Add(MachineState.REPOSITION, this.RepositionSequence);
             this.SetState(MachineState.INITIALIZE);
         }
@@ -168,6 +169,11 @@ namespace ThousandLines
             });
         }
 
+        protected virtual void StopSequence()
+        {
+
+        }
+
         #endregion
 
         #region SetState
@@ -210,6 +216,22 @@ namespace ThousandLines
             //이미 준비상태 였다면 해제로 돌입한다.
             if (this.machineState == MachineState.READY)
                 this.SetState(MachineState.OUT);
+        }
+
+        public void SetStopMachine(Machine baseMachine)
+        {
+            //Stop 은 오로지 베이스 머신만 가능
+            var baseMachineC = baseMachine.GetComponent<BaseMachine>();
+            baseMachineC.m_isStop = !baseMachineC.m_isStop;
+            if (!baseMachineC.m_isStop)
+                this.m_buttonSpriteRenderer.color = Color.green;
+            else
+                this.m_buttonSpriteRenderer.color = Color.red;
+
+            if (this.machineState == MachineState.STOP)
+            {
+                this.SetState(MachineState.READY);
+            }
         }
 
         #endregion
