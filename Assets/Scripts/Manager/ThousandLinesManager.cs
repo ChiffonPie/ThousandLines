@@ -199,11 +199,10 @@ namespace ThousandLines
             previousMachine.SetState(MachineState.READY);
         }
 
-        public void ResetReadyMachine(Machine currentMachine, int index)
+        public void ResetRepositionMachine(Machine currentMachine, int index)
         {
-            //해제 후 옆에 애가 쉬고 있으면 부르는 코드 - 업무가 진행중일때
-            //본인이 작업중이면 안함
             //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
+            //본인이 이동중인 대상일 때
             var nextMachine = this.m_Machines.Find(index + 1);
             if (nextMachine == null) return;
 
@@ -214,15 +213,15 @@ namespace ThousandLines
         }
 
 
-        public void ResetReadyMachine1(Machine currentMachine, int index)
+        public void ResetReadyMachine(Machine currentMachine, int index)
         {
-            //해제 후 옆에 애가 쉬고 있으면 부르는 코드 - 업무가 진행중일때
-            //본인이 작업중이면 안함
+            //본인이 레디 일 때
             //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
             var nextMachine = this.m_Machines.Find(index + 1);
             if (nextMachine == null) return;
 
-            if ((currentMachine.machineState == MachineState.REPOSITION || currentMachine.machineState == MachineState.OUT) && 
+            if ((currentMachine.machineState == MachineState.REPOSITION || 
+                currentMachine.machineState == MachineState.OUT) && 
                 nextMachine.machineState == MachineState.READY)
             {
                 nextMachine.SetState(MachineState.REPOSITION);

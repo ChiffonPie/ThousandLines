@@ -140,9 +140,10 @@ namespace ThousandLines
 
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListRemove(this);
-            ThousandLinesManager.Instance.ResetReadyMachine1(this, index);
+
             //만약 다음 친구가 READY 면 Call 해야함
             //나는 확정 OUT
+            ThousandLinesManager.Instance.ResetReadyMachine(this, index);
 
             Vector2 hidePos = this.transform.position;
             hidePos += new Vector2(0.78f, 1f);
@@ -161,7 +162,7 @@ namespace ThousandLines
 
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListSet(this);
-            ThousandLinesManager.Instance.ResetReadyMachine(this, index);
+            ThousandLinesManager.Instance.ResetRepositionMachine(this, index);
 
             //용규야 단순하게 생각해
             //이동 시작하면 다음 애 그냥 끌고오면 되는거야
