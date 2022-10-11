@@ -75,7 +75,7 @@ namespace ThousandLines
 
         protected override void IdleSequence()
         {
-            Debug.Log(this.name + " : ¿Ãµø¡ﬂ");
+            base.IdleSequence();
         }
 
         protected override void MoveSequence()

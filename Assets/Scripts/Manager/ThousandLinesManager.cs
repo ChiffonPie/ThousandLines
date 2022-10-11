@@ -159,12 +159,12 @@ namespace ThousandLines
             if (nextMachine == null) return;
 
             //다음 머신이 준비 상태인지
-            if (nextMachine.machineState != MachineState.READY) return;
+            if (nextMachine.machineState != MachineState.IDLE) return;
 
             // 다음 머신이 해제 대기중이면
             if (nextMachine.m_isReserved)
             {
-                nextMachine.SetState(MachineState.READY);
+                nextMachine.SetState(MachineState.IDLE);
                 return;
             }
 

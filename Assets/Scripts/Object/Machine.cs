@@ -119,7 +119,7 @@ namespace ThousandLines
 
         protected virtual void IdleSequence()
         {
-            Debug.Log(this.name + " : 이동중");
+            Debug.Log(this.name + " : 업무 완료 후 대기");
         }
 
         protected virtual void WaitSequence()
