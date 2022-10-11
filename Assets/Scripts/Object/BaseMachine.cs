@@ -46,6 +46,11 @@ namespace ThousandLines
         {
             base.InitializeSequence();
         }
+        protected override void IdleSequence()
+        {
+            Debug.Log(this.name + " : ¿Ãµø¡ﬂ");
+        }
+
         protected override void ReadySequence()
         {
             base.ReadySequence();

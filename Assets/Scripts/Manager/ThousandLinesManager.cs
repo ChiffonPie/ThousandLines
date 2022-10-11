@@ -151,13 +151,14 @@ namespace ThousandLines
 
         #region MachineState
 
-        //모든 행동들이 완료가 되면 호출됨
-
-        // Receive
+        // Receive - Wait 상태에서 (자기일 끝난 후 대기) 옆에 보내줄 때
         public void MachineReceive(Machine currentMachine)
         {
+            //다음 머신 존재 여부
             var nextMachine = this.FindMachine(currentMachine, true);
             if (nextMachine == null) return;
+
+            //다음 머신이 준비 상태인지
             if (nextMachine.machineState != MachineState.READY) return;
 
             // 다음 머신이 해제 대기중이면
@@ -169,7 +170,7 @@ namespace ThousandLines
 
             this.SetMaterialObject(nextMachine, currentMachine);
 
-            nextMachine.SetState(MachineState.MOVE);
+            nextMachine.SetState(MachineState.READY);
             currentMachine.SetState(MachineState.READY);
         }
 
@@ -183,32 +184,55 @@ namespace ThousandLines
             if (previousMachine == null)
             {
                 currentMachine.SetState(MachineState.REPOSITION);
-                //다음 애가 Ready 상태로 대기할 경우 불러줘서 옮겨준다.
-                var nextMachine = this.FindMachine(currentMachine, true);
-                if (nextMachine == null) return;
+                return;
             }
 
             if (previousMachine.machineState != MachineState.WAIT) return;
-
             //전달 완료 하였고, 이전 메테리얼 수령함 준비로 상태변경
             this.SetMaterialObject(currentMachine, previousMachine);
             previousMachine.SetState(MachineState.READY);
-            currentMachine.SetState(MachineState.MOVE);
+            currentMachine.SetState(MachineState.READY);
         }
 
         public void ResetReadyMachine(Machine currentMachine, int index)
         {
-            //해제 후 옆에 애가 쉬고 있으면 부르는 코드
+            Debug.LogError("일반 리셋");
+            Debug.LogError(currentMachine.name);
+            Debug.LogError(currentMachine.machineState);
+
+
+            //해제 후 옆에 애가 쉬고 있으면 부르는 코드 - 업무가 진행중일때
             //본인이 작업중이면 안함
             Debug.LogError(currentMachine.machineState);
 
-            if (currentMachine.machineState != MachineState.READY) return;
-
+            //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
             var nextMachine = this.m_Machines.Find(index + 1);
             if (nextMachine == null) return;
-            if (nextMachine.machineState != MachineState.READY) return;
 
-            nextMachine.SetState(MachineState.REPOSITION);
+            if (nextMachine.machineState == MachineState.READY)
+            {
+                nextMachine.SetState(MachineState.REPOSITION);
+            }
+        }
+
+
+        public void ResetReadyMachine1(Machine currentMachine, int index)
+        {
+            Debug.LogError("리셋머신 1");
+            Debug.LogError(currentMachine.name);
+            Debug.LogError(currentMachine.machineState);
+
+            //해제 후 옆에 애가 쉬고 있으면 부르는 코드 - 업무가 진행중일때
+            //본인이 작업중이면 안함
+            //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
+            var nextMachine = this.m_Machines.Find(index + 1);
+            if (nextMachine == null) return;
+
+            if ((currentMachine.machineState == MachineState.REPOSITION || currentMachine.machineState == MachineState.OUT) && 
+                nextMachine.machineState == MachineState.READY)
+            {
+                nextMachine.SetState(MachineState.REPOSITION);
+            }
         }
 
         private void SetMaterialObject(Machine setMachine, Machine getMachine)

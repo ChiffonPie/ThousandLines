@@ -73,6 +73,11 @@ namespace ThousandLines
             });
         }
 
+        protected override void IdleSequence()
+        {
+            Debug.Log(this.name + " : ¿Ãµø¡ﬂ");
+        }
+
         protected override void MoveSequence()
         {
             base.MoveSequence();

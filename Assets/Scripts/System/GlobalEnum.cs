@@ -15,18 +15,19 @@ namespace ThousandLines
         NULL        = -1, // 정상적이지 않은 상태
         INITIALIZE  =  0, // 초기화
         READY       =  1, // 준비 완료
+        IDLE        =  2, // 일 없이 대기
 
-        PLAY        =  2, // 가동
+        PLAY        =  3, // 가동
 
-        MOVE        =  3, // 작업물 다음 장소로 이동
-        WAIT        =  4, // 작업 완료 대기 상태
+        MOVE        =  4, // 작업물 다음 장소로 이동
+        WAIT        =  5, // 작업 완료 대기 상태
 
-        IN          =  5, // 머신 설치
-        OUT         =  6, // 머신 해제 
+        IN          =  6, // 머신 설치
+        OUT         =  7, // 머신 해제 
 
-        REPOSITION  =  7, // 머신 순서 재설정
+        REPOSITION  =  8, // 머신 순서 재설정
 
-        STOP        =  8, // 정지
+        STOP        =  9, // 정지
     }
 
     public enum MachineAbility

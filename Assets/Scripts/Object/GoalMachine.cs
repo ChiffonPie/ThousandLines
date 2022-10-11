@@ -28,6 +28,10 @@ namespace ThousandLines
             base.InitializeSequence();
             this.SetState(MachineState.READY);
         }
+        protected override void IdleSequence()
+        {
+            Debug.Log(this.name + " : ¿Ãµø¡ﬂ");
+        }
 
         protected override void ReadySequence()
         {

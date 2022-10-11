@@ -93,6 +93,7 @@ namespace ThousandLines
             this.m_Actions.Add(MachineState.INITIALIZE, this.InitializeSequence);
             this.m_Actions.Add(MachineState.READY,      this.ReadySequence);
             this.m_Actions.Add(MachineState.PLAY,       this.PlaySequence);
+            this.m_Actions.Add(MachineState.IDLE,       this.IdleSequence);
             this.m_Actions.Add(MachineState.MOVE,       this.MoveSequence);
             this.m_Actions.Add(MachineState.WAIT,       this.WaitSequence);
             this.m_Actions.Add(MachineState.IN,         this.InSequence);
@@ -112,6 +113,11 @@ namespace ThousandLines
             });
         }
         protected virtual void MoveSequence()
+        {
+            Debug.Log(this.name + " : 이동중");
+        }
+
+        protected virtual void IdleSequence()
         {
             Debug.Log(this.name + " : 이동중");
         }
@@ -138,8 +144,11 @@ namespace ThousandLines
         {
             Debug.Log(this.name + " : 해제");
 
+            int index = this.Index;
             ThousandLinesManager.Instance.MachineListRemove(this);
-            ThousandLinesManager.Instance.ResetReadyMachine(this, this.Index);
+            ThousandLinesManager.Instance.ResetReadyMachine1(this, index);
+            //만약 다음 친구가 READY 면 Call 해야함
+            //나는 확정 OUT
 
             Vector2 hidePos = this.transform.position;
             hidePos += new Vector2(0.78f, 1f);
@@ -159,6 +168,9 @@ namespace ThousandLines
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListSet(this);
             ThousandLinesManager.Instance.ResetReadyMachine(this, index);
+
+            //용규야 단순하게 생각해
+            //이동 시작하면 다음 애 그냥 끌고오면 되는거야
 
             Sequence sequence = DOTween.Sequence();
             Vector2 movePos = ThousandLinesManager.Instance.GetMachineLinePos(this);
