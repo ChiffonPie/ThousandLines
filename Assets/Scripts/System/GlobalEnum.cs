@@ -15,7 +15,6 @@ namespace ThousandLines
         NULL        = -1, // 정상적이지 않은 상태
         INITIALIZE  =  0, // 초기화
         READY       =  1, // 준비 완료
-        IDLE        =  2, // 일 없이 대기
 
         PLAY        =  3, // 가동
 

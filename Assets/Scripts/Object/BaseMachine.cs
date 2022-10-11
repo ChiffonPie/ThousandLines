@@ -46,10 +46,6 @@ namespace ThousandLines
         {
             base.InitializeSequence();
         }
-        protected override void IdleSequence()
-        {
-            base.IdleSequence();
-        }
 
         protected override void ReadySequence()
         {

@@ -93,7 +93,6 @@ namespace ThousandLines
             this.m_Actions.Add(MachineState.INITIALIZE, this.InitializeSequence);
             this.m_Actions.Add(MachineState.READY,      this.ReadySequence);
             this.m_Actions.Add(MachineState.PLAY,       this.PlaySequence);
-            this.m_Actions.Add(MachineState.IDLE,       this.IdleSequence);
             this.m_Actions.Add(MachineState.MOVE,       this.MoveSequence);
             this.m_Actions.Add(MachineState.WAIT,       this.WaitSequence);
             this.m_Actions.Add(MachineState.IN,         this.InSequence);
@@ -115,11 +114,6 @@ namespace ThousandLines
         protected virtual void MoveSequence()
         {
             Debug.Log(this.name + " : 이동중");
-        }
-
-        protected virtual void IdleSequence()
-        {
-            Debug.Log(this.name + " : 업무 완료 후 대기");
         }
 
         protected virtual void WaitSequence()
@@ -225,7 +219,6 @@ namespace ThousandLines
             else
                 this.m_buttonSpriteRenderer.color = Color.red;
 
-            //이미 준비상태 였다면 해제로 돌입한다.
             if (this.machineState == MachineState.READY)
                 this.SetState(MachineState.OUT);
         }
