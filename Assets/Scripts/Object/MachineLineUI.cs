@@ -24,7 +24,9 @@ namespace ThousandLines
         public void Initialize(MachineLineData machineLineData)
         {
             //모든 버튼의 초기화
-            this.SetButtonSprites(this.m_BuyButton, machineLineData);
+            //this.SetButtonSprites(this.m_BuyButton, machineLineData);
+            
+            this.m_BuyButton.gameObject.SetActive(machineLineData.Line_isGet == 0);
             //구매 여부 체크
             if (machineLineData.Line_isGet == 0)
             {
@@ -33,8 +35,8 @@ namespace ThousandLines
                 {
                     this.OnClickBuyButton();
                 });
-                return;
             }
+
 
             //설치 여부 체크
             if (machineLineData.Line_isActive == 0)
@@ -45,6 +47,8 @@ namespace ThousandLines
                     this.OnClickSettingButton();
                 });
             }
+
+            this.m_Settingbutton.interactable = machineLineData.Line_isActive == 0;
         }
 
         private void SetButtonSprites(SpriteButton button, MachineLineData machineLineData)
