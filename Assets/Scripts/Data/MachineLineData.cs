@@ -7,6 +7,9 @@ namespace ThousandLines_Data
 		[JsonProperty("Line_isActive")]
 		public int Line_isActive { get; protected set; }
 
+		[JsonProperty("Line_isGet")]
+		public int Line_isGet { get; protected set; }
+
 		[JsonProperty("Line_Order_Index")]
 		public int OrderIndex { get; private set; }
 
