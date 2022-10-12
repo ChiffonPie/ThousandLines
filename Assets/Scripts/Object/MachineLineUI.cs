@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using ThousandLines_Data;
 
 namespace ThousandLines
 {
     public class MachineLineUI : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public Button m_button;
+        public TextMeshProUGUI m_Price;
+
+        public void Initialize(MachineLineData machineLineDatas)
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            this.m_button.interactable = machineLineDatas.Line_isActive == 1;
         }
     }
 }

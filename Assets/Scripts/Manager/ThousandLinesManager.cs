@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TMPro;
 using ThousandLines_Data;
 using UnityEngine.Rendering;
 using Unity.VisualScripting;
@@ -21,10 +20,8 @@ namespace ThousandLines
         public GoalMachine m_GoalMachine;
         public MaterialObject m_MaterialObject;
 
-        [Header("UI")]
-        public TextMeshProUGUI m_moneyText;
-        public double m_money;
 
+        public double m_money;
         public List<Machine> m_Machines    = new List<Machine>();
         public List<Machine> m_OffMachines = new List<Machine>(); //대기중인 머신
 
@@ -36,7 +33,7 @@ namespace ThousandLines
             set
             {
                 this.m_money += value;
-                this.m_moneyText.text = m_money.ToString();
+                ThousandLinesUIManager.Instance.m_moneyText.text = m_money.ToString();
             }
         }
 
@@ -50,18 +47,17 @@ namespace ThousandLines
 
         public void Initiaize()
         {
-            this.StartCoroutine(InitializeCoroutine());
+            var machineLineDatas = AssetDataManager.GetDatas<MachineLineData>();
+            ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
+            this.StartCoroutine(InitializeCoroutine(machineLineDatas));
         }
 
-        private IEnumerator InitializeCoroutine()
+        private IEnumerator InitializeCoroutine(List<MachineLineData> machineLineDatas)
         {
             this.InitializeBaseMachine();
             yield return new WaitForSeconds(0.5f);
 
             //테이블에 활성화 된 머신에 따라서 생성한다.
-
-            var machineLineDatas = AssetDataManager.GetDatas<MachineLineData>();
-
             int index = 1;
             for (int i = 0; i < machineLineDatas.Count; i++)
             {
@@ -75,6 +71,9 @@ namespace ThousandLines
             }
             this.InitializeGoalMachine();
             yield return new WaitForSeconds(0.5f);
+
+            //모든 머신이 로드 된 후 UI 활성화
+            ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
         }
 
         private void InitializeBaseMachine()

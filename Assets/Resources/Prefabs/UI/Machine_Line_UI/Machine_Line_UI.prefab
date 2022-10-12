@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7527404535792125704}
   - component: {fileID: -2130837779719921884}
   m_Layer: 5
-  m_Name: Machine_Line_1
+  m_Name: Machine_Line_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043db2ff588fd28429e2999546057afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_button: {fileID: 7527404535792125704}
+  m_Price: {fileID: 7527404536191404001}
 --- !u!1 &7527404536191404003
 GameObject:
   m_ObjectHideFlags: 0
