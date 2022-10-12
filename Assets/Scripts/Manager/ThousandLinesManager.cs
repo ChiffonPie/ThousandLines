@@ -48,7 +48,6 @@ namespace ThousandLines
         public void Initiaize()
         {
             var machineLineDatas = AssetDataManager.GetDatas<MachineLineData>();
-            ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
             this.StartCoroutine(InitializeCoroutine(machineLineDatas));
         }
 
@@ -73,6 +72,7 @@ namespace ThousandLines
             yield return new WaitForSeconds(0.5f);
 
             //모든 머신이 로드 된 후 UI 활성화
+            ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
         }
 
