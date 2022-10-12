@@ -60,19 +60,19 @@ namespace ThousandLines
             int index = 1;
             for (int i = 0; i < machineLineDatas.Count; i++)
             {
+                //전부 생성 후 하이드 처리 해야함.
+                this.InitializeMachineLine(machineLineDatas[i], index);
                 if (machineLineDatas[i].Line_isActive != 0)
                 {
-                    this.InitializeMachineLine(machineLineDatas[i], index);
                     index++;
                     yield return new WaitForSeconds(0.5f);
-                    continue;
                 }
             }
             this.InitializeGoalMachine();
             yield return new WaitForSeconds(1f);
 
             //모든 머신이 로드 된 후 UI 활성화
-            ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
+            //ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
             InputManager.Instance.IsLock = false;
         }
@@ -100,14 +100,23 @@ namespace ThousandLines
 
             MachineLine machineLine = machineLineGameObject.GetComponent<MachineLine>();
             machineLine.name = machineLineData.Id;
-            machineLine.Index = index;
 
             machineLine.SetMachine(machineLineData);
             machineLine.m_Distace = machineLineData.Line_Distance;
 
-            machineLine.transform.position = GetMachineLinePos(machineLine);
-            this.m_Machines.Add(machineLine);
+            if (machineLine.Model.m_Data.Line_isActive == 0)
+            {
+                machineLine.Index = -1;
+                this.m_OffMachines.Add(machineLine);
+                return;
+            }
+            else
+            {
+                machineLine.Index = index;
+                this.m_Machines.Add(machineLine);
+            }
 
+            machineLine.transform.position = GetMachineLinePos(machineLine);
             this.SetSortingGroup(machineLine.gameObject, machineLine.Index);
 
             machineLine.Show();

@@ -103,13 +103,7 @@ namespace ThousandLines
         }
         protected virtual void InitializeSequence()
         {
-            //초기화 시간 지정 - 0.5f
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
-            sequence.AppendInterval(0.5f).OnComplete(() => 
-            {
-                this.SetState(MachineState.READY);
-            });
+            Debug.Log(this.name + " : 초기화 중");
         }
         protected virtual void MoveSequence()
         {

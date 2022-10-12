@@ -27,11 +27,11 @@ namespace ThousandLines
         }
 
         //게임 매니저가 Init 해줌
-        public void Initialize(List<MachineLineData> machineLineDatas)
+        public void Initialize(List<MachineLine> machineLines)
         {
-            for (int i = 0; i < machineLineDatas.Count; i++)
+            for (int i = 0; i < machineLines.Count; i++)
             {
-                this.CreateMachineButtonUI(machineLineDatas[i]);
+                this.CreateMachineButtonUI(machineLines[i]);
             }
         }
 
@@ -40,10 +40,10 @@ namespace ThousandLines
             this.m_GameUI.SetActive(isActive);
         }
 
-        private void CreateMachineButtonUI(MachineLineData machineLineData)
+        private void CreateMachineButtonUI(MachineLine machineLine)
         {
             MachineLineUI machineLineUI = Instantiate(m_MachineButtonPreview, m_MachineButtonTr);
-            machineLineUI.Initialize(machineLineData);
+            machineLineUI.Initialize(machineLine);
             this.m_MachineButtonUIs.Add(machineLineUI);
         }
     }

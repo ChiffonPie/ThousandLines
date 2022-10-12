@@ -39,6 +39,17 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
+            //초기화 시간 지정 - 0.5f
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
+            sequence.AppendInterval(0.5f).OnComplete(() =>
+            {
+                //비설치된 장비
+                if (this.Model.m_Data.Line_isActive == 1)
+                {
+                    this.SetState(MachineState.READY);
+                }
+            });
         }
 
         #endregion

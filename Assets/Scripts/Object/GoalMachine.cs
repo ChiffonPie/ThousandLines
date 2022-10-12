@@ -26,12 +26,22 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-            this.SetState(MachineState.READY);
+            //초기화 시간 지정 - 0.5f
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
+            sequence.AppendInterval(0.5f).OnComplete(() =>
+            {
+                this.SetState(MachineState.READY);
+            });
         }
 
         protected override void ReadySequence()
         {
             base.ReadySequence();
+            //다음 머신이 존재하는지 여부에 따라서 먼저 재배치 한다.
+
+            //머신 리스트를 재정리 한다.
+
             ThousandLinesManager.Instance.MachineSend(this);
         }
 
