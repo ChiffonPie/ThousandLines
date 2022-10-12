@@ -11,6 +11,9 @@ namespace ThousandLines
     public class MachineLineUI : MonoBehaviour
     {
         [SerializeField]
+        private int m_MachineIndex;
+
+        [SerializeField]
         private Image m_MachineImage;
         [SerializeField]
         private TextMeshProUGUI m_Price;
@@ -21,11 +24,18 @@ namespace ThousandLines
         [SerializeField]
         private SpriteButton m_BuyButton;
 
+
+        public int Index
+        {
+            get { return this.m_MachineIndex; }
+            //set { this.m_MachineIndex = value; }
+        }
+
         public void Initialize(MachineLine machineLine)
         {
             //모든 버튼의 초기화
             //this.SetButtonSprites(this.m_BuyButton, machineLineData);
-            
+
             //일단 설치부터
             //this.m_BuyButton.gameObject.SetActive(machineLineData.Line_isGet == 0);
             //구매 여부 체크
@@ -38,7 +48,7 @@ namespace ThousandLines
             //    });
             //}
 
-
+            this.m_MachineIndex = machineLine.Index;
             //설치 여부 체크
             if (machineLine.Model.m_Data.Line_isActive == 0)
             {

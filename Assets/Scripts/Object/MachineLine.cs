@@ -49,6 +49,10 @@ namespace ThousandLines
                 {
                     this.SetState(MachineState.READY);
                 }
+                else
+                {
+                    this.SetState(MachineState.OUT);
+                }
             });
         }
 

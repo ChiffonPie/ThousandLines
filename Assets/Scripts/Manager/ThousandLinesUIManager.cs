@@ -43,6 +43,7 @@ namespace ThousandLines
         private void CreateMachineButtonUI(MachineLine machineLine)
         {
             MachineLineUI machineLineUI = Instantiate(m_MachineButtonPreview, m_MachineButtonTr);
+            machineLineUI.name = machineLine.Model.m_Data.Id;
             machineLineUI.Initialize(machineLine);
             this.m_MachineButtonUIs.Add(machineLineUI);
         }

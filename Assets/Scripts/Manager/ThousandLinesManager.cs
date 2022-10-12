@@ -22,8 +22,8 @@ namespace ThousandLines
 
 
         public double m_money;
-        public List<Machine> m_Machines    = new List<Machine>();
-        public List<Machine> m_OffMachines = new List<Machine>(); //대기중인 머신
+        public List<Machine> m_InMachines    = new List<Machine>();
+        public List<Machine> m_OutMachines = new List<Machine>(); //대기중인 머신
 
         [SerializeField]
         private List<MaterialObject> m_MaterialObjects;
@@ -57,24 +57,46 @@ namespace ThousandLines
             yield return new WaitForSeconds(0.5f);
 
             //테이블에 활성화 된 머신에 따라서 생성한다.
-            int index = 1;
             for (int i = 0; i < machineLineDatas.Count; i++)
             {
                 //전부 생성 후 하이드 처리 해야함.
-                this.InitializeMachineLine(machineLineDatas[i], index);
                 if (machineLineDatas[i].Line_isActive != 0)
-                {
-                    index++;
-                    yield return new WaitForSeconds(0.5f);
-                }
+                    this.m_InMachines.Add(this.InitializeMachineLine(machineLineDatas[i]));
+                else
+                    this.m_OutMachines.Add(this.InitializeMachineLine(machineLineDatas[i]));
             }
+
+            //배치중인 것들 활성화
+            for (int i = 1; i < this.m_InMachines.Count; i++)
+            {
+                this.m_InMachines[i].Show();
+                yield return new WaitForSeconds(0.5f);
+            }
+
             this.InitializeGoalMachine();
             yield return new WaitForSeconds(1f);
 
             //모든 머신이 로드 된 후 UI 활성화
-            //ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
+            List<MachineLine> allMachineLine = new List<MachineLine>();
+            allMachineLine.AddRange(this.FindMachineLine(this.m_InMachines));
+            allMachineLine.AddRange(this.FindMachineLine(this.m_OutMachines));
+
+            ThousandLinesUIManager.Instance.Initialize(allMachineLine);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
             InputManager.Instance.IsLock = false;
+        }
+
+        private List<MachineLine> FindMachineLine(List<Machine> machines)
+        {
+            List<MachineLine> machineLines = new List<MachineLine>();
+            for (int i = 0; i < machines.Count; i++)
+            {
+                if (machines[i].GetComponent<MachineLine>() != null)
+                {
+                    machineLines.Add(machines[i].GetComponent<MachineLine>());
+                }
+            }
+            return machineLines;
         }
 
         private void InitializeBaseMachine()
@@ -84,14 +106,14 @@ namespace ThousandLines
             baseMachine.name = this.m_BaseMachine.name;
             
             this.m_BaseMachine = baseMachine;
-            this.m_BaseMachine.Index = this.m_Machines.Count;
-            this.m_Machines.Add(this.m_BaseMachine);
+            this.m_BaseMachine.Index = this.m_InMachines.Count;
+            this.m_InMachines.Add(this.m_BaseMachine);
 
             this.SetSortingGroup(this.m_BaseMachine.gameObject, this.m_BaseMachine.Index);
             this.m_BaseMachine.Show();
         }
 
-        private void InitializeMachineLine(MachineLineData machineLineData, int index)
+        private MachineLine InitializeMachineLine(MachineLineData machineLineData)
         {
             //테이블 이름에 맞는 리스소 프리팹 로드
             GameObject machineLineGameObject = Instantiate(
@@ -103,23 +125,11 @@ namespace ThousandLines
 
             machineLine.SetMachine(machineLineData);
             machineLine.m_Distace = machineLineData.Line_Distance;
-
-            if (machineLine.Model.m_Data.Line_isActive == 0)
-            {
-                machineLine.Index = -1;
-                this.m_OffMachines.Add(machineLine);
-                return;
-            }
-            else
-            {
-                machineLine.Index = index;
-                this.m_Machines.Add(machineLine);
-            }
+            machineLine.Index = machineLine.Model.m_Data.Line_Setting_Index;
 
             machineLine.transform.position = GetMachineLinePos(machineLine);
             this.SetSortingGroup(machineLine.gameObject, machineLine.Index);
-
-            machineLine.Show();
+            return machineLine;
         }
 
         private void InitializeGoalMachine()
@@ -127,10 +137,10 @@ namespace ThousandLines
             GoalMachine goalMachine = Instantiate(this.m_GoalMachine, this.transform);
             goalMachine.name = this.m_GoalMachine.name;
             this.m_GoalMachine = goalMachine;
-            this.m_GoalMachine.Index = this.m_Machines.Count;
+            this.m_GoalMachine.Index = this.m_InMachines.Count;
 
             this.m_GoalMachine.transform.position = GetMachineLinePos(this.m_GoalMachine);
-            this.m_Machines.Add(this.m_GoalMachine);
+            this.m_InMachines.Add(this.m_GoalMachine);
 
             this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.Index);
             this.m_GoalMachine.Show();
@@ -148,9 +158,9 @@ namespace ThousandLines
             float xPos = machine.m_Distace;
             for (int i = 0; i < machine.Index; i++)
             {
-                if (this.m_Machines[i] != null)
+                if (this.m_InMachines[i] != null)
                 {
-                    xPos += this.m_Machines[i].m_Distace;
+                    xPos += this.m_InMachines[i].m_Distace;
                 }
             }
             return new Vector2((xPos) , machine.transform.position.y);
@@ -212,7 +222,7 @@ namespace ThousandLines
         {
             //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
             //본인이 이동중인 대상일 때
-            var nextMachine = this.m_Machines.Find(index + 1);
+            var nextMachine = this.m_InMachines.Find(index + 1);
             if (nextMachine == null) return;
 
             if (nextMachine.machineState == MachineState.READY)
@@ -226,7 +236,7 @@ namespace ThousandLines
         {
             //본인이 레디 일 때
             //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
-            var nextMachine = this.m_Machines.Find(index + 1);
+            var nextMachine = this.m_InMachines.Find(index + 1);
             if (nextMachine == null) return;
 
             if ((currentMachine.machineState == MachineState.REPOSITION || 
@@ -252,12 +262,12 @@ namespace ThousandLines
         {
             if (!isPrevious) // 다음거
             {
-                var findMachine = this.m_Machines.Find(currentMachine.Index - 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.Index - 1);
                 if (findMachine != null) return findMachine;
             }
             else
             {
-                var findMachine = this.m_Machines.Find(currentMachine.Index + 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.Index + 1);
                 if (findMachine != null) return findMachine;
             }
             return null;
@@ -265,18 +275,18 @@ namespace ThousandLines
 
         public void MachineListRemove(Machine machine)
         {
-            this.m_OffMachines.Add(machine);
-            this.m_Machines[machine.Index] = null;
+            this.m_OutMachines.Add(machine);
+            this.m_InMachines[machine.Index] = null;
         }
 
         public void MachineListSet(Machine machine)
         {
-            for (int i = 0; i < this.m_Machines.Count; i++)
+            for (int i = 0; i < this.m_InMachines.Count; i++)
             {
-                if (this.m_Machines[i] == null)
+                if (this.m_InMachines[i] == null)
                 {
-                    this.m_Machines[i] = machine;
-                    this.m_Machines[machine.Index] = null;
+                    this.m_InMachines[i] = machine;
+                    this.m_InMachines[machine.Index] = null;
                     machine.Index = i;
                     return;
                 }
