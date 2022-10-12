@@ -11,6 +11,6 @@ namespace ThousandLines_Data
 		public float Line_Speed { get; protected set; }
 
 		[JsonProperty("Line_Order_index")]
-		public int OrderIndex { get; private set; }
+		public int OrderIndex { get; protected set; }
 	}
 }

@@ -69,11 +69,12 @@ namespace ThousandLines
                 }
             }
             this.InitializeGoalMachine();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
 
             //모든 머신이 로드 된 후 UI 활성화
             ThousandLinesUIManager.Instance.Initialize(machineLineDatas);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
+            InputManager.Instance.IsLock = false;
         }
 
         private void InitializeBaseMachine()

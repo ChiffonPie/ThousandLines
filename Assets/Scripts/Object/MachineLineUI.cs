@@ -20,10 +20,10 @@ namespace ThousandLines
         [SerializeField]
         private Button m_Settingbutton;
 
-        public void Initialize(MachineLineData machineLineDatas)
+        public void Initialize(MachineLineData machineLineData)
         {
             //구매 여부 체크
-            if (machineLineDatas.Line_isGet == 0)
+            if (machineLineData.Line_isGet == 0)
             {
                 // 돈주고 살 수 있는 버튼 이벤트 추가
                 this.m_BuyButton.OnClickAsObservable().Subscribe(_ =>
@@ -34,7 +34,7 @@ namespace ThousandLines
             }
 
             //설치 여부 체크
-            if (machineLineDatas.Line_isActive == 0)
+            if (machineLineData.Line_isActive == 0)
             {
                 // 설치할 수 있는 버튼 이벤트 추가
                 this.m_BuyButton.OnClickAsObservable().Subscribe(_ =>
@@ -47,13 +47,13 @@ namespace ThousandLines
 
         private void OnClickBuyButton()
         {
-
+            Debug.LogError(11);
         }
 
 
         private void OnClickSettingButton()
         {
-
+            Debug.LogError(22);
         }
     }
 }

@@ -8,14 +8,19 @@ namespace ThousandLines
 {
     public  class InputManager : MonoBehaviour
     {
-        public static InputManager Instance;
-        public bool isLock; //터치 제어용
+        public static InputManager Instance { get; private set; }
+        private bool isLock; //터치 제어용
         Camera camera;
+
+        public bool IsLock
+        {
+            set { isLock = value; }
+        }
 
         private void Awake()
         {
             Instance = this;
-            isLock = false;
+            this.isLock = true ; //게임 매니저가 로드를 완료하면 활성화 해준다.
 
             this.camera = this.GetComponent<Camera>();
             var mouseDownStream = this.UpdateAsObservable().Where(_ => Input.GetMouseButtonDown(0));

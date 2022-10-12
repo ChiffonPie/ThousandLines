@@ -11,21 +11,21 @@ namespace ThousandLines_Data
 		public int Line_isGet { get; protected set; }
 
 		[JsonProperty("Line_Order_Index")]
-		public int OrderIndex { get; private set; }
+		public int OrderIndex { get; protected set; }
 
 		[JsonProperty("Line_Price")]
-		public double Line_Price { get; private set; }
+		public double Line_Price { get; protected set; }
 
 		[JsonProperty("Line_Speed")]
-		public float Line_Speed { get; private set; }
+		public float Line_Speed { get; protected set; }
 
 		[JsonProperty("Line_Distance")]
-		public float Line_Distance { get; private set; }
+		public float Line_Distance { get; protected set; }
 
 		[JsonProperty("Line_Prosseing")]
-		public string Line_Prosseing { get; private set; }
+		public string Line_Prosseing { get; protected set; }
 
 		[JsonProperty("Line_Description")]
-		public string Line_Description { get; private set; }
+		public string Line_Description { get; protected set; }
 	}
 }
