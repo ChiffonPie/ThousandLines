@@ -63,23 +63,27 @@ namespace ThousandLines
                 if (machineLineDatas[i].Line_isActive != 0)
                     this.m_InMachines.Add(this.InitializeMachineLine(machineLineDatas[i]));
                 else
+                {
                     this.m_OutMachines.Add(this.InitializeMachineLine(machineLineDatas[i]));
+                }
             }
 
+            List<MachineLine> allMachineLine = new List<MachineLine>();
+            allMachineLine.AddRange(this.FindMachineLine(this.m_InMachines));
+            allMachineLine.AddRange(this.FindMachineLine(this.m_OutMachines));
+
             //배치중인 것들 활성화
-            for (int i = 1; i < this.m_InMachines.Count; i++)
+            for (int i = 1; i < allMachineLine.Count; i++)
             {
-                this.m_InMachines[i].Show();
-                yield return new WaitForSeconds(0.5f);
+                allMachineLine[i].Show();
+                if (!allMachineLine[i].m_isOut)
+                    yield return new WaitForSeconds(0.5f);
             }
 
             this.InitializeGoalMachine();
             yield return new WaitForSeconds(1f);
 
             //모든 머신이 로드 된 후 UI 활성화
-            List<MachineLine> allMachineLine = new List<MachineLine>();
-            allMachineLine.AddRange(this.FindMachineLine(this.m_InMachines));
-            allMachineLine.AddRange(this.FindMachineLine(this.m_OutMachines));
 
             ThousandLinesUIManager.Instance.Initialize(allMachineLine);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
@@ -126,6 +130,8 @@ namespace ThousandLines
             machineLine.SetMachine(machineLineData);
             machineLine.m_Distace = machineLineData.Line_Distance;
             machineLine.Index = machineLine.Model.m_Data.Line_Setting_Index;
+
+            machineLine.m_isOut = machineLineData.Line_isActive == 0;
 
             machineLine.transform.position = GetMachineLinePos(machineLine);
             this.SetSortingGroup(machineLine.gameObject, machineLine.Index);

@@ -26,7 +26,7 @@ namespace ThousandLines
         [SerializeField]
         protected List<Transform> m_tr;
         protected Vector3[] m_Pos;
-        private bool m_Reposition = false; // 해제로 인한 이동 예약
+        public bool m_isOut = false; // 해제 상태 체크
 
         [HideInInspector]
         public bool m_isReserved = false; //해제 및 설치 예약
@@ -131,6 +131,7 @@ namespace ThousandLines
         protected virtual void OutSequence()
         {
             Debug.Log(this.name + " : 해제");
+            if (this.m_isOut) return;
 
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListRemove(this);
@@ -194,12 +195,15 @@ namespace ThousandLines
         private void SetStateColor(MachineState state)
         {
             if (this.m_stateSr == null) return;
-            switch (machineState)
+            switch (state)
             {
                 case MachineState.INITIALIZE: return;
                 case MachineState.READY:      this.m_stateSr.color = Color.cyan;   return;
                 case MachineState.PLAY:       this.m_stateSr.color = Color.green;  return;
-                case MachineState.OUT:        this.m_stateSr.color = Color.red;    return;
+                case MachineState.OUT:
+                    if (!this.m_isOut) return;
+                        this.m_stateSr.color = Color.red; 
+                    return;
                 case MachineState.REPOSITION: this.m_stateSr.color = Color.yellow; return;
             }
             this.m_stateSr.color = new Color(1, 0.5f, 0);

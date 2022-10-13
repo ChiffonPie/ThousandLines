@@ -48,7 +48,7 @@ namespace ThousandLines
             //    });
             //}
 
-            this.m_MachineIndex = machineLine.Index;
+            machineLine.Index = this.m_MachineIndex;
             //설치 여부 체크
             if (machineLine.Model.m_Data.Line_isActive == 0)
             {

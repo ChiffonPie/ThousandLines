@@ -40,19 +40,20 @@ namespace ThousandLines
         {
             base.InitializeSequence();
             //초기화 시간 지정 - 0.5f
+
+            //비설치된 장비
+            if (this.Model.m_Data.Line_isActive == 0)
+            {
+                this.SetState(MachineState.OUT);
+                return;
+            }
+
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
             sequence.AppendInterval(0.5f).OnComplete(() =>
             {
                 //비설치된 장비
-                if (this.Model.m_Data.Line_isActive == 1)
-                {
-                    this.SetState(MachineState.READY);
-                }
-                else
-                {
-                    this.SetState(MachineState.OUT);
-                }
+                this.SetState(MachineState.READY);
             });
         }
 
