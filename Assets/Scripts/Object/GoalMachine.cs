@@ -45,22 +45,33 @@ namespace ThousandLines
             //누가 추가되어 대기중인지 확인
             if (ThousandLinesManager.Instance.m_InMachines.Count > this.SettingIndex)
             {
-                // 널체크 부터
+                // 널체크 부터- 코드정리 전
 
                 // 순서
                 // 1. 내 뒤에 Null 있는지 확인 후 압축
+                for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
+                {
+                    if (ThousandLinesManager.Instance.m_InMachines[i] == null)
+                    {
+                        ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
+                        this.SettingIndex = i;
+                    }
+                }
                 // 2. 널이 아닌경우 인데 추가된 사항이 있는경우
                 //    - 해당 항목을 In 으로 대체시키고 자신은 뒤로 빠진다.
                 // 할만한데?
 
-                if (true)
+                // 리스트 인덱스 재정의 하고 돌려야 한다.
+
+
+                for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
                 {
-
+                    if (ThousandLinesManager.Instance.m_InMachines[i] != null)
+                    {
+                        ThousandLinesManager.Instance.m_InMachines[i].SetState(MachineState.IN);
+                        this.SetState(MachineState.REPOSITION);
+                    }
                 }
-            }
-
-            if (true)
-            {
 
             }
             //머신 리스트를 재정리 한다.

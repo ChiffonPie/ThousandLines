@@ -123,6 +123,9 @@ namespace ThousandLines
         protected override void InSequence()
         {
             base.InSequence();
+            //소환 코드 호출
+
+            //다음 머신의 상태에 따라 호출
         }
 
         protected override void OutSequence()
