@@ -11,7 +11,7 @@ namespace ThousandLines
     public class MachineLineUI : MonoBehaviour
     {
         [SerializeField]
-        private int m_MachineIndex;
+        private string m_MachineId;
 
         [SerializeField]
         private Image m_MachineImage;
@@ -23,13 +23,6 @@ namespace ThousandLines
 
         [SerializeField]
         private SpriteButton m_BuyButton;
-
-
-        public int Index
-        {
-            get { return this.m_MachineIndex; }
-            //set { this.m_MachineIndex = value; }
-        }
 
         public void Initialize(MachineLine machineLine)
         {
@@ -48,9 +41,9 @@ namespace ThousandLines
             //    });
             //}
 
-            this.m_MachineIndex = machineLine.Index;
+            this.m_MachineId = machineLine.Model.m_Data.Id;
             //설치 여부 체크
-            if (machineLine.Model.m_Data.Line_isActive == 0)
+            if (machineLine.Model.m_Data.Line_Setting_Index == 0)
             {
                 // 설치할 수 있는 버튼 이벤트 추가
                 this.m_Settingbutton.OnClickAsObservable().Subscribe(_ =>
@@ -59,10 +52,7 @@ namespace ThousandLines
                 });
             }
 
-            if (machineLine.Model.m_Data.Line_isActive == 0)
-            {
-                this.m_Settingbutton.interactable = true;
-            }
+            this.m_Settingbutton.interactable = machineLine.Model.m_Data.Line_Setting_Index == 0;
         }
 
         private void SetButtonSprites(SpriteButton button, MachineLineData machineLineData)
@@ -89,8 +79,8 @@ namespace ThousandLines
             Debug.LogError("설치함");
             this.m_Settingbutton.interactable = false;
 
-            //ThousandLinesManager.Instance.m_Machines.Add();
-
+            //설치 메커니즘
+            ThousandLinesManager.Instance.SettingMachine(this.m_MachineId);
             //설치 예약에 들어갑니다. (해제 불가)
             //리스트에 추가됩니다.
         }

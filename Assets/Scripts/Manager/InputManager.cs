@@ -40,7 +40,7 @@ namespace ThousandLines
                     if (hit.collider.GetComponent<Machine>() != null)
                     {
                         //베이스 머신은 생상 정지를 시킴
-                        if (hit.collider.GetComponent<Machine>().Index == 0)
+                        if (hit.collider.GetComponent<Machine>().SettingIndex == 0)
                         {
                             hit.collider.GetComponent<Machine>().SetStopMachine(hit.collider.GetComponent<Machine>());
                         }

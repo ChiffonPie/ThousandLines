@@ -60,7 +60,7 @@ namespace ThousandLines
             for (int i = 0; i < machineLineDatas.Count; i++)
             {
                 //전부 생성 후 하이드 처리 해야함.
-                if (machineLineDatas[i].Line_isActive != 0)
+                if (machineLineDatas[i].Line_Setting_Index != 0)
                     this.m_InMachines.Add(this.InitializeMachineLine(machineLineDatas[i]));
                 else
                 {
@@ -115,10 +115,10 @@ namespace ThousandLines
             baseMachine.name = this.m_BaseMachine.name;
 
             this.m_BaseMachine = baseMachine;
-            this.m_BaseMachine.Index = this.m_InMachines.Count;
+            this.m_BaseMachine.SettingIndex = this.m_InMachines.Count;
             this.m_InMachines.Add(this.m_BaseMachine);
 
-            this.SetSortingGroup(this.m_BaseMachine.gameObject, this.m_BaseMachine.Index);
+            this.SetSortingGroup(this.m_BaseMachine.gameObject, this.m_BaseMachine.SettingIndex);
             this.m_BaseMachine.Show();
         }
 
@@ -134,10 +134,10 @@ namespace ThousandLines
 
             machineLine.SetMachine(machineLineData);
             machineLine.m_Distace = machineLineData.Line_Distance;
-            machineLine.Index = machineLine.Model.m_Data.Line_Setting_Index;
+            machineLine.SettingIndex = machineLine.Model.m_Data.Line_Setting_Index;
 
             machineLine.transform.position = GetMachineLinePos(machineLine);
-            this.SetSortingGroup(machineLine.gameObject, machineLine.Index);
+            this.SetSortingGroup(machineLine.gameObject, machineLine.SettingIndex);
             return machineLine;
         }
 
@@ -146,12 +146,12 @@ namespace ThousandLines
             GoalMachine goalMachine = Instantiate(this.m_GoalMachine, this.transform);
             goalMachine.name = this.m_GoalMachine.name;
             this.m_GoalMachine = goalMachine;
-            this.m_GoalMachine.Index = this.m_InMachines.Count;
+            this.m_GoalMachine.SettingIndex = this.m_InMachines.Count;
 
             this.m_GoalMachine.transform.position = GetMachineLinePos(this.m_GoalMachine);
             this.m_InMachines.Add(this.m_GoalMachine);
 
-            this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.Index);
+            this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.SettingIndex);
             this.m_GoalMachine.Show();
         }
 
@@ -165,7 +165,7 @@ namespace ThousandLines
         public Vector2 GetMachineLinePos(Machine machine)
         {
             float xPos = machine.m_Distace;
-            for (int i = 0; i < machine.Index; i++)
+            for (int i = 0; i < machine.SettingIndex; i++)
             {
                 if (this.m_InMachines[i] != null)
                 {
@@ -271,12 +271,12 @@ namespace ThousandLines
         {
             if (!isPrevious) // 다음거
             {
-                var findMachine = this.m_InMachines.Find(currentMachine.Index - 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex - 1);
                 if (findMachine != null) return findMachine;
             }
             else
             {
-                var findMachine = this.m_InMachines.Find(currentMachine.Index + 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex + 1);
                 if (findMachine != null) return findMachine;
             }
             return null;
@@ -285,7 +285,7 @@ namespace ThousandLines
         public void MachineListRemove(Machine machine)
         {
             this.m_OutMachines.Add(machine);
-            this.m_InMachines[machine.Index] = null;
+            this.m_InMachines[machine.SettingIndex] = null;
         }
 
         public void MachineListSet(Machine machine)
@@ -295,11 +295,31 @@ namespace ThousandLines
                 if (this.m_InMachines[i] == null)
                 {
                     this.m_InMachines[i] = machine;
-                    this.m_InMachines[machine.Index] = null;
-                    machine.Index = i;
+                    this.m_InMachines[machine.SettingIndex] = null;
+                    machine.SettingIndex = i;
                     return;
                 }
             }
+        }
+
+        public void SettingMachine(string machineId)
+        {
+            var machine = this.GetMachineId(this.m_OutMachines, machineId);
+            this.m_OutMachines.Remove(machine);
+            this.m_InMachines.Add(machine);
+        }
+
+
+        private Machine GetMachineId(List<Machine> machines ,string id)
+        {
+            for (int i = 0; i < machines.Count; i++)
+            {
+                if (machines[i].id == id)
+                {
+                    return machines[i];
+                }
+            }
+            return null;
         }
 
         #endregion

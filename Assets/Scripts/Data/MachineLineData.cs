@@ -10,9 +10,6 @@ namespace ThousandLines_Data
 		[JsonProperty("Line_Setting_Index")]
 		public int Line_Setting_Index { get; protected set; }
 
-		[JsonProperty("Line_isActive")]
-		public int Line_isActive { get; protected set; }
-
 		[JsonProperty("Line_isGet")]
 		public int Line_isGet { get; protected set; }
 

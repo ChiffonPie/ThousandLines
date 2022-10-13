@@ -11,7 +11,8 @@ namespace ThousandLines
     public class Machine : MonoBehaviour
     {
         [Header("[ Machine ]")]
-        public int Index;
+        public string id;
+        public int SettingIndex;
         public float m_Distace; // 입력해도 되고, 데이터로 로드 해도됨
         public MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
@@ -130,7 +131,7 @@ namespace ThousandLines
         {
             Debug.Log(this.name + " : 해제");
 
-            int index = this.Index;
+            int index = this.SettingIndex;
             ThousandLinesManager.Instance.MachineListRemove(this);
 
             //만약 다음 친구가 READY 면 Call 해야함
@@ -155,7 +156,7 @@ namespace ThousandLines
             // 해제 머신의 다음 머신들은 모든 생산을 완료 한 뒤 이동 하여야 한다.
             Debug.Log(this.name + " : 포지션 재정리");
 
-            int index = this.Index;
+            int index = this.SettingIndex;
             ThousandLinesManager.Instance.MachineListSet(this);
             ThousandLinesManager.Instance.ResetRepositionMachine(this, index);
 

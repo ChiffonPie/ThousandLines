@@ -32,6 +32,7 @@ namespace ThousandLines
             var model = new MachineLineModel(machineLineData);
             this.machineAbility = EnumExtension.ProsseingStringToEnum(model.m_Data.Line_Prosseing);
             this.animationTime = this.GetAnimationTime();
+            this.id = model.m_Data.Id;
             this.Model = model;
             this.m_Distace = Model.m_Data.Line_Distance;
         }
@@ -40,7 +41,7 @@ namespace ThousandLines
         {
             base.InitializeSequence();
 
-            if (this.Model.m_Data.Line_isActive == 0)
+            if (this.Model.m_Data.Line_Setting_Index == 0)
             {
                 this.SetState(MachineState.OUT);
                 return;
@@ -126,7 +127,7 @@ namespace ThousandLines
 
         protected override void OutSequence()
         {
-            if (this.Model.m_Data.Line_isActive == 0) return;
+            if (this.Model.m_Data.Line_Setting_Index == 0) return;
             base.OutSequence();
         }
 
