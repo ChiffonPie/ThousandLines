@@ -39,20 +39,18 @@ namespace ThousandLines
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
-            //초기화 시간 지정 - 0.5f
 
-            //비설치된 장비
             if (this.Model.m_Data.Line_isActive == 0)
             {
                 this.SetState(MachineState.OUT);
                 return;
             }
 
+            //초기화 시간 지정 - 0.5f
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
             sequence.AppendInterval(0.5f).OnComplete(() =>
             {
-                //비설치된 장비
                 this.SetState(MachineState.READY);
             });
         }
@@ -128,6 +126,7 @@ namespace ThousandLines
 
         protected override void OutSequence()
         {
+            if (this.Model.m_Data.Line_isActive == 0) return;
             base.OutSequence();
         }
 
@@ -144,10 +143,10 @@ namespace ThousandLines
         {
             switch (machineAbility)
             {
-                case MachineAbility.NULL:    Debug.LogError("처리 과정이 정의되지 않았습니다.");  break;
-                case MachineAbility.PRESS:   this.PressScale(this.m_MaterialObject);    break;
-                case MachineAbility.WELDING: this.AddSprite (this.m_MaterialObject, this.Model.m_Data.Line_Prosseing);    break;
-                case MachineAbility.SOAK:    this.ChangeColor();   break;
+                case MachineAbility.NULL: Debug.LogError("처리 과정이 정의되지 않았습니다."); break;
+                case MachineAbility.PRESS: this.PressScale(this.m_MaterialObject); break;
+                case MachineAbility.WELDING: this.AddSprite(this.m_MaterialObject, this.Model.m_Data.Line_Prosseing); break;
+                case MachineAbility.SOAK: this.ChangeColor(); break;
             }
         }
 

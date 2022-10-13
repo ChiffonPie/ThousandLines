@@ -13,7 +13,7 @@ namespace ThousandLines
         [Header("[ Machine ]")]
         public int Index;
         public float m_Distace; // 입력해도 되고, 데이터로 로드 해도됨
-        public  MachineState machineState = MachineState.NULL;
+        public MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
 
         [SerializeField]
@@ -26,7 +26,7 @@ namespace ThousandLines
         [SerializeField]
         protected List<Transform> m_tr;
         protected Vector3[] m_Pos;
-        public bool m_isOut = false; // 해제 상태 체크
+        private bool m_Reposition = false; // 해제로 인한 이동 예약
 
         [HideInInspector]
         public bool m_isReserved = false; //해제 및 설치 예약
@@ -53,15 +53,13 @@ namespace ThousandLines
             this.m_SpriteRenderers = new List<SpriteRenderer>();
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
-            if (this.m_stateSr != null) this.m_stateSr.color = Color.red;
 
             //버튼 스프라이트 적용
             for (int i = 0; i < this.m_SpriteRenderers.Count; i++)
             {
-                if (this.m_SpriteRenderers[i].name =="MachineButton")
+                if (this.m_SpriteRenderers[i].name == "MachineButton")
                 {
                     this.m_buttonSpriteRenderer = this.m_SpriteRenderers[i];
-                    this.m_buttonSpriteRenderer.color = Color.green;
                 }
             }
         }
@@ -91,13 +89,13 @@ namespace ThousandLines
         protected virtual void SetupSequence()
         {
             this.m_Actions.Add(MachineState.INITIALIZE, this.InitializeSequence);
-            this.m_Actions.Add(MachineState.READY,      this.ReadySequence);
-            this.m_Actions.Add(MachineState.PLAY,       this.PlaySequence);
-            this.m_Actions.Add(MachineState.MOVE,       this.MoveSequence);
-            this.m_Actions.Add(MachineState.WAIT,       this.WaitSequence);
-            this.m_Actions.Add(MachineState.IN,         this.InSequence);
-            this.m_Actions.Add(MachineState.OUT,        this.OutSequence);
-            this.m_Actions.Add(MachineState.STOP,       this.StopSequence);
+            this.m_Actions.Add(MachineState.READY, this.ReadySequence);
+            this.m_Actions.Add(MachineState.PLAY, this.PlaySequence);
+            this.m_Actions.Add(MachineState.MOVE, this.MoveSequence);
+            this.m_Actions.Add(MachineState.WAIT, this.WaitSequence);
+            this.m_Actions.Add(MachineState.IN, this.InSequence);
+            this.m_Actions.Add(MachineState.OUT, this.OutSequence);
+            this.m_Actions.Add(MachineState.STOP, this.StopSequence);
             this.m_Actions.Add(MachineState.REPOSITION, this.RepositionSequence);
             this.SetState(MachineState.INITIALIZE);
         }
@@ -131,7 +129,6 @@ namespace ThousandLines
         protected virtual void OutSequence()
         {
             Debug.Log(this.name + " : 해제");
-            if (this.m_isOut) return;
 
             int index = this.Index;
             ThousandLinesManager.Instance.MachineListRemove(this);
@@ -147,7 +144,10 @@ namespace ThousandLines
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, false));
-            sequence.Join(this.transform.DOMove(hidePos, 1f));
+            sequence.Join(this.transform.DOMove(hidePos, 1f)).OnComplete(() =>
+            {
+                this.gameObject.SetActive(false);
+            });
         }
 
         protected virtual void RepositionSequence()
@@ -195,15 +195,12 @@ namespace ThousandLines
         private void SetStateColor(MachineState state)
         {
             if (this.m_stateSr == null) return;
-            switch (state)
+            switch (machineState)
             {
                 case MachineState.INITIALIZE: return;
-                case MachineState.READY:      this.m_stateSr.color = Color.cyan;   return;
-                case MachineState.PLAY:       this.m_stateSr.color = Color.green;  return;
-                case MachineState.OUT:
-                    if (!this.m_isOut) return;
-                        this.m_stateSr.color = Color.red; 
-                    return;
+                case MachineState.READY: this.m_stateSr.color = Color.cyan; return;
+                case MachineState.PLAY: this.m_stateSr.color = Color.green; return;
+                case MachineState.OUT: this.m_stateSr.color = Color.red; return;
                 case MachineState.REPOSITION: this.m_stateSr.color = Color.yellow; return;
             }
             this.m_stateSr.color = new Color(1, 0.5f, 0);
@@ -269,7 +266,7 @@ namespace ThousandLines
             if (materialObject == null) return;
 
             //압축에 대한 연출
-            materialObject.transform.localScale = 
+            materialObject.transform.localScale =
                 new Vector2(materialObject.transform.localScale.x * 1.5f, materialObject.transform.localScale.y * 0.8f);
         }
 
