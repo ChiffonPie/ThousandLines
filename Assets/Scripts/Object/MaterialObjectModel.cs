@@ -5,10 +5,13 @@ using UnityEngine;
 
 namespace ThousandLines
 {
-    public abstract class MaterialObjectModel
+    public class MaterialObjectModel
     {
         // 원자재 모델
-        public MaterialObjectData m_data;
-        public List<int> LineTypes = new List<int>();
+        public MaterialObjectData m_Data;
+        public MaterialObjectModel(MaterialObjectData data)
+        {
+            this.m_Data = data;
+        }
     }
 }

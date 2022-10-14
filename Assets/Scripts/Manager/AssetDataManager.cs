@@ -25,6 +25,7 @@ namespace ThousandLines_Data
 				AssetDataManager.Load<int, BaseMachineData>("BaseMachineData"),
 				AssetDataManager.Load<string, MachineLineData>("MachineLineData"),
 				AssetDataManager.Load<string, MachineAbilityData>("MachineAbilityData"),
+				AssetDataManager.Load<int, MaterialObjectData>("MaterialObjectData"),
 			});
 
 			AssetDataManager.IsLoaded = true;

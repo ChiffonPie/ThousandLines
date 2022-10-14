@@ -53,6 +53,7 @@ namespace ThousandLines
 
         private IEnumerator InitializeCoroutine(List<MachineLineData> machineLineDatas)
         {
+            this.InitializeMaterialObjects();
             this.InitializeBaseMachine();
             yield return new WaitForSeconds(0.5f);
 
@@ -106,6 +107,25 @@ namespace ThousandLines
                 }
             }
             return machineLines;
+        }
+
+        private void InitializeMaterialObjects()
+        {
+            //데이터 기반 리스트 생성
+            this.m_MaterialObjects = new List<MaterialObject>();
+
+            var data = AssetDataManager.GetDatas<MaterialObjectData>();
+            for (int i = 0; i < data.Count; i++)
+            {
+                MaterialObject materialObject = new MaterialObject();
+                //Test
+                //Instantiate(materialObject, this.transform);
+
+                materialObject.SetMaterialObject(data[i]);
+                this.m_MaterialObjects.Add(materialObject);
+                m_MaterialObject = materialObject;
+            }
+            Debug.LogError(m_MaterialObject);
         }
 
         private void InitializeBaseMachine()

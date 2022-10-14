@@ -78,7 +78,7 @@ namespace ThousandLines
                     isReset = false;
                 }
 
-                Debug.LogError(this.SettingIndex);
+                //Debug.LogError(this.SettingIndex);
             }
             //머신 리스트를 재정리 한다.
 

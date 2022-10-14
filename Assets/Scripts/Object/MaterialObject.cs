@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ThousandLines_Data;
 using UnityEngine;
 
 namespace ThousandLines
@@ -8,6 +9,8 @@ namespace ThousandLines
     {
         [SerializeField]
         private MaterialObjectModel Model = null;
+
+        public List<int> LineTypes = new List<int>();
 
         [SerializeField]
         private double m_Value = 0;
@@ -19,16 +22,18 @@ namespace ThousandLines
         }
 
         //처음 생성시 만들어지는 기본 데이터 메테리얼 오브젝트
-        private void SetMaterialObject(MaterialObjectModel materialObjectModel)
+        public void SetMaterialObject(MaterialObjectData materialObjectData)
         {
-            this.Model = materialObjectModel;
-            this.Value = materialObjectModel.m_data.Material_Value;
+            var model = new MaterialObjectModel(materialObjectData);
+            this.Model = model;
+            this.Value = model.m_Data.Material_Value;
+            //this.Value = materialObjectModel.m_data.Material_Value;
         }
 
         private void SetLineComplete(int lineindex)
         {
             if (this.Model == null) return;
-            this.Model.LineTypes.Add(lineindex);
+            this.LineTypes.Add(lineindex);
 
             //금액 계산 처리
         }
