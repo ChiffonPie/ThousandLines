@@ -11,7 +11,7 @@ namespace ThousandLines
     public class MachineLineUI : MonoBehaviour
     {
         [SerializeField]
-        private string m_MachineId;
+        public string m_MachineId;
 
         [SerializeField]
         private Image m_MachineImage;
@@ -19,7 +19,7 @@ namespace ThousandLines
         private TextMeshProUGUI m_Price;
 
         [SerializeField]
-        private SpriteButton m_Settingbutton;
+        public SpriteButton m_Settingbutton;
 
         [SerializeField]
         private SpriteButton m_BuyButton;

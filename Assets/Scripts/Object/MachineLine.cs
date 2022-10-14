@@ -124,13 +124,27 @@ namespace ThousandLines
         {
             base.InSequence();
             //소환 코드 호출
+            this.gameObject.SetActive(true);
+            Vector2 hidePos = ThousandLinesManager.Instance.GetMachineLinePos(this);// 좌표 계산식 참고
+            Vector2 startPos = new Vector2(0.78f, 1f);
 
+            this.transform.position = new Vector2(startPos.x + hidePos.x, startPos.y);
+
+            ThousandLinesManager.Instance.SetSortingGroup(this.gameObject, this.SettingIndex);
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, true));
+            sequence.Join(this.transform.DOMove(hidePos, 1f)).OnComplete(() =>
+            {
+                this.m_isReserved = false;
+                this.SetState(MachineState.READY);
+            });
             //다음 머신의 상태에 따라 호출
         }
 
         protected override void OutSequence()
         {
-            if (this.Model.m_Data.Line_Setting_Index == 0) return;
+            if (this.SettingIndex == 0) return;
             base.OutSequence();
         }
 

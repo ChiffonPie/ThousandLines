@@ -155,7 +155,7 @@ namespace ThousandLines
             this.m_GoalMachine.Show();
         }
 
-        private void SetSortingGroup(GameObject gameObject, int index)
+        public void SetSortingGroup(GameObject gameObject, int index)
         {
             if (gameObject.GetComponent<SortingGroup>() == null)
                 gameObject.AddComponent<SortingGroup>();
@@ -172,7 +172,7 @@ namespace ThousandLines
                     xPos += this.m_InMachines[i].m_Distace;
                 }
             }
-            return new Vector2((xPos), machine.transform.position.y);
+            return new Vector2((xPos), 0);
         }
 
         #endregion
@@ -269,6 +269,12 @@ namespace ThousandLines
 
         private Machine FindMachine(Machine currentMachine, bool isPrevious = false)
         {
+            if (currentMachine.name == "GoalMachine")
+            {
+                Debug.LogError(currentMachine.SettingIndex);
+            }
+
+
             if (!isPrevious) // ¥Ÿ¿Ω∞≈
             {
                 var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex - 1);

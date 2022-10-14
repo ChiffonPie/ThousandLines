@@ -145,8 +145,16 @@ namespace ThousandLines
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, false));
+
+
+
             sequence.Join(this.transform.DOMove(hidePos, 1f)).OnComplete(() =>
             {
+                //설치 해제 컬러 세팅
+                this.m_buttonSpriteRenderer.color = Color.green;
+                //완료되면 버튼을 재 활성화 해준다.
+                ThousandLinesUIManager.Instance.SetInteractableButton(this.id);
+
                 this.gameObject.SetActive(false);
             });
         }

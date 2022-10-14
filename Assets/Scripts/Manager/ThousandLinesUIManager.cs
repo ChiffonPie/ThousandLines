@@ -47,5 +47,17 @@ namespace ThousandLines
             machineLineUI.Initialize(machineLine);
             this.m_MachineButtonUIs.Add(machineLineUI);
         }
+
+
+        public void SetInteractableButton(string id)
+        {
+            for (int i = 0; i < this.m_MachineButtonUIs.Count; i++)
+            {
+                if (this.m_MachineButtonUIs[i].m_MachineId == id)
+                {
+                    this.m_MachineButtonUIs[i].m_Settingbutton.interactable = true;
+                }
+            }
+        }
     }
 }
