@@ -50,14 +50,17 @@ namespace ThousandLines
                     if (ThousandLinesManager.Instance.m_InMachines[i] == null)
                     {
                         ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
-                        this.SettingIndex = i;
+                        this.SettingIndex = i -1;
                     }
                 }
                 // 2. 널이 아닌경우 인데 추가된 사항이 있는경우
                 //    - 해당 항목을 In 으로 대체시키고 자신은 뒤로 빠진다.
                 // 할만한데?
 
+                //라인 매니저 327 번째 줄 꼭 참고
+
                 // 리스트 인덱스 재정의 하고 돌려야 한다.
+                // 본인 제거 해야한다.
                 bool isReset = false;
                 for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
                 {

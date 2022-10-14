@@ -124,6 +124,8 @@ namespace ThousandLines
         {
             base.InSequence();
             //소환 코드 호출
+
+
             this.gameObject.SetActive(true);
             Vector2 hidePos = ThousandLinesManager.Instance.GetMachineLinePos(this);// 좌표 계산식 참고
             Vector2 startPos = new Vector2(0.78f, 1f);

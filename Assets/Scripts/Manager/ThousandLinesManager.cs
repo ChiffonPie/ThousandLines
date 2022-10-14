@@ -125,7 +125,7 @@ namespace ThousandLines
 
                 materialObject.SetMaterialObject(data[i]);
                 this.m_MaterialObjects.Add(materialObject);
-                m_MaterialObject = materialObject;
+                //m_MaterialObject = materialObject;
             }
             Debug.LogError(m_MaterialObject);
         }
@@ -329,6 +329,11 @@ namespace ThousandLines
             var machine = this.GetMachineId(this.m_OutMachines, machineId);
             this.m_OutMachines.Remove(machine);
             this.m_InMachines.Add(machine);
+
+
+
+            //만약 골이 Ready 상태면 직접 호출 하여야 한다.
+            //골 위치도 변경해 주어야 한다. ( 스테이트 변경 ) ㅂ
         }
 
 
