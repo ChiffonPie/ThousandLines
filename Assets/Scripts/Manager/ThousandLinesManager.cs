@@ -49,6 +49,8 @@ namespace ThousandLines
         {
             var machineLineDatas = AssetDataManager.GetDatas<MachineLineData>();
             this.StartCoroutine(InitializeCoroutine(machineLineDatas));
+
+            AssetDataManager.Save();
         }
 
         private IEnumerator InitializeCoroutine(List<MachineLineData> machineLineDatas)
