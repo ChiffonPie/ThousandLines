@@ -38,22 +38,19 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
-
-            //리스트 체크하고 정리한다.
-            //다음 머신이 존재하는지 여부에 따라서 먼저 재배치 한다.
-
             //누가 추가되어 대기중인지 확인
             if (ThousandLinesManager.Instance.m_InMachines.Count > this.SettingIndex)
             {
                 // 널체크 부터- 코드정리 전
 
                 // 순서
-                // 1. 내 뒤에 Null 있는지 확인 후 압축
+                // 1. 내 뒤에 Null 있는지 확인 후 압축 (리스트 정리)
                 for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
                 {
                     if (ThousandLinesManager.Instance.m_InMachines[i] == null)
                     {
                         ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
+                        this.SettingIndex = i;
                     }
                 }
                 // 2. 널이 아닌경우 인데 추가된 사항이 있는경우

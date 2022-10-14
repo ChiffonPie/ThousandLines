@@ -269,12 +269,6 @@ namespace ThousandLines
 
         private Machine FindMachine(Machine currentMachine, bool isPrevious = false)
         {
-            if (currentMachine.name == "GoalMachine")
-            {
-                Debug.LogError(currentMachine.SettingIndex);
-            }
-
-
             if (!isPrevious) // ¥Ÿ¿Ω∞≈
             {
                 var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex - 1);

@@ -43,14 +43,11 @@ namespace ThousandLines
 
             this.m_MachineId = machineLine.Model.m_Data.Id;
             //설치 여부 체크
-            if (machineLine.Model.m_Data.Line_Setting_Index == 0)
+            // 설치할 수 있는 버튼 이벤트 추가
+            this.m_Settingbutton.OnClickAsObservable().Subscribe(_ =>
             {
-                // 설치할 수 있는 버튼 이벤트 추가
-                this.m_Settingbutton.OnClickAsObservable().Subscribe(_ =>
-                {
-                    this.OnClickSettingButton();
-                });
-            }
+                this.OnClickSettingButton();
+            });
 
             this.m_Settingbutton.interactable = machineLine.Model.m_Data.Line_Setting_Index == 0;
         }

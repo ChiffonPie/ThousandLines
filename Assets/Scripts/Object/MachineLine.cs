@@ -129,7 +129,6 @@ namespace ThousandLines
             Vector2 startPos = new Vector2(0.78f, 1f);
 
             this.transform.position = new Vector2(startPos.x + hidePos.x, startPos.y);
-
             ThousandLinesManager.Instance.SetSortingGroup(this.gameObject, this.SettingIndex);
 
             Sequence sequence = DOTween.Sequence();
