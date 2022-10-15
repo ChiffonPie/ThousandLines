@@ -13,7 +13,7 @@ namespace ThousandLines
         public List<int> LineTypes = new List<int>();
 
         [SerializeField]
-        private double m_Value = 0;
+        private new double m_Value = 0;
 
         public double Value
         {

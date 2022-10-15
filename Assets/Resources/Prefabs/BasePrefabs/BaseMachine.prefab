@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 3262982130653268023}
   - component: {fileID: 3262982130653267976}
   - component: {fileID: 2193886958801953691}
+  - component: {fileID: 7447679258846168716}
   m_Layer: 0
   m_Name: BaseMachine
   m_TagString: Untagged
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
-  SettingIndex: 0
+  m_Index: 0
   m_Distace: 0
   machineState: -1
   m_MaterialObject: {fileID: 0}
@@ -272,6 +273,17 @@ PolygonCollider2D:
       - {x: 2.3, y: -1}
       - {x: 2.3, y: -2}
       - {x: 3.4, y: -2}
+--- !u!210 &7447679258846168716
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262982130653268022}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &3262982130776111160
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,13 +73,11 @@ namespace ThousandLines
 
         private void OnClickSettingButton()
         {
-            Debug.LogError("설치함");
             this.m_Settingbutton.interactable = false;
 
             //설치 메커니즘
-            ThousandLinesManager.Instance.SettingMachine(this.m_MachineId);
             //설치 예약에 들어갑니다. (해제 불가)
-            //리스트에 추가됩니다.
+            ThousandLinesManager.Instance.SettingMachine(this.m_MachineId);
         }
     }
 }

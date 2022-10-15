@@ -10,7 +10,6 @@ namespace ThousandLines
     public class GoalMachine : Machine
     {
         public float Line_Distance = 2.7f;
-
         protected override void Awake()
         {
             base.Awake();
@@ -38,61 +37,53 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
+
             //누가 추가되어 대기중인지 확인
-            if (ThousandLinesManager.Instance.m_InMachines.Count > this.SettingIndex)
+            //최신 리스트 상태에 따라서 위치조정을 해야함.
+
+            //앞으로 밀착
+
+            if (ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] == null)
             {
-                // 널체크 부터- 코드정리 전
-                bool isReset = false;
+                ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] = this;
+                this.CurrentIndex--;
+                ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex]);
+                this.SetState(MachineState.REPOSITION);
+                return;
+            }
+            //리스트 클리어 처리
 
-                // 순서
-                // 1. 내 뒤에 Null 있는지 확인 후 압축 (리스트 정리)
-                for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
+            for (int i = this.CurrentIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count;)
+            {
+                if (ThousandLinesManager.Instance.m_InMachines[i] == null)
                 {
-                    if (ThousandLinesManager.Instance.m_InMachines[i] == null)
-                    {
-                        ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
-                        this.SettingIndex = i -1;
-                        isReset = true;
-                    }
+                    ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
                 }
-                // 2. 널이 아닌경우 인데 추가된 사항이 있는경우
-                //    - 해당 항목을 In 으로 대체시키고 자신은 뒤로 빠진다.
-                // 할만한데?
-
-                //라인 매니저 327 번째 줄 꼭 참고
-
-                // 리스트 인덱스 재정의 하고 돌려야 한다.
-                // 본인 제거 해야한다.
-
-                //리스트의 가장 마지막으로 이동한다.
-                if (this.SettingIndex + 1 < ThousandLinesManager.Instance.m_InMachines.Count)
+                else
                 {
-                    ThousandLinesManager.Instance.m_InMachines.Remove(this);
-                    ThousandLinesManager.Instance.m_InMachines.Add(this);
-                    this.SettingIndex = ThousandLinesManager.Instance.m_InMachines.Count;
-                    isReset = true;
+                    i++;
                 }
+            }
 
-                for (int i = 1; i < ThousandLinesManager.Instance.m_InMachines.Count -1; i++)
+            //포지션 재정리
+            if (this.CurrentIndex < ThousandLinesManager.Instance.m_InMachines.Count - 1)
+            {
+                for (int i = 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
                 {
                     if (ThousandLinesManager.Instance.m_InMachines[i].machineState == MachineState.OUT)
                     {
-                        ThousandLinesManager.Instance.m_InMachines[i].SettingIndex = i;
-                        this.SettingIndex = ThousandLinesManager.Instance.m_InMachines.Count -1;
-                        ThousandLinesManager.Instance.m_InMachines[i -1].SetState(MachineState.IN);
+                        ThousandLinesManager.Instance.m_InMachines[i].CurrentIndex = i;
+                        ThousandLinesManager.Instance.m_InMachines[i].SetState(MachineState.IN);
                     }
                 }
 
-                if (isReset)
-                {
-                    ThousandLinesManager.Instance.SetSortingGroup(this.gameObject, this.SettingIndex);
-                    this.SetState(MachineState.REPOSITION);
-                    isReset = false;
-                }
+                ThousandLinesManager.Instance.m_InMachines.Remove(this);
+                ThousandLinesManager.Instance.m_InMachines.Add(this);
+                this.CurrentIndex = ThousandLinesManager.Instance.m_InMachines.Count - 1;
 
-                //Debug.LogError(this.SettingIndex);
+                this.SetState(MachineState.REPOSITION);
+                return;
             }
-            //머신 리스트를 재정리 한다.
 
             ThousandLinesManager.Instance.MachineSend(this);
         }

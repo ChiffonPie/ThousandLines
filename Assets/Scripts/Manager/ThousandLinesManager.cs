@@ -135,12 +135,12 @@ namespace ThousandLines
             //생산머신 초기화
             BaseMachine baseMachine = Instantiate(this.m_BaseMachine, this.transform);
             baseMachine.name = this.m_BaseMachine.name;
-
             this.m_BaseMachine = baseMachine;
-            this.m_BaseMachine.SettingIndex = this.m_InMachines.Count;
+
+            this.SetSortingGroup(this.m_BaseMachine.gameObject, 0);
+            this.m_BaseMachine.CurrentIndex = this.m_InMachines.Count;
             this.m_InMachines.Add(this.m_BaseMachine);
 
-            this.SetSortingGroup(this.m_BaseMachine.gameObject, this.m_BaseMachine.SettingIndex);
             this.m_BaseMachine.Show();
         }
 
@@ -156,10 +156,11 @@ namespace ThousandLines
 
             machineLine.SetMachine(machineLineData);
             machineLine.m_Distace = machineLineData.Line_Distance;
-            machineLine.SettingIndex = machineLine.Model.m_Data.Line_Setting_Index;
+            machineLine.CurrentIndex = machineLine.Model.m_Data.Line_Setting_Index;
+
+            this.SetSortingGroup(machineLine.gameObject, machineLine.CurrentIndex);
 
             machineLine.transform.position = GetMachineLinePos(machineLine);
-            this.SetSortingGroup(machineLine.gameObject, machineLine.SettingIndex);
             return machineLine;
         }
 
@@ -168,28 +169,27 @@ namespace ThousandLines
             GoalMachine goalMachine = Instantiate(this.m_GoalMachine, this.transform);
             goalMachine.name = this.m_GoalMachine.name;
             this.m_GoalMachine = goalMachine;
-            this.m_GoalMachine.SettingIndex = this.m_InMachines.Count;
+            this.m_GoalMachine.CurrentIndex = this.m_InMachines.Count;
 
+            this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.CurrentIndex);
             this.m_GoalMachine.transform.position = GetMachineLinePos(this.m_GoalMachine);
+
             this.m_InMachines.Add(this.m_GoalMachine);
 
-            this.SetSortingGroup(this.m_GoalMachine.gameObject, this.m_GoalMachine.SettingIndex);
             this.m_GoalMachine.Show();
         }
 
         public void SetSortingGroup(GameObject gameObject, int index)
         {
-            if (gameObject.GetComponent<SortingGroup>() == null)
-                gameObject.AddComponent<SortingGroup>();
             gameObject.GetComponent<SortingGroup>().sortingOrder = index;
         }
 
         public Vector2 GetMachineLinePos(Machine machine)
         {
             float xPos = machine.m_Distace;
-            for (int i = 0; i < machine.SettingIndex; i++)
+            for (int i = 0; i < machine.CurrentIndex; i++)
             {
-                if (this.m_InMachines[i] != null)
+                if (this.m_InMachines[i] != null && this.m_InMachines[i] != m_GoalMachine)
                 {
                     xPos += this.m_InMachines[i].m_Distace;
                 }
@@ -253,6 +253,7 @@ namespace ThousandLines
         {
             //그런데 내가 리셋 포지션 중이면 끌고 올 수 있어야함.
             //본인이 이동중인 대상일 때
+
             var nextMachine = this.m_InMachines.Find(index + 1);
             if (nextMachine == null) return;
 
@@ -293,12 +294,12 @@ namespace ThousandLines
         {
             if (!isPrevious) // 다음거
             {
-                var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex - 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.CurrentIndex - 1);
                 if (findMachine != null) return findMachine;
             }
             else
             {
-                var findMachine = this.m_InMachines.Find(currentMachine.SettingIndex + 1);
+                var findMachine = this.m_InMachines.Find(currentMachine.CurrentIndex + 1);
                 if (findMachine != null) return findMachine;
             }
             return null;
@@ -307,18 +308,19 @@ namespace ThousandLines
         public void MachineListRemove(Machine machine)
         {
             this.m_OutMachines.Add(machine);
-            this.m_InMachines[machine.SettingIndex] = null;
+            this.m_InMachines[machine.CurrentIndex] = null;
         }
 
         public void MachineListSet(Machine machine)
         {
+            if (machine == this.m_GoalMachine) return;
             for (int i = 0; i < this.m_InMachines.Count; i++)
             {
                 if (this.m_InMachines[i] == null)
                 {
                     this.m_InMachines[i] = machine;
-                    this.m_InMachines[machine.SettingIndex] = null;
-                    machine.SettingIndex = i;
+                    this.m_InMachines[machine.CurrentIndex] = null;
+                    machine.CurrentIndex = i;
                     return;
                 }
             }
@@ -330,10 +332,23 @@ namespace ThousandLines
             this.m_OutMachines.Remove(machine);
             this.m_InMachines.Add(machine);
 
-
-
+            if (this.m_GoalMachine.machineState == MachineState.READY)
+            {
+                for (int i = 1; i <= this.m_GoalMachine.CurrentIndex; i++)
+                {
+                    if (this.m_InMachines[i] == null)
+                    {
+                        return;
+                    }
+                }
+                if (this.m_InMachines[this.m_GoalMachine.CurrentIndex - 1].machineState == MachineState.READY ||
+                    this.m_InMachines[this.m_GoalMachine.CurrentIndex - 1].machineState == MachineState.STOP)
+                {
+                    this.m_GoalMachine.SetState(MachineState.REPOSITION);
+                }
+            }
             //만약 골이 Ready 상태면 직접 호출 하여야 한다.
-            //골 위치도 변경해 주어야 한다. ( 스테이트 변경 ) ㅂ
+            //골 위치도 변경해 주어야 한다. ( 스테이트 변경 )
         }
 
 

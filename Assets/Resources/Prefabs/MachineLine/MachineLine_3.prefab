@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 1539109955869655992}
   - component: {fileID: -4422365330376278587}
   - component: {fileID: 8611121163958407842}
+  - component: {fileID: 6311387022680998449}
   m_Layer: 0
   m_Name: MachineLine_3
   m_TagString: Untagged
@@ -149,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
-  SettingIndex: 0
+  m_Index: 0
   m_Distace: 0
   machineState: -1
   m_MaterialObject: {fileID: 0}
@@ -231,6 +232,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!210 &6311387022680998449
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573767739431929319}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &4573767740169045382
 GameObject:
   m_ObjectHideFlags: 0

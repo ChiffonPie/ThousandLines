@@ -12,7 +12,7 @@ namespace ThousandLines
     {
         [Header("[ Machine ]")]
         public string id;
-        public int SettingIndex;
+        public int m_Index;
         public float m_Distace; // 입력해도 되고, 데이터로 로드 해도됨
         public MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
@@ -38,6 +38,17 @@ namespace ThousandLines
         [HideInInspector]
         protected Dictionary<MachineState, Action> m_Actions = new Dictionary<MachineState, Action>();
 
+
+        public int CurrentIndex
+        {
+            get { return m_Index; }
+            set
+            {
+                ThousandLinesManager.Instance.SetSortingGroup(this.gameObject, value);
+                this.m_Index = value;
+            }
+        }
+
         protected virtual void Awake()
         {
             this.InitializeSprites();
@@ -48,7 +59,6 @@ namespace ThousandLines
         {
             this.SetupSequence();
             this.SetupPos();
-            this.SetupMaterial();
         }
 
         #region Initialize
@@ -77,14 +87,6 @@ namespace ThousandLines
             return this.m_tr.ConvertAll(c => c.localPosition).ToArray();
         }
         
-        private void SetupMaterial()
-        {
-            if (this.m_MovingBoard != null)
-            {
-                this.m_MovingBoard.defaultM.color = Color.clear;
-            }
-        }
-
         private void InitializeAnimator()
         {
             if (this.GetComponent<Animator>() != null)
@@ -144,7 +146,7 @@ namespace ThousandLines
         {
             Debug.Log(this.name + " : 해제");
 
-            int index = this.SettingIndex;
+            int index = this.CurrentIndex;
             ThousandLinesManager.Instance.MachineListRemove(this);
 
             //만약 다음 친구가 READY 면 Call 해야함
@@ -176,18 +178,34 @@ namespace ThousandLines
         {
             // 해제 머신의 다음 머신들은 모든 생산을 완료 한 뒤 이동 하여야 한다.
             Debug.Log(this.name + " : 포지션 재정리");
+            Sequence sequence = DOTween.Sequence();
 
-            int index = this.SettingIndex;
+            if (this != ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex])
+            {
+                for (int i = 0; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
+                {
+                    if (ThousandLinesManager.Instance.m_InMachines[i] == this)
+                    {
+                        this.CurrentIndex = i;
+                        break;
+                    }
+                }
+
+                Vector2 movePos1 = ThousandLinesManager.Instance.GetMachineLinePos(this);
+                sequence.Append(this.transform.DOMove(movePos1, 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
+                {
+                    this.SetState(MachineState.READY);
+                });
+                return;
+            }
+
+            int index = this.CurrentIndex;
             ThousandLinesManager.Instance.MachineListSet(this);
             ThousandLinesManager.Instance.ResetRepositionMachine(this, index);
 
-            //용규야 단순하게 생각해
-            //이동 시작하면 다음 애 그냥 끌고오면 되는거야
-
-            Sequence sequence = DOTween.Sequence();
             Vector2 movePos = ThousandLinesManager.Instance.GetMachineLinePos(this);
 
-            sequence.Append(this.transform.DOMove(movePos, 1f)).OnComplete(() =>
+            sequence.Append(this.transform.DOMove(movePos, 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
             {
                 this.SetState(MachineState.READY);
             });
@@ -195,6 +213,7 @@ namespace ThousandLines
 
         protected virtual void StopSequence()
         {
+            Debug.Log(this.name + " : 정지");
             if (this.m_MovingBoard != null)
             {
             }

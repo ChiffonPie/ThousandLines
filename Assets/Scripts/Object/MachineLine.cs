@@ -49,8 +49,8 @@ namespace ThousandLines
 
             //초기화 시간 지정 - 0.5f
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
-            sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.white, 0.5f));
+            sequence.Append(this.m_MovingBoard.defaultM.DOColor(Color.white, 0.5f));
+            sequence.Join(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
             sequence.AppendInterval(0.5f).OnComplete(() =>
             {
                 this.SetState(MachineState.READY);
@@ -64,8 +64,15 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
+            if (this != ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex])
+            {
+                this.SetState(MachineState.REPOSITION);
+                return;
+            }
+
             if (this.m_isReserved)
             {
+                //이전게 널인지 체크 후 무빙
                 this.SetState(MachineState.OUT);
             }
             else
@@ -129,13 +136,11 @@ namespace ThousandLines
             base.InSequence();
             //소환 코드 호출
 
-
             this.gameObject.SetActive(true);
             Vector2 hidePos = ThousandLinesManager.Instance.GetMachineLinePos(this);// 좌표 계산식 참고
             Vector2 startPos = new Vector2(0.78f, 1f);
 
             this.transform.position = new Vector2(startPos.x + hidePos.x, startPos.y);
-            ThousandLinesManager.Instance.SetSortingGroup(this.gameObject, this.SettingIndex);
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, true));
@@ -145,11 +150,13 @@ namespace ThousandLines
                 this.SetState(MachineState.READY);
             });
             //다음 머신의 상태에 따라 호출
+
+
         }
 
         protected override void OutSequence()
         {
-            if (this.SettingIndex == 0) return;
+            if (this.CurrentIndex == 0) return;
             base.OutSequence();
         }
 

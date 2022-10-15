@@ -18,14 +18,15 @@ public class MovingBoard : MonoBehaviour
     {
         if (speed != 0)
         {
-            uvOffset += direction * speed * Time.deltaTime;
-            defaultM.SetTextureOffset(textureName, uvOffset);
+            this.uvOffset += direction * speed * Time.deltaTime;
+            this.defaultM.SetTextureOffset(textureName, uvOffset);
         }
     }
 
     private void MaterialInstancing()
     {
-        defaultM = Instantiate(defaultM);
-        m_LoopBoard.material = defaultM;
+        this.defaultM = Instantiate(defaultM);
+        this.m_LoopBoard.material = defaultM;
+        this.defaultM.color = Color.clear;
     }
 }
