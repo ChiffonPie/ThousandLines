@@ -48,6 +48,7 @@ namespace ThousandLines
         {
             this.SetupSequence();
             this.SetupPos();
+            this.SetupMaterial();
         }
 
         #region Initialize
@@ -57,12 +58,6 @@ namespace ThousandLines
             this.m_SpriteRenderers = new List<SpriteRenderer>();
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
-
-            if (this.m_MovingBoard != null)
-            {
-                this.m_MovingBoard.defaultM.color = Color.clear;
-            }
-
             //버튼 스프라이트 적용
             for (int i = 0; i < this.m_SpriteRenderers.Count; i++)
             {
@@ -80,6 +75,14 @@ namespace ThousandLines
         private Vector3[] GetPoints()
         {
             return this.m_tr.ConvertAll(c => c.localPosition).ToArray();
+        }
+        
+        private void SetupMaterial()
+        {
+            if (this.m_MovingBoard != null)
+            {
+                this.m_MovingBoard.defaultM.color = Color.clear;
+            }
         }
 
         private void InitializeAnimator()
