@@ -93,7 +93,7 @@ namespace ThousandLines
         {
             base.MoveSequence();
             var sequence = DOTween.Sequence();
-            this.SetBoardSpeed = -this.Model.m_Data.Line_Speed * 0.5f;
+            this.SetBoardSpeed = this.Model.m_Data.Line_Speed * 0.5f;
             if (!isComplete)
             {
                 // 2. 재료 중앙 이동

@@ -718,10 +718,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3157713161715433095, guid: 0722c944361f0064387d678dea9ddcf1, type: 3}
+      propertyPath: defaultM
+      value: 
+      objectReference: {fileID: 2100000, guid: 81bc7781bf902a14db13221cb42957f4, type: 2}
     - target: {fileID: 5423251976268478078, guid: 0722c944361f0064387d678dea9ddcf1, type: 3}
       propertyPath: m_Name
       value: Board
       objectReference: {fileID: 0}
+    - target: {fileID: 6542483341197457780, guid: 0722c944361f0064387d678dea9ddcf1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 81bc7781bf902a14db13221cb42957f4, type: 2}
     - target: {fileID: 9076866713548577673, guid: 0722c944361f0064387d678dea9ddcf1, type: 3}
       propertyPath: m_RootOrder
       value: 2

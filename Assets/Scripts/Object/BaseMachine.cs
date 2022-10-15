@@ -46,8 +46,10 @@ namespace ThousandLines
         {
             base.InitializeSequence();
             //초기화 시간 지정 - 0.5f
+
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
+            sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.white, 0.5f));
             sequence.AppendInterval(0.5f).OnComplete(() =>
             {
                 this.SetState(MachineState.READY);
@@ -78,7 +80,7 @@ namespace ThousandLines
         protected override void MoveSequence()
         {
             base.MoveSequence();
-            this.SetBoardSpeed = -this.Model.m_Data.Machine_Create_Speed * 0.9f;
+            this.SetBoardSpeed = this.Model.m_Data.Machine_Create_Speed * 0.9f;
 
             this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, this.Model.m_Data.Machine_Speed * 0.5f).SetEase(Ease.Linear).OnComplete(() =>
             {
