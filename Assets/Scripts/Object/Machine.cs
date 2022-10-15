@@ -58,6 +58,11 @@ namespace ThousandLines
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
 
+            if (this.m_MovingBoard != null)
+            {
+                this.m_MovingBoard.defaultM.color = Color.clear;
+            }
+
             //버튼 스프라이트 적용
             for (int i = 0; i < this.m_SpriteRenderers.Count; i++)
             {
@@ -128,6 +133,8 @@ namespace ThousandLines
         protected virtual void InSequence()
         {
             Debug.Log(this.name + " : 설치");
+            Sequence sequence = DOTween.Sequence();
+            sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.white, 1f));
         }
 
         protected virtual void OutSequence()
@@ -147,9 +154,9 @@ namespace ThousandLines
             //떠날 때 이전 머신이 Ready 상태일 경우 불러준다.
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 1f, false));
 
-
+            sequence.Append(SpriteExtensions.SetSpritesColor(this.m_SpriteRenderers, 1f, false));
+            sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.clear, 1f));
 
             sequence.Join(this.transform.DOMove(hidePos, 1f)).OnComplete(() =>
             {
@@ -185,7 +192,9 @@ namespace ThousandLines
 
         protected virtual void StopSequence()
         {
-
+            if (this.m_MovingBoard != null)
+            {
+            }
         }
 
         #endregion
@@ -323,6 +332,7 @@ namespace ThousandLines
         #endregion
 
         #region Other
+
         protected float SetBoardSpeed
         {
             set 

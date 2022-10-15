@@ -50,6 +50,7 @@ namespace ThousandLines
             //초기화 시간 지정 - 0.5f
             Sequence sequence = DOTween.Sequence();
             sequence.Append(SpriteExtensions.SetSpritesColor(m_SpriteRenderers, 0.5f, true));
+            sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.white, 0.5f));
             sequence.AppendInterval(0.5f).OnComplete(() =>
             {
                 this.SetState(MachineState.READY);
