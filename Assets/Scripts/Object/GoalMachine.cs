@@ -42,6 +42,7 @@ namespace ThousandLines
             if (ThousandLinesManager.Instance.m_InMachines.Count > this.SettingIndex)
             {
                 // 널체크 부터- 코드정리 전
+                bool isReset = false;
 
                 // 순서
                 // 1. 내 뒤에 Null 있는지 확인 후 압축 (리스트 정리)
@@ -51,6 +52,7 @@ namespace ThousandLines
                     {
                         ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
                         this.SettingIndex = i -1;
+                        isReset = true;
                     }
                 }
                 // 2. 널이 아닌경우 인데 추가된 사항이 있는경우
@@ -61,15 +63,22 @@ namespace ThousandLines
 
                 // 리스트 인덱스 재정의 하고 돌려야 한다.
                 // 본인 제거 해야한다.
-                bool isReset = false;
-                for (int i = this.SettingIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
+
+                //리스트의 가장 마지막으로 이동한다.
+                if (this.SettingIndex + 1 < ThousandLinesManager.Instance.m_InMachines.Count)
                 {
-                    if (ThousandLinesManager.Instance.m_InMachines[i] != null)
+                    ThousandLinesManager.Instance.m_InMachines.Remove(this);
+                    ThousandLinesManager.Instance.m_InMachines.Add(this);
+                    this.SettingIndex = ThousandLinesManager.Instance.m_InMachines.Count;
+                    isReset = true;
+                }
+
+                for (int i = 1; i < ThousandLinesManager.Instance.m_InMachines.Count -1; i++)
+                {
+                    if (ThousandLinesManager.Instance.m_InMachines[i].machineState == MachineState.OUT)
                     {
-                        ThousandLinesManager.Instance.m_InMachines.Swap(i, this.SettingIndex);
-                        ThousandLinesManager.Instance.m_InMachines[i - 1].SettingIndex = this.SettingIndex;
+                        ThousandLinesManager.Instance.m_InMachines[i].SettingIndex = i;
                         this.SettingIndex = ThousandLinesManager.Instance.m_InMachines.Count -1;
-                        isReset = true;
                         ThousandLinesManager.Instance.m_InMachines[i -1].SetState(MachineState.IN);
                     }
                 }

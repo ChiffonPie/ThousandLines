@@ -16,8 +16,11 @@ public class MovingBoard : MonoBehaviour
 
     private void Update()
     {
-        uvOffset += direction * speed * Time.deltaTime;
-        defaultM.SetTextureOffset(textureName, uvOffset);
+        if (speed != 0)
+        {
+            uvOffset += direction * speed * Time.deltaTime;
+            defaultM.SetTextureOffset(textureName, uvOffset);
+        }
     }
 
     private void MaterialInstancing()
