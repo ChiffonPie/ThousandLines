@@ -104,7 +104,7 @@ namespace ThousandLines
 
             var sequence = DOTween.Sequence();
             this.SetMaterialParent(this.transform);
-            sequence.Append(this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, 1)).OnComplete(() =>
+            sequence.Append(this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, 1).SetEase(Ease.Linear)).OnComplete(() =>
             {
                 this.SetMoney();
                 this.SetState(MachineState.READY);

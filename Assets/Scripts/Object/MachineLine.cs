@@ -92,21 +92,23 @@ namespace ThousandLines
         {
             base.MoveSequence();
             var sequence = DOTween.Sequence();
-
+            this.SetBoardSpeed = -this.Model.m_Data.Line_Speed * 0.5f;
             if (!isComplete)
             {
                 // 2. 재료 중앙 이동
-                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
+                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear));
+                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
                 {
-                    this.SetMaterialParent(prosseingTr);
-                    this.SetState(MachineState.PLAY);
+                     this.SetBoardSpeed = 0;
+                     this.SetMaterialParent(prosseingTr);
+                     this.SetState(MachineState.PLAY);
                 });
             }
             else
             {
                 // 3. 가공 완료 후 다음으로 이동
                 this.SetMaterialParent(this.transform);
-                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f)).OnComplete(() =>
+                sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[2], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
                 {
                     this.SetState(MachineState.WAIT);
                 });
@@ -116,6 +118,7 @@ namespace ThousandLines
         protected override void WaitSequence()
         {
             base.WaitSequence();
+            this.SetBoardSpeed = 0;
             this.isComplete = false;
             ThousandLinesManager.Instance.MachineReceive(this);
         }

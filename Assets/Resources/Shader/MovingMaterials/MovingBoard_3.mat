@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MovingBoard_1
+  m_Name: MovingBoard_3
   m_Shader: {fileID: 4800000, guid: 4f73b40ceddb434409606271e7088280, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

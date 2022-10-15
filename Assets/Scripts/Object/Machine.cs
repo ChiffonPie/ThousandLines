@@ -29,6 +29,9 @@ namespace ThousandLines
         protected Vector3[] m_Pos;
         private bool m_Reposition = false; // 해제로 인한 이동 예약
 
+        [SerializeField]
+        protected MovingBoard m_MovingBoard;
+
         [HideInInspector]
         public bool m_isReserved = false; //해제 및 설치 예약
 
@@ -317,6 +320,19 @@ namespace ThousandLines
             //담금질에 대한 연출
         }
 
+        #endregion
+
+        #region Other
+        protected float SetBoardSpeed
+        {
+            set 
+            {
+                if (this.m_MovingBoard != null)
+                {
+                    this.m_MovingBoard.speed = value;
+                }
+            }
+        }
         #endregion
     }
 }
