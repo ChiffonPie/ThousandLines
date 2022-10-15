@@ -70,6 +70,7 @@ namespace ThousandLines
             base.PlaySequence();
 
             var sequence = DOTween.Sequence();
+            this.SetBoardSpeed = this.Model.m_Data.Machine_Create_Speed * 0.9f;
             sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed * 0.5f).OnComplete(() => {
 
                 this.CreateBaseMaterial(ThousandLinesManager.Instance.m_MaterialObject);
@@ -80,7 +81,6 @@ namespace ThousandLines
         protected override void MoveSequence()
         {
             base.MoveSequence();
-            this.SetBoardSpeed = this.Model.m_Data.Machine_Create_Speed * 0.9f;
 
             this.m_MaterialObject.transform.DOLocalPath(this.m_Pos, this.Model.m_Data.Machine_Speed * 0.5f).SetEase(Ease.Linear).OnComplete(() =>
             {
