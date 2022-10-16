@@ -101,7 +101,7 @@ namespace ThousandLines
                         {
                             case ProcessingType.NULL:                                break;
                             case ProcessingType.PRESS:    value += getValue;         break;
-                            case ProcessingType.WELDING:  value *= getValue;         break;
+                            case ProcessingType.WELDING:  value += getValue;         break;
                             case ProcessingType.SOAK:     value += getValue;         break;
                         }
                     }

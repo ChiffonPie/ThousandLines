@@ -126,6 +126,11 @@ namespace ThousandLines
             }
         }
 
+        public void Cheate()
+        {
+            ThousandLinesManager.Instance.Money = 1000000;
+        }
+
         #endregion
     }
 }

@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MachineLine_4_Play
+  m_Name: MachineLine_8_Play
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d88bf9d17affcfd45b3c0316b39627a9, type: 2}
+  m_Motion: {fileID: 7400000, guid: c5f8373a37923df48ac9bc705bfffc2d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -32,7 +32,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MachineLine_4
+  m_Name: MachineLine_8
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
