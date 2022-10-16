@@ -23,8 +23,8 @@ namespace ThousandLines
         private UnityEngine.UI.ToggleGroup m_MaterialToggleTr;
         [SerializeField]
         private MaterialToggle m_MaterialTogglePreview;
-        [SerializeField]
-        private List<MaterialToggle> m_MaterialToggles;
+
+        public List<MaterialToggle> m_MaterialToggles;
 
         public static ThousandLinesUIManager Instance { get; private set; }
         private void Awake()
@@ -109,12 +109,19 @@ namespace ThousandLines
 
         private void GetSelectedToggle()
         {
-            for (int i = 0; i < m_MaterialToggles.Count; i++)
+            for (int i = 0; i < this.m_MaterialToggles.Count; i++)
             {
-                if (m_MaterialToggles[i].m_Toggle.isOn)
+                if (this.m_MaterialToggles[i].m_Toggle.isOn)
                 {
-                    ThousandLinesManager.Instance.m_MaterialObject = ThousandLinesManager.Instance.m_MaterialObjects[i];
-                    return;
+                    //µ· ¼Ò¸ð
+                    if (this.m_MaterialToggles[i].Price <= ThousandLinesManager.Instance.Money)
+                    {
+                        ThousandLinesManager.Instance.m_MaterialObject = ThousandLinesManager.Instance.m_MaterialObjects[i];
+                        return;
+                    }
+
+                    this.m_MaterialToggles[0].m_Toggle.isOn = true;
+                    break;
                 }
             }
         }

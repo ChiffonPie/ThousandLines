@@ -73,8 +73,9 @@ namespace ThousandLines
 
             var sequence = DOTween.Sequence();
             this.SetBoardSpeed = this.Model.m_Data.Machine_Create_Speed * 0.9f;
-            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed * 0.5f).OnComplete(() => {
-
+            sequence.AppendInterval(this.Model.m_Data.Machine_Create_Speed * 0.5f).OnComplete(() =>
+            {
+                this.CheckMoney();
                 this.CreateBaseMaterial();
                 this.SetState(MachineState.MOVE);
             });
@@ -162,6 +163,18 @@ namespace ThousandLines
         #endregion
 
         #region Others
+
+        private void CheckMoney()
+        {
+            //생성 전 돈체크
+            if (ThousandLinesManager.Instance.m_MaterialObject.Model.m_Data.Material_Price > ThousandLinesManager.Instance.Money)
+            {
+                ThousandLinesManager.Instance.m_MaterialObject = ThousandLinesManager.Instance.m_MaterialObjects[0];
+                ThousandLinesUIManager.Instance.m_MaterialToggles[0].m_Toggle.isOn = true;
+            }
+            else
+                ThousandLinesManager.Instance.Money = -ThousandLinesManager.Instance.m_MaterialObject.Model.m_Data.Material_Price;
+        }
 
         private void CreateBaseMaterial()
         {
