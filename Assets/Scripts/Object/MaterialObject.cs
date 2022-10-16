@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using ThousandLines_Data;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace ThousandLines
 {
     public class MaterialObject : MonoBehaviour
     {
+        public IObjectPool<MaterialObject> poolToReturn;
+
         [SerializeField]
         public MaterialObjectModel Model = null;
 
@@ -35,11 +38,9 @@ namespace ThousandLines
             this.m_SpriteRenderer.sprite = Resources.Load<Sprite>($"{"Sprites/PNG/MaterialObjects/" + materialObjectData.Id}");
         }
 
-        private void SetLineComplete(int lineindex)
+        public void DestroyMaterialObject()
         {
-            if (this.Model == null) return;
-            this.LineTypes.Add(lineindex);
-            //금액 계산 처리
+            poolToReturn.Release(this);
         }
     }
 }

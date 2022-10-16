@@ -302,6 +302,7 @@ namespace ThousandLines
                     spriteRenderer = materialObject.transform.GetChild(i).GetComponent<SpriteRenderer>();
                     spriteRenderer.sprite = sprite;
                     spriteRenderer.sortingOrder = materialObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
+                    materialObject.transform.GetChild(i).gameObject.SetActive(true);
                     return;
                 }
             }
@@ -316,6 +317,7 @@ namespace ThousandLines
             spriteRenderer = weldingObject.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
             spriteRenderer.sortingOrder = materialObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
+            weldingObject.transform.gameObject.SetActive(true);
         }
 
         protected void ChangeColor(MaterialObject materialObject, Color color)

@@ -62,6 +62,7 @@ namespace ThousandLines
                 this.SetState(MachineState.READY);
             });
         }
+
         protected override void WaitSequence()
         {
             base.WaitSequence();
@@ -73,6 +74,13 @@ namespace ThousandLines
         }
 
         #endregion
+
+        private void SetMoney()
+        {
+            ThousandLinesManager.Instance.Money = this.m_MaterialObject.Value;
+            this.m_MaterialObject.DestroyMaterialObject();
+            this.m_MaterialObject = null;
+        }
 
         #region Others
 
@@ -132,13 +140,6 @@ namespace ThousandLines
 
                 return false;
             }
-        }
-
-        private void SetMoney()
-        {
-            ThousandLinesManager.Instance.Money = this.m_MaterialObject.Value;
-            Destroy(this.m_MaterialObject.gameObject);
-            this.m_MaterialObject = null;
         }
 
         #endregion
