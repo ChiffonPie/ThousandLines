@@ -14,8 +14,6 @@ namespace ThousandLines
         public bool m_isStop = false;
         public BaseMachineModel Model;
 
-        private List<Sprite> materialSpriteList;
-
         protected override void Awake()
         {
             base.Awake();

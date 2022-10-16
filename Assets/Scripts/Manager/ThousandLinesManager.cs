@@ -351,6 +351,8 @@ namespace ThousandLines
             {
                 this.m_money += value;
                 ThousandLinesUIManager.Instance.m_moneyText.text = m_money.ToString();
+
+                //머니 갱신시마다 구매할 수 있는 항목을 활성화 해 준다.
             }
         }
 

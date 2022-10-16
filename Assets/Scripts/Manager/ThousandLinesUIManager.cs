@@ -67,6 +67,7 @@ namespace ThousandLines
             MachineLineUI machineLineUI = Instantiate(this.m_MachineButtonPreview, this.m_MachineButtonTr);
             machineLineUI.name = machineLine.Model.m_Data.Id;
             machineLineUI.Initialize(machineLine);
+            machineLineUI.m_MachineImage.sprite = Resources.Load<Sprite>($"{"Sprites/PNG/UI/Machine_Line_UI/" + machineLine.Model.m_Data.Id}");
             this.m_MachineButtonUIs.Add(machineLineUI);
         }
 
