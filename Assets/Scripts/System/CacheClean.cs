@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿# if UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 
 public class CacheClean : EditorWindow
@@ -11,3 +13,5 @@ public class CacheClean : EditorWindow
         PlayerPrefs.DeleteAll();
     }
 }
+
+#endif
