@@ -98,6 +98,7 @@ MonoBehaviour:
   m_MovingBoard: {fileID: 6043437469409656747}
   m_isReserved: 0
   prosseingTr: {fileID: 8891366113691911807}
+  processingType: -1
 --- !u!95 &1539109955869655992
 Animator:
   serializedVersion: 4
@@ -253,12 +254,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b26fe4a1fa5d1f540aef46979d3ed205, type: 3}
+  m_Sprite: {fileID: -2011847960, guid: b26fe4a1fa5d1f540aef46979d3ed205, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.37, y: 4.13}
+  m_Size: {x: 2.15, y: 4.13}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

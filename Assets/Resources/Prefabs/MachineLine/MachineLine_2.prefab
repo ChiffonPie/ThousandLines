@@ -104,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 70cf50b55ef5943498a33bbc785f6656, type: 3}
+  m_Sprite: {fileID: 463083211, guid: e545b0ca6cd47c04e8157d850ac62a96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_MovingBoard: {fileID: 8477816378786088126}
   m_isReserved: 0
   prosseingTr: {fileID: 8891366113691911807}
+  processingType: -1
 --- !u!95 &1539109955869655992
 Animator:
   serializedVersion: 4
@@ -434,7 +435,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 17d566c14f6b66641b2ca7ad750f00bc, type: 3}
+  m_Sprite: {fileID: -1647913459, guid: e545b0ca6cd47c04e8157d850ac62a96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
