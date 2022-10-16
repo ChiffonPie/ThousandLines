@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a8fea3afe98c7334993c0c8fd22a4fc8
+guid: 06e2d3f45d9786e4fb65a533dd7e2cfc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -127,18 +127,84 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Machine_Back_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 695
+        width: 477
+        height: 329
+      alignment: 9
+      pivot: {x: 0.1395763, y: 0.6286608}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 307c174ed4bdbd24eaea1b44ee9fc206
+      internalID: 1877728306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Machine_Back_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 495
+        width: 177
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bc33a7a804444244b6feb042cf133d3
+      internalID: 1839785236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Machine_Front_1
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 249
+        width: 130
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d5a3b26604e9be4a87eaad299d19cd6
+      internalID: -146356251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 19165d885ecc5e549a5c5dcb22da7c5e
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Machine_Back_2: 1839785236
+      Machine_Back_1: 1877728306
+      Machine_Front_1: -146356251
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

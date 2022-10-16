@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 186ef8fb93fee424489f0234c2d19c43
+guid: 97bf66a363fb4c54fa3289c6e5923f83
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -127,18 +127,129 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Board_BackGround_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 778
+        width: 477
+        height: 234
+      alignment: 9
+      pivot: {x: 0.535, y: 0.84}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0043a6e8f729c7c49a23bd7d046ea3e4
+      internalID: -749429294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoardCap_L
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 902
+        width: 81
+        height: 110
+      alignment: 9
+      pivot: {x: 0.535, y: 0.84}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84be4b19fb8cced478289a1d78953266
+      internalID: -1930759493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoardCap_R
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 901
+        width: 91
+        height: 112
+      alignment: 9
+      pivot: {x: 0.535, y: 0.84}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cadfc6d84e6e1b741b3073e9c84b6956
+      internalID: -1792160455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button
+      rect:
+        serializedVersion: 2
+        x: 705
+        y: 960
+        width: 56
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fef6f4bc4196bed4ab25652ac8e52bd4
+      internalID: 1434140337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Machine_State
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 956
+        width: 62
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc241df9f1561954a938f6076dbc4f96
+      internalID: 57417282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: d7d288804f3a52a43b548a5306c079fd
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Board_Loop: 1945003296
+      BoardCap_L: -1930759493
+      BoardCap_R: -1792160455
+      Board_BackGround_1: -749429294
+      Button: 1434140337
+      Machine_State: 57417282
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

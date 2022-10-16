@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 00e18571bb925f247b4ee6ca2cd29d85
+guid: e4e90af081ff5884fbf638228a9be765
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -127,18 +127,173 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MachineLIst_UI
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 797
+        width: 1016
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81c217b9bfb68db40a860c903a62332b
+      internalID: 1469188664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaterialList_UI
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 683
+        width: 444
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b741f5d5737fa7f4f95eab8076ba1f24
+      internalID: -1023160852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BuyPanel_UI
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 547
+        width: 157
+        height: 247
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb72bb15f82a07e48a0cc6f5de826da2
+      internalID: 734367662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaterialObject_UI
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 590
+        width: 92
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10579fe19382bf249bdb07ab7595f328
+      internalID: 954969646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Material_Select_UI
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 589
+        width: 92
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42cbb2801a4fa09468ec15776c090c81
+      internalID: -812423731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MachineLIne_OutLine_UI
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 339
+        width: 157
+        height: 247
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5410f69c1718c0344806af1038bc04f1
+      internalID: -1707929305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Money_UI
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 161
+        width: 635
+        height: 174
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85de64612187cb54bb1232fcdee75755
+      internalID: -1699039640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: a96e530e4fe0eee4990eba8abfff9ae6
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BuyPanel_UI: 734367662
+      MachineLIst_UI: 1469188664
+      "\uC81C\uBAA9 \uC5C6\uC74C-1_3": -740552316
+      Material_Select_UI: -812423731
+      Money_UI: -1699039640
+      MaterialObject_UI: 954969646
+      MachineLIne_OutLine_UI: -1707929305
+      MaterialList_UI: -1023160852
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
