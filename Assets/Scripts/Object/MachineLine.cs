@@ -11,7 +11,7 @@ namespace ThousandLines
         [SerializeField]
         private Transform prosseingTr;
         public MachineLineModel Model;
-        private MachineAbility machineAbility = MachineAbility.NULL;
+        public ProcessingType processingType = ProcessingType.NULL;
         private float animationTime;
         private bool isComplete = false;
 
@@ -30,7 +30,7 @@ namespace ThousandLines
         public void SetMachine(MachineLineData machineLineData)
         {
             var model = new MachineLineModel(machineLineData);
-            this.machineAbility = EnumExtension.ProsseingStringToEnum(model.m_Data.Line_Prosseing);
+            this.processingType = EnumExtension.ProsseingStringToEnum(model.m_Data.Line_Prosseing);
             this.animationTime = this.GetAnimationTime();
             this.id = model.m_Data.Id;
             this.Model = model;
@@ -103,6 +103,7 @@ namespace ThousandLines
                 sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
                 {
                      this.SetBoardSpeed = 0;
+                     this.m_MaterialObject.processingList.Add(this.Model.m_Data.OrderIndex);
                      this.SetMaterialParent(prosseingTr);
                      this.SetState(MachineState.PLAY);
                 });
@@ -162,12 +163,12 @@ namespace ThousandLines
 
         public void ProsseingMatertial()
         {
-            switch (machineAbility)
+            switch (processingType)
             {
-                case MachineAbility.NULL: Debug.LogError("처리 과정이 정의되지 않았습니다."); break;
-                case MachineAbility.PRESS: this.PressScale(this.m_MaterialObject); break;
-                case MachineAbility.WELDING: this.AddSprite(this.m_MaterialObject, this.Model.m_Data.Line_Prosseing); break;
-                case MachineAbility.SOAK: this.ChangeColor(this.m_MaterialObject, Color.green); break;
+                case ProcessingType.NULL: Debug.LogError("처리 과정이 정의되지 않았습니다."); break;
+                case ProcessingType.PRESS: this.PressScale(this.m_MaterialObject); break;
+                case ProcessingType.WELDING: this.AddSprite(this.m_MaterialObject, this.Model.m_Data.Line_Prosseing); break;
+                case ProcessingType.SOAK: this.ChangeColor(this.m_MaterialObject, Color.green); break;
             }
         }
 

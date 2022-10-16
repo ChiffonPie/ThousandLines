@@ -1,5 +1,9 @@
-Id,Line_Order_Index,Line_Setting_Index,Line_isGet,Line_Price,Line_Speed,Line_Distance,Line_Prosseing,Line_Description
-MachineLine_1,1,1,1,10,1,4,Press,납작 기계입니다!
-MachineLine_2,2,2,1,100,1,4,Welding,용접 기계입니다!
-MachineLine_3,3,3,1,1000,1,4,Soak,담금질 기계입니다!
-MachineLine_4,3,4,1,1000,1,4,Soak,담금질 기계입니다!
+Id,Line_Order_Index,Line_Setting_Index,Line_isGet,Line_Price,Line_Speed,Line_Distance,Line_Prosseing,Line_Prosseing_Value,Line_Description
+MachineLine_1,1,0,0,10,1,4,Press,10,납작 기계입니다!
+MachineLine_2,2,0,0,100,1,4,Welding,3,용접 기계입니다!
+MachineLine_3,3,0,0,500,1,4,Soak,50,담금질 기계입니다!
+MachineLine_4,4,0,0,1000,1,4,Press,100,납작 기계입니다!
+MachineLine_5,5,0,0,1245,1,4,Press,120,납작 기계입니다!
+MachineLine_6,6,0,0,4582,1,4,Welding,4,용접 기계입니다!
+MachineLine_7,7,0,0,11919,1,4,Soak,200,담금질 기계입니다!
+MachineLine_8,8,0,0,32256,1,4,Press,300,납작 기계입니다!

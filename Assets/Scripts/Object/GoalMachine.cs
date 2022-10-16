@@ -1,4 +1,6 @@
 using DG.Tweening;
+using ThousandLines_Data;
+using UnityEngine;
 
 namespace ThousandLines
 {
@@ -77,9 +79,35 @@ namespace ThousandLines
 
         private void SetMoney()
         {
-            ThousandLinesManager.Instance.Money = this.m_MaterialObject.Value;
+            ThousandLinesManager.Instance.Money = this.CalculationValue();
             this.m_MaterialObject.DestroyMaterialObject();
             this.m_MaterialObject = null;
+        }
+
+        private double CalculationValue()
+        {
+            double value = this.m_MaterialObject.Value;
+            //리스트의 오더 인덱스로 추가값을 계산
+
+            for (int i = 0; i < this.m_MaterialObject.processingList.Count; i++)
+            {
+                for (int j = 0; j < ThousandLinesManager.Instance.m_Machines.Count; j++)
+                {
+                    if (ThousandLinesManager.Instance.m_Machines[j].Model.m_Data.OrderIndex == this.m_MaterialObject.processingList[i])
+                    {
+                        var getValue = ThousandLinesManager.Instance.m_Machines[j].Model.m_Data.Line_Prosseing_Value;
+
+                        switch (ThousandLinesManager.Instance.m_Machines[i].processingType)
+                        {
+                            case ProcessingType.NULL:                                break;
+                            case ProcessingType.PRESS:    value += getValue;         break;
+                            case ProcessingType.WELDING:  value *= getValue;         break;
+                            case ProcessingType.SOAK:     value += getValue;         break;
+                        }
+                    }
+                }
+            }
+            return value;
         }
 
         #region Others

@@ -25,6 +25,9 @@ namespace ThousandLines_Data
 		[JsonProperty("Line_Prosseing")]
 		public string Line_Prosseing { get; protected set; }
 
+		[JsonProperty("Line_Prosseing_Value")]
+		public double Line_Prosseing_Value { get; protected set; }
+
 		[JsonProperty("Line_Description")]
 		public string Line_Description { get; protected set; }
 	}

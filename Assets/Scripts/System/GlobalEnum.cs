@@ -28,7 +28,7 @@ namespace ThousandLines
         STOP        =  9, // Á¤Áö
     }
 
-    public enum MachineAbility
+    public enum ProcessingType
     {
         NULL    = -1,
         PRESS   =  0,

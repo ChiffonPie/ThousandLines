@@ -17,6 +17,8 @@ namespace ThousandLines
         public MaterialObject m_MaterialObject;
 
         public double m_money;
+
+        public List<MachineLine> m_Machines = new List<MachineLine>();
         public List<Machine> m_InMachines = new List<Machine>();
         public List<Machine> m_OutMachines = new List<Machine>(); //대기중인 머신
 
@@ -77,12 +79,12 @@ namespace ThousandLines
             yield return new WaitForSeconds(1f);
 
             //리스트 정렬
-            List<MachineLine> allMachineLine = new List<MachineLine>();
-            allMachineLine.AddRange(this.FindMachineLine(this.m_InMachines));
-            allMachineLine.AddRange(this.FindMachineLine(this.m_OutMachines));
+            this.m_Machines = new List<MachineLine>();
+            this.m_Machines.AddRange(this.FindMachineLine(this.m_InMachines));
+            this.m_Machines.AddRange(this.FindMachineLine(this.m_OutMachines));
 
             // UI 초기화
-            ThousandLinesUIManager.Instance.Initialize(allMachineLine);
+            ThousandLinesUIManager.Instance.Initialize(this.m_Machines);
             ThousandLinesUIManager.Instance.SetAcitveGameUI(true);
 
             //전부 완료 후 터치 활성화

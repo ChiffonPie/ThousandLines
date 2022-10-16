@@ -14,12 +14,14 @@ namespace ThousandLines
 
         public SpriteRenderer m_SpriteRenderer;
 
-        public List<int> LineTypes = new List<int>();
+        //작업한 공정 리스트
+        public List<int> processingList = new List<int>();
         private double m_Value = 0;
 
         private void Awake()
         {
-            m_SpriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.m_SpriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.processingList = new List<int>();
         }
 
         public double Value
@@ -31,6 +33,7 @@ namespace ThousandLines
         //처음 생성시 만들어지는 기본 데이터 메테리얼 오브젝트
         public void SetMaterialObject(MaterialObjectData materialObjectData)
         {
+            this.processingList.Clear();
             var model = new MaterialObjectModel(materialObjectData);
             this.Model = model;
             this.Value = model.m_Data.Material_Value;
