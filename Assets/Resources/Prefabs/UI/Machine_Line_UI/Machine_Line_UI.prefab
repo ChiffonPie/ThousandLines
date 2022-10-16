@@ -520,6 +520,7 @@ MonoBehaviour:
   m_MachineImage: {fileID: 5601610843389985481}
   m_MachineId: 
   m_NameText: {fileID: 7527404536191404001}
+  m_price: 0
   m_PriceText: {fileID: 1654483983965177452}
   m_Settingbutton: {fileID: 8479418107969105378}
   m_BuyButton: {fileID: 6018845548223318739}

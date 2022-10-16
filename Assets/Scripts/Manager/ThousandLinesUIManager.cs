@@ -77,7 +77,8 @@ namespace ThousandLines
             MaterialToggle materialToggle = Instantiate(this.m_MaterialTogglePreview, this.m_MaterialToggleTr.transform);
             materialToggle.m_Toggle.group = this.m_MaterialToggleTr;
             materialToggle.Id = materialObject.Model.m_Data.Id;
-            materialToggle.SetMaterialSprite();
+            materialToggle.SetMaterial();
+            materialToggle.Price = materialObject.Model.m_Data.Material_Price;
             materialToggle.m_Toggle.onValueChanged.AddListener(HandleToggleValueChanged);
 
             m_MaterialToggles.Add(materialToggle);

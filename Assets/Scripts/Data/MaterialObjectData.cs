@@ -4,8 +4,8 @@ namespace ThousandLines_Data
 {
 	public class MaterialObjectData : AssetData<string>, ISort
 	{
-		[JsonProperty("Material_Hp")]
-		public int Material_Hp { get; protected set; }
+		[JsonProperty("Material_Price")]
+		public int Material_Price { get; protected set; }
 
 		[JsonProperty("Material_Value")]
 		public int Material_Value { get; protected set; }

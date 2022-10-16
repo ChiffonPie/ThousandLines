@@ -1,5 +1,5 @@
-Id,Material_Hp,Material_Value
-MaterialObject_1,3,10
-MaterialObject_2,4,20
-MaterialObject_3,5,30
-MaterialObject_4,6,40
+Id,Material_Price,Material_Value
+MaterialObject_1,0,10
+MaterialObject_2,10,20
+MaterialObject_3,50,30
+MaterialObject_4,100,40
