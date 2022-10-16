@@ -687,7 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LoadingSlider: {fileID: 1032943101}
   m_IntroLabel: {fileID: 1001825239}
-  m_LoadingDuration: 0.1
+  m_LoadingDuration: 2
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0

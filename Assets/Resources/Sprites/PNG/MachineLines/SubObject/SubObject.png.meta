@@ -233,6 +233,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Tutorial_1
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 72
+        width: 349
+        height: 316
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8afce292bd9b7f441a8479198b2ba671
+      internalID: -922154330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -245,6 +266,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Board_Loop: 1945003296
+      Tutorial_1: -922154330
       BoardCap_L: -1930759493
       BoardCap_R: -1792160455
       Board_BackGround_1: -749429294
