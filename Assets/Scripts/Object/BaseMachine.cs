@@ -1,9 +1,6 @@
 using DG.Tweening;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using ThousandLines_Data;
-using UniRx;
 
 namespace ThousandLines
 {

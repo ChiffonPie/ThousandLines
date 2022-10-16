@@ -4,9 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using ThousandLines;
-using System.IO;
 
 namespace ThousandLines_Data
 {

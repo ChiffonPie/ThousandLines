@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using ThousandLines_Data;
 using UnityEngine.Rendering;
-using Unity.VisualScripting;
 
 namespace ThousandLines
 {
