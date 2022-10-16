@@ -9,7 +9,7 @@ namespace ThousandLines_Data
         //특정 파일을 파싱하는 방식
         public static string ConvertCsvFileToJson(string fileName)
         {
-            //서버에서 내려주는 데이터의 경우 한번만 해도 됨.
+            //서버에서 내려주는 데이터의 변환하지 않아도 된다.
             List<JObject> jsonData = new List<JObject>();
             string[] files = Directory.GetFiles($"{AssetDataManager.dataPath}", "*.csv");
             string jsonAllData = null;

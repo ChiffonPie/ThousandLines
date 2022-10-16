@@ -1,6 +1,5 @@
 Id,Material_Hp,Material_Value
-Material_1,3,10
-Material_2,4,20
-Material_3,5,30
-Material_4,6,40
-Material_5,7,50
+MaterialObject_1,3,10
+MaterialObject_2,4,20
+MaterialObject_3,5,30
+MaterialObject_4,6,40

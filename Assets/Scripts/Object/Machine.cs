@@ -13,21 +13,21 @@ namespace ThousandLines
         [Header("[ Machine ]")]
         public string id;
         public int m_Index;
-        public float m_Distace; // 입력해도 되고, 데이터로 로드 해도됨
+        public float m_Distace; // 입력하거나, 데이터 로드 (데이터 로드 우선)
         public MachineState machineState = MachineState.NULL;
         public MaterialObject m_MaterialObject;
 
         [SerializeField]
         protected SpriteRenderer m_stateSr;
-
         protected List<SpriteRenderer> m_SpriteRenderers;
+        
+        [SerializeField]
         protected SpriteRenderer m_buttonSpriteRenderer;
         protected Animator m_Animator;
 
         [SerializeField]
         protected List<Transform> m_tr;
         protected Vector3[] m_Pos;
-        private bool m_Reposition = false; // 해제로 인한 이동 예약
 
         [SerializeField]
         protected MovingBoard m_MovingBoard;
@@ -38,7 +38,6 @@ namespace ThousandLines
         [HideInInspector]
         protected Dictionary<MachineState, Action> m_Actions = new Dictionary<MachineState, Action>();
 
-
         public int CurrentIndex
         {
             get { return m_Index; }
@@ -48,7 +47,6 @@ namespace ThousandLines
                 this.m_Index = value;
             }
         }
-
         protected virtual void Awake()
         {
             this.InitializeSprites();
@@ -68,14 +66,6 @@ namespace ThousandLines
             this.m_SpriteRenderers = new List<SpriteRenderer>();
             this.m_SpriteRenderers = SpriteExtensions.GetSpriteList(this.gameObject);
             SpriteExtensions.HideSpriteObject(this.m_SpriteRenderers);
-            //버튼 스프라이트 적용
-            for (int i = 0; i < this.m_SpriteRenderers.Count; i++)
-            {
-                if (this.m_SpriteRenderers[i].name == "MachineButton")
-                {
-                    this.m_buttonSpriteRenderer = this.m_SpriteRenderers[i];
-                }
-            }
         }
 
         private void SetupPos()
@@ -115,59 +105,50 @@ namespace ThousandLines
         }
         protected virtual void InitializeSequence()
         {
-            Debug.Log(this.name + " : 초기화 중");
+            Debug.Log(this.name + " : Initialize");
         }
         protected virtual void MoveSequence()
         {
-            Debug.Log(this.name + " : 이동중");
+            Debug.Log(this.name + " : Move");
         }
 
         protected virtual void WaitSequence()
         {
-            Debug.Log(this.name + " : 대기중");
+            Debug.Log(this.name + " : Wait");
         }
         protected virtual void ReadySequence()
         {
-            Debug.Log(this.name + " : 준비완료");
+            Debug.Log(this.name + " : Ready");
         }
         protected virtual void PlaySequence()
         {
-            Debug.Log(this.name + " : 작동");
+            Debug.Log(this.name + " : Play");
         }
 
         protected virtual void InSequence()
         {
-            Debug.Log(this.name + " : 설치");
+            Debug.Log(this.name + " : In");
             Sequence sequence = DOTween.Sequence();
             sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.white, 1f));
         }
-
         protected virtual void OutSequence()
         {
-            Debug.Log(this.name + " : 해제");
+            Debug.Log(this.name + " : Out");
 
             int index = this.CurrentIndex;
             ThousandLinesManager.Instance.MachineListRemove(this);
-
-            //만약 다음 친구가 READY 면 Call 해야함
-            //나는 확정 OUT
             ThousandLinesManager.Instance.ResetReadyMachine(this, index);
 
             Vector2 hidePos = this.transform.position;
             hidePos += new Vector2(0.78f, 1f);
 
-            //떠날 때 이전 머신이 Ready 상태일 경우 불러준다.
-
             Sequence sequence = DOTween.Sequence();
-
             sequence.Append(SpriteExtensions.SetSpritesColor(this.m_SpriteRenderers, 1f, false));
             sequence.Join(this.m_MovingBoard.defaultM.DOColor(Color.clear, 1f));
 
             sequence.Join(this.transform.DOMove(hidePos, 1f)).OnComplete(() =>
             {
-                //설치 해제 컬러 세팅
                 this.m_buttonSpriteRenderer.color = Color.green;
-                //완료되면 버튼을 재 활성화 해준다.
                 ThousandLinesUIManager.Instance.SetInteractableButton(this.id);
 
                 this.gameObject.SetActive(false);
@@ -176,8 +157,7 @@ namespace ThousandLines
 
         protected virtual void RepositionSequence()
         {
-            // 해제 머신의 다음 머신들은 모든 생산을 완료 한 뒤 이동 하여야 한다.
-            Debug.Log(this.name + " : 포지션 재정리");
+            Debug.Log(this.name + " : Reposition");
             Sequence sequence = DOTween.Sequence();
 
             if (this != ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex])
@@ -201,7 +181,7 @@ namespace ThousandLines
 
             int index = this.CurrentIndex;
             ThousandLinesManager.Instance.MachineListSet(this);
-            ThousandLinesManager.Instance.ResetRepositionMachine(this, index);
+            ThousandLinesManager.Instance.ResetRepositionMachine(index);
 
             Vector2 movePos = ThousandLinesManager.Instance.GetMachineLinePos(this);
 
@@ -214,9 +194,6 @@ namespace ThousandLines
         protected virtual void StopSequence()
         {
             Debug.Log(this.name + " : 정지");
-            if (this.m_MovingBoard != null)
-            {
-            }
         }
 
         #endregion
@@ -238,7 +215,7 @@ namespace ThousandLines
         private void SetStateColor(MachineState state)
         {
             if (this.m_stateSr == null) return;
-            switch (machineState)
+            switch (state)
             {
                 case MachineState.INITIALIZE: return;
                 case MachineState.READY: this.m_stateSr.color = Color.cyan; return;
@@ -273,9 +250,7 @@ namespace ThousandLines
                 this.m_buttonSpriteRenderer.color = Color.red;
 
             if (this.machineState == MachineState.STOP)
-            {
                 this.SetState(MachineState.READY);
-            }
         }
 
         #endregion
@@ -346,9 +321,10 @@ namespace ThousandLines
             spriteRenderer.sortingOrder = materialObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
         }
 
-        protected void ChangeColor()
+        protected void ChangeColor(MaterialObject materialObject, Color color)
         {
             //담금질에 대한 연출
+            materialObject.m_SpriteRenderer.color = color;
         }
 
         #endregion
@@ -357,12 +333,10 @@ namespace ThousandLines
 
         protected float SetBoardSpeed
         {
-            set 
+            set
             {
                 if (this.m_MovingBoard != null)
-                {
                     this.m_MovingBoard.speed = value;
-                }
             }
         }
         #endregion

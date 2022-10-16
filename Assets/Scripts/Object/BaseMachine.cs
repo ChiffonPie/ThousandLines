@@ -10,8 +10,7 @@ namespace ThousandLines
     public class BaseMachine : Machine
     {
         [HideInInspector]
-        public bool m_isStop = false; // 생산머신 특징 - 정지 함
-
+        public bool m_isStop = false;
         public BaseMachineModel Model;
 
         protected override void Awake()
@@ -42,6 +41,7 @@ namespace ThousandLines
         #endregion
 
         #region Sequences
+
         protected override void InitializeSequence()
         {
             base.InitializeSequence();
@@ -98,7 +98,6 @@ namespace ThousandLines
         {
             base.InSequence();
         }
-
         protected override void OutSequence()
         {
             base.OutSequence();

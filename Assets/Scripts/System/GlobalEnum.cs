@@ -23,7 +23,6 @@ namespace ThousandLines
 
         IN          =  6, // 머신 설치
         OUT         =  7, // 머신 해제 
-
         REPOSITION  =  8, // 머신 순서 재설정
 
         STOP        =  9, // 정지

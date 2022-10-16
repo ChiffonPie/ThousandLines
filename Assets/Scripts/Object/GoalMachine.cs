@@ -37,53 +37,10 @@ namespace ThousandLines
         protected override void ReadySequence()
         {
             base.ReadySequence();
+            if (isPullForward) return;
 
-            //누가 추가되어 대기중인지 확인
-            //최신 리스트 상태에 따라서 위치조정을 해야함.
-
-            //앞으로 밀착
-
-            if (ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] == null)
-            {
-                ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] = this;
-                this.CurrentIndex--;
-                ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex]);
-                this.SetState(MachineState.REPOSITION);
-                return;
-            }
-            //리스트 클리어 처리
-
-            for (int i = this.CurrentIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count;)
-            {
-                if (ThousandLinesManager.Instance.m_InMachines[i] == null)
-                {
-                    ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
-                }
-                else
-                {
-                    i++;
-                }
-            }
-
-            //포지션 재정리
-            if (this.CurrentIndex < ThousandLinesManager.Instance.m_InMachines.Count - 1)
-            {
-                for (int i = 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
-                {
-                    if (ThousandLinesManager.Instance.m_InMachines[i].machineState == MachineState.OUT)
-                    {
-                        ThousandLinesManager.Instance.m_InMachines[i].CurrentIndex = i;
-                        ThousandLinesManager.Instance.m_InMachines[i].SetState(MachineState.IN);
-                    }
-                }
-
-                ThousandLinesManager.Instance.m_InMachines.Remove(this);
-                ThousandLinesManager.Instance.m_InMachines.Add(this);
-                this.CurrentIndex = ThousandLinesManager.Instance.m_InMachines.Count - 1;
-
-                this.SetState(MachineState.REPOSITION);
-                return;
-            }
+            this.ClearInMachineList();
+            if (isResetPosition) return;
 
             ThousandLinesManager.Instance.MachineSend(this);
         }
@@ -122,11 +79,73 @@ namespace ThousandLines
 
         #endregion
 
+        #region Others
+
+        //한칸씩 앞으로 전진
+        private bool isPullForward
+        {
+            get
+            {
+                //앞으로 밀착
+                if (ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] == null)
+                {
+                    ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex - 1] = this;
+                    this.CurrentIndex--;
+                    ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[this.CurrentIndex]);
+                    this.SetState(MachineState.REPOSITION);
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        private void ClearInMachineList()
+        {
+            //리스트 클리어 처리
+            for (int i = this.CurrentIndex + 1; i < ThousandLinesManager.Instance.m_InMachines.Count;)
+            {
+                if (ThousandLinesManager.Instance.m_InMachines[i] == null)
+                    ThousandLinesManager.Instance.m_InMachines.Remove(ThousandLinesManager.Instance.m_InMachines[i]);
+                else
+                    i++;
+            }
+        }
+
+        private bool isResetPosition
+        {
+                //포지션 재정리 여부
+            get 
+            {
+                if (this.CurrentIndex < ThousandLinesManager.Instance.m_InMachines.Count - 1)
+                {
+                    for (int i = 1; i < ThousandLinesManager.Instance.m_InMachines.Count; i++)
+                    {
+                        if (ThousandLinesManager.Instance.m_InMachines[i].machineState == MachineState.OUT)
+                        {
+                            ThousandLinesManager.Instance.m_InMachines[i].CurrentIndex = i;
+                            ThousandLinesManager.Instance.m_InMachines[i].SetState(MachineState.IN);
+                        }
+                    }
+
+                    ThousandLinesManager.Instance.m_InMachines.Remove(this);
+                    ThousandLinesManager.Instance.m_InMachines.Add(this);
+                    this.CurrentIndex = ThousandLinesManager.Instance.m_InMachines.Count - 1;
+
+                    this.SetState(MachineState.REPOSITION);
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         private void SetMoney()
         {
             ThousandLinesManager.Instance.Money = this.m_MaterialObject.Value;
             Destroy(this.m_MaterialObject.gameObject);
             this.m_MaterialObject = null;
         }
+
+        #endregion
     }
 }

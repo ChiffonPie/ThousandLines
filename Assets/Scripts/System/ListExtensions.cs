@@ -81,20 +81,6 @@ namespace System.Collections.Generic
 
 		public static void Shuffle<T>(this IList<T> list)
 		{
-			// var random = new Random();
-			// int index = list.Count;
-			//
-			// while (1 < index)
-			// {
-			// 	var dest = random.Next(index + 1);
-			// 	if (dest == index)
-			// 		continue;
-			// 	
-			// 	list.Swap(index, dest);
-			// 	index--;
-			// }
-
-
 			var random = new Random();
 			int index = list.Count;
 			int dest;

@@ -202,6 +202,7 @@ MonoBehaviour:
   machineState: -1
   m_MaterialObject: {fileID: 0}
   m_stateSr: {fileID: 7981290656778686251}
+  m_buttonSpriteRenderer: {fileID: 0}
   m_tr:
   - {fileID: 3750000197967954155}
   - {fileID: 589499282366970894}

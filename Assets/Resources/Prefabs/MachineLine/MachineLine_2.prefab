@@ -173,6 +173,7 @@ MonoBehaviour:
   machineState: -1
   m_MaterialObject: {fileID: 0}
   m_stateSr: {fileID: 5259501975214385469}
+  m_buttonSpriteRenderer: {fileID: 8021407164595445004}
   m_tr:
   - {fileID: 7530230391608116807}
   - {fileID: 5220525913171313887}
@@ -719,5 +720,10 @@ PrefabInstance:
 --- !u!4 &4041427354990016912 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6234183566033032823, guid: af442b584618dc144b3eb0bc3def710e, type: 3}
+  m_PrefabInstance: {fileID: 7967514425492238311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &8021407164595445004 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 127102964992045803, guid: af442b584618dc144b3eb0bc3def710e, type: 3}
   m_PrefabInstance: {fileID: 7967514425492238311}
   m_PrefabAsset: {fileID: 0}

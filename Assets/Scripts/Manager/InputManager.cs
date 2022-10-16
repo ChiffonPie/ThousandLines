@@ -10,7 +10,7 @@ namespace ThousandLines
     {
         public static InputManager Instance { get; private set; }
         private bool isLock; //터치 제어용
-        Camera camera;
+        private Camera mainCamera;
 
         public bool IsLock
         {
@@ -22,7 +22,7 @@ namespace ThousandLines
             Instance = this;
             this.isLock = true ; //게임 매니저가 로드를 완료하면 활성화 해준다.
 
-            this.camera = this.GetComponent<Camera>();
+            this.mainCamera = this.GetComponent<Camera>();
             var mouseDownStream = this.UpdateAsObservable().Where(_ => Input.GetMouseButtonDown(0));
             mouseDownStream.Subscribe(_ => TouchObject());
         }
@@ -32,8 +32,8 @@ namespace ThousandLines
             if (!isLock)
             {
                 Vector3 touchPos = Input.mousePosition;
-                Vector3 convertVector = camera.ScreenToWorldPoint(touchPos);
-                RaycastHit2D hit = Physics2D.Raycast(convertVector, camera.transform.forward);
+                Vector3 convertVector = mainCamera.ScreenToWorldPoint(touchPos);
+                RaycastHit2D hit = Physics2D.Raycast(convertVector, mainCamera.transform.forward);
                 if (hit.collider != null)
                 {
                     //머신 버튼을 터치

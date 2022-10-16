@@ -23,25 +23,13 @@ namespace ThousandLines_Data
 			AssetDataManager.AssetMap.Clear();
 			await UniTask.WhenAll(new List<UniTask>()
 			{
-				AssetDataManager.Load<int, UserData>("UserData"),
 				AssetDataManager.Load<int, BaseMachineData>("BaseMachineData"),
 				AssetDataManager.Load<string, MachineLineData>("MachineLineData"),
-				AssetDataManager.Load<string, MachineAbilityData>("MachineAbilityData"),
 				AssetDataManager.Load<string, MaterialObjectData>("MaterialObjectData"),
 			});
 
 			AssetDataManager.IsLoaded = true;
 		}
-
-		public static void Save()
-        {
-			//매니저에 보유된 정보를 json 으로 파싱함.
-			string json = JsonUtility.ToJson(ThousandLinesManager.Instance.m_InMachines[0].GetComponent<MachineLine>().Model.m_Data);
-			string FileName = "MachineLineData";
-			string path = Application.dataPath + "/Data/Save/" + FileName + ".json";
-			File.WriteAllText(path, json);
-        }
-
 
 		private static async UniTask Load<TKey, TValue>(string name) where TValue : AssetData<TKey>, new()
 		{

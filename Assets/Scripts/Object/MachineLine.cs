@@ -71,14 +71,9 @@ namespace ThousandLines
             }
 
             if (this.m_isReserved)
-            {
-                //이전게 널인지 체크 후 무빙
                 this.SetState(MachineState.OUT);
-            }
             else
-            {
                 ThousandLinesManager.Instance.MachineSend(this);
-            }
         }
 
         protected override void PlaySequence()
@@ -86,7 +81,7 @@ namespace ThousandLines
             base.PlaySequence();
             var sequence = DOTween.Sequence();
 
-            // 3. 가공 대기상태 (애니메이션 시작)
+            // 2. 가공 시작 (애니메이션 시작)
             this.SetAnimationSpeed(1);
             sequence.AppendInterval(this.animationTime).OnComplete(() =>
             {
@@ -103,7 +98,7 @@ namespace ThousandLines
             this.SetBoardSpeed = this.Model.m_Data.Line_Speed * 0.5f;
             if (!isComplete)
             {
-                // 2. 재료 중앙 이동
+                // 1. 재료 중앙 이동
                 sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[0], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear));
                 sequence.Append(this.m_MaterialObject.transform.DOLocalMove(this.m_Pos[1], this.Model.m_Data.Line_Speed * 0.5f).SetEase(Ease.Linear)).OnComplete(() =>
                 {
@@ -134,10 +129,9 @@ namespace ThousandLines
         protected override void InSequence()
         {
             base.InSequence();
-            //소환 코드 호출
 
             this.gameObject.SetActive(true);
-            Vector2 hidePos = ThousandLinesManager.Instance.GetMachineLinePos(this);// 좌표 계산식 참고
+            Vector2 hidePos = ThousandLinesManager.Instance.GetMachineLinePos(this); // 좌표 계산식 참고
             Vector2 startPos = new Vector2(0.78f, 1f);
 
             this.transform.position = new Vector2(startPos.x + hidePos.x, startPos.y);
@@ -149,9 +143,6 @@ namespace ThousandLines
                 this.m_isReserved = false;
                 this.SetState(MachineState.READY);
             });
-            //다음 머신의 상태에 따라 호출
-
-
         }
 
         protected override void OutSequence()
@@ -176,7 +167,7 @@ namespace ThousandLines
                 case MachineAbility.NULL: Debug.LogError("처리 과정이 정의되지 않았습니다."); break;
                 case MachineAbility.PRESS: this.PressScale(this.m_MaterialObject); break;
                 case MachineAbility.WELDING: this.AddSprite(this.m_MaterialObject, this.Model.m_Data.Line_Prosseing); break;
-                case MachineAbility.SOAK: this.ChangeColor(); break;
+                case MachineAbility.SOAK: this.ChangeColor(this.m_MaterialObject, Color.green); break;
             }
         }
 
